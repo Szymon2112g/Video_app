@@ -1,5 +1,7 @@
 package com.wideoapp.WideoAppDatabase.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,7 +23,7 @@ public class Video {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id",updatable = false, insertable = false, nullable=false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Video() { }
@@ -65,7 +67,7 @@ public class Video {
         this.description = description;
     }
 
-    public User _GetUser() {
+    public User getUser() {
         return user;
     }
     public void SetUser(User user) {

@@ -12,7 +12,7 @@ create table `user` (
     `email` varchar(64) default null,
     `password` varchar(64) default null,
     primary key(`id`)
-    )engine=InnoDB auto_increment=1 default charset=latin1;
+)engine=InnoDB auto_increment=1 default charset=latin1;
     
 drop table if exists `video`;
 create table `video` (
@@ -26,4 +26,4 @@ create table `video` (
 	constraint `FK_USER`
     foreign key (`user_id`)
     references `user`(`id`)
-    )engine=InnoDB auto_increment=1 default charset=latin1;
+)engine=InnoDB auto_increment=1 default charset=latin1;

@@ -1,5 +1,7 @@
 package com.wideoapp.WideoAppDatabase.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class User {
     @OneToMany(fetch=FetchType.LAZY,
                 cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                 CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id", updatable = false, insertable = false, nullable=false)
+    @JoinColumn(name = "user_id")
     private List<Video> videoList;
 
     public User() { }
