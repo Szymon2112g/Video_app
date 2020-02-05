@@ -3,6 +3,7 @@ package com.wideoapp.WideoAppDatabase.Entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "video")
@@ -26,13 +27,25 @@ public class Video {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Video() { }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "video_detail_id")
+    private VideoDetail videoDetail;
 
-    public Video(String url, String title, String description, User user) {
+    @OneToMany(fetch = FetchType.LAZY,
+                cascade = CascadeType.ALL)
+    @JoinColumn(name = "video_id")
+    private List<Review> reviews;
+
+    public Video() {
+    }
+
+    public Video(String url, String title, String description, User user, VideoDetail videoDetail, List<Review> reviews) {
         this.url = url;
         this.title = title;
         this.description = description;
         this.user = user;
+        this.videoDetail = videoDetail;
+        this.reviews = reviews;
     }
 
     public int getId() {
@@ -70,8 +83,24 @@ public class Video {
     public User getUser() {
         return user;
     }
-    public void SetUser(User user) {
+
+    public void setUser(User user) {
         this.user = user;
     }
 
+    public VideoDetail getVideoDetail() {
+        return videoDetail;
+    }
+
+    public void setVideoDetail(VideoDetail videoDetail) {
+        this.videoDetail = videoDetail;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }

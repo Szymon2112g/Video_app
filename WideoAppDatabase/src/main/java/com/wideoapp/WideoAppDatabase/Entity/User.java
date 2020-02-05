@@ -32,14 +32,24 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Video> videoList;
 
-    public User() { }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name="review_user",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="review_id")
+    )
+    private List<Review> reviews;
 
-    public User(String firstName, String lastName, String email, String password, List<Video> videoList) {
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String email, String password, List<Video> videoList, List<Review> reviews) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.videoList = videoList;
+        this.reviews = reviews;
     }
 
     public int getId() {
@@ -90,4 +100,11 @@ public class User {
         this.videoList = videoList;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }
