@@ -36,16 +36,20 @@ public class Video {
     @JoinColumn(name = "video_id")
     private List<Review> reviews;
 
+    @Column(name = "photo_url")
+    private String photoUrl;
+
     public Video() {
     }
 
-    public Video(String url, String title, String description, User user, VideoDetail videoDetail, List<Review> reviews) {
+    public Video(String url, String title, String description, User user, VideoDetail videoDetail, List<Review> reviews, String photoUrl) {
         this.url = url;
         this.title = title;
         this.description = description;
         this.user = user;
         this.videoDetail = videoDetail;
         this.reviews = reviews;
+        this.photoUrl = photoUrl;
     }
 
     public int getId() {
@@ -103,4 +107,13 @@ public class Video {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 }
+

@@ -10,8 +10,20 @@ create table `user` (
     `first_name` varchar(64) default null,
     `last_name` varchar(64) default null,
     `email` varchar(64) default null,
-    `password` varchar(64) default null,
+    `password` varchar(64) default null,   
+    
     primary key(`id`)
+
+)engine=InnoDB auto_increment=1 default charset=latin1;
+    
+drop table if exists `video_detail`;
+create table `video_detail` (
+	`id` int(11) not null auto_increment,
+    `likes` int(11) default null,
+    `dislikes` int(11) default null,
+    `display` int(16) default null,
+    primary key(`id`)
+
 )engine=InnoDB auto_increment=1 default charset=latin1;
     
 drop table if exists `video`;
@@ -21,9 +33,43 @@ create table `video` (
     `title` varchar(64) default null,
     `description` varchar(256) default null,
     `user_id` int(16) default null,
+    `video_detail_id` int(11) default null,
+    `photo_url` varchar(256) default null,
     primary key(`id`),
     
 	constraint `FK_USER`
     foreign key (`user_id`)
-    references `user`(`id`)
+    references `user`(`id`),
+    
+    constraint `FK_VIDEO_DETAIL`
+    foreign key (`video_detail_id`)
+    references `video_detail`(`id`)
 )engine=InnoDB auto_increment=1 default charset=latin1;
+
+drop table if exists `review`;
+create table `review` (
+	`id` int(11) not null auto_increment,
+    `comment` varchar(256) default null,
+    `video_id` int(11) default null,
+    
+    primary key(`id`),
+    
+    constraint `FK_VIDEO`
+    foreign key (`video_id`)
+    references `video`(`id`)    
+)engine=InnoDB auto_increment=1 default charset=latin1;
+
+drop table if exists `review_user`;
+create table `review_user` (
+	`review_id` int(11) not null,
+    `user_id` int(11) not null,
+    primary key(`review_id`,`user_id`),
+    
+    constraint `FK_REVIEW`
+    foreign key (`review_id`)
+    references `review`(`id`),   
+	
+    constraint `FK_USERID`
+    foreign key (`user_id`)
+    references `user`(`id`)   
+)engine=InnoDB default charset=latin1;
