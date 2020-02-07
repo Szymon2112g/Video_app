@@ -1,1 +1,29 @@
 <p>startpage works!</p>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>id</th>
+    <th>url</th>
+    <th>title</th>
+    <th>description</th>
+    <th>firstName</th>
+    <th>lastName</th>
+    <th>display</th>
+    <th>photoUrl</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let tmp of videoBasic">
+    <td>{{tmp.id}}</td>
+    <td>{{tmp.url}}</td>
+    <td>{{tmp.title}}</td>
+    <td>{{tmp.description}}</td>
+    <td>{{tmp.firstName}}</td>
+    <td>{{tmp.lastName}}</td>
+    <td>{{tmp.display}}</td>
+    <td>{{tmp.photoUrl}}</td>
+  </tr>
+  </tbody>
+
+</table>

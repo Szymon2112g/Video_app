@@ -9,8 +9,9 @@ public class VideoBasicInformation {
     private String firstName;
     private String lastName;
     private int display;
+    private String photoUrl;
 
-    public VideoBasicInformation(int id, String url, String title, String description, String firstName, String lastName, int display) {
+    public VideoBasicInformation(int id, String url, String title, String description, String firstName, String lastName, int display, String photoUrl) {
         this.id = id;
         this.url = url;
         this.title = title;
@@ -18,6 +19,7 @@ public class VideoBasicInformation {
         this.firstName = firstName;
         this.lastName = lastName;
         this.display = display;
+        this.photoUrl = photoUrl;
     }
 
     public int getId() {
@@ -75,4 +77,13 @@ public class VideoBasicInformation {
     public void setDisplay(int display) {
         this.display = display;
     }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 }
+
