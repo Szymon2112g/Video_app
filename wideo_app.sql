@@ -10,7 +10,7 @@ create table `user` (
     `first_name` varchar(64) default null,
     `last_name` varchar(64) default null,
     `email` varchar(64) default null,
-    `password` varchar(64) default null,   
+    `password` char(128) default null,   
     
     primary key(`id`)
 
