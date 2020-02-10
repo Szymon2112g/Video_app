@@ -30,7 +30,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Value("{jwt.http.request.header}")
+    @Value("${jwt.http.request.header}")
     private String tokenHeader;
 
     @Override
@@ -41,10 +41,12 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
         logger.debug("Authentication Request For '{}", httpServletRequest.getRequestURL());
 
-        final  String requestTokenHeader = httpServletRequest.getHeader(this.tokenHeader);
+        final String requestTokenHeader = httpServletRequest.getHeader(this.tokenHeader);
 
         String username = null;
         String jwtToken = null;
+
+
         if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {

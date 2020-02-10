@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {VideoappdatabaseService, VideoBasicInformation} from '../server/videoappdatabase.service';
+import {AuthenticationService} from '../server/authentication.service';
 
 @Component({
   selector: 'app-startpage',
@@ -8,14 +9,26 @@ import {VideoappdatabaseService, VideoBasicInformation} from '../server/videoapp
 })
 export class StartpageComponent implements OnInit {
 
+  test = 'brak';
+
   videoBasic: VideoBasicInformation[];
 
   constructor(
-    private VideoAppDatabase: VideoappdatabaseService
-  ) { }
+    private VideoAppDatabase: VideoappdatabaseService,
+    private authentication: AuthenticationService
+    ) { }
 
   ngOnInit() {
     this.getAllVideo();
+    this.getTest();
+  }
+
+  getTest() {
+    this.authentication.getTest().subscribe(
+      response => {
+        this.test = response.message;
+      }
+    );
   }
 
   getAllVideo() {
