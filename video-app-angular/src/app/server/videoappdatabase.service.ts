@@ -21,4 +21,10 @@ export class VideoappdatabaseService {
     const endpoint = `http://localhost:8080/videobasicinformation`;
     return this.http.get<VideoBasicInformation[]>(endpoint);
   }
+
+  register(firstName, lastName, email, password) {
+    const endpoint = `http://localhost:8080/register`;
+      return this.http.post(endpoint,{firstName, lastName, email, password});
+  }
+
 }

@@ -23,4 +23,10 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll() {
         return userDAO.findAll();
     }
+
+    @Override
+    @Transactional
+    public String addUser(User user) {
+        return userDAO.addUser(user);
+    }
 }
