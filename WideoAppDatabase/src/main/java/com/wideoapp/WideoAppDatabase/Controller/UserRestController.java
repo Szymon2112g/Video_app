@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin( origins = "http://localhost:4200")
+@CrossOrigin( origins = {"http://localhost:4200", "http://localhost:8100"})
 public class UserRestController {
 
     private UserService userService;
@@ -44,6 +44,11 @@ public class UserRestController {
         userService.addUser(user);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/usertest")
+    public String gettest() {
+        return "testowy user do sprawdzenia";
     }
 
 }
