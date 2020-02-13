@@ -46,6 +46,8 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         String username = null;
         String jwtToken = null;
 
+        logger.warn("cos tam" + requestTokenHeader);
+
 
         if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);

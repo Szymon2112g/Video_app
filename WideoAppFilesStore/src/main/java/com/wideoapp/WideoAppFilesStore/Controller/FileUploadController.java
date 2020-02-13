@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin( origins = {"http://localhost:4200", "http://localhost:8100"})
 public class FileUploadController {
 
     private final StorageService storageService;
@@ -44,10 +45,15 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping("/")
+    @PostMapping(path = "/addvideofile", consumes = {"multipart/form-data"})
     public ResponseEntity<?> handleFileUpload(@RequestBody MultipartFile file) {
         storageService.store(file);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/usertest")
+    public String gettest() {
+        return "testowy user do sprawdzenia";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

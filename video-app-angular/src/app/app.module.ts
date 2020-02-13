@@ -10,6 +10,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpIntercepterBasicAuthService} from './server/http/http-intercepter-basic-auth.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register/register.component';
+import { AddvideoComponent } from './addvideo/addvideo.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { RegisterComponent } from './login/register/register.component';
     HeaderComponent,
     StartpageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    AddvideoComponent
   ],
   imports: [
     BrowserModule,

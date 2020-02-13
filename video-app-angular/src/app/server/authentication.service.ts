@@ -20,6 +20,14 @@ export class AuthenticationService {
     return this.http.get<AuthenticationBean>('http://localhost:8100/hello-world-bean');
   }
 
+  sendVideoFile(fileToUpload: File) {
+    const url = `http://localhost:8100/sendvideofile`;
+    const formData: FormData = new FormData();
+
+    formData.append('file', fileToUpload);
+    return this.http.post<any>(url, formData);
+  }
+
   executeJWTAuthenticationService(username, password) {
     return this.http.post<any>(
       `http://localhost:8100/authenticate`, {
