@@ -21,7 +21,7 @@ public interface WideoAppFS {
 
 
     @PostMapping(path = "/wideoappfilesstore/addvideofile", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> handleFileUpload(@RequestBody MultipartFile file);
+    public ResponseEntity<String> handleFileUpload(@RequestBody MultipartFile file);
 
 
 

@@ -24,14 +24,30 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @OneToMany(fetch=FetchType.LAZY,
+                cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private List<Video> videoList;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name="review_user",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="review_id")
+    )
+    private List<Review> reviews;
+
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String email, String password, List<Video> videoList, List<Review> reviews) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.videoList = videoList;
+        this.reviews = reviews;
     }
 
     public int getId() {
@@ -72,5 +88,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Video> getVideoList() {
+        return videoList;
+    }
+
+    public void setVideoList(List<Video> videoList) {
+        this.videoList = videoList;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

@@ -2,6 +2,8 @@ package com.wideoapp.WideoAppFilesStore.Controller;
 
 import com.wideoapp.WideoAppFilesStore.Storage.StorageFileNotFoundException;
 import com.wideoapp.WideoAppFilesStore.Storage.StorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.thymeleaf.spring5.expression.Mvc;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
 public class FileUploadController {
 
     private final StorageService storageService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public FileUploadController(StorageService storageService) {
@@ -46,9 +51,20 @@ public class FileUploadController {
     }
 
     @PostMapping(path = "/addvideofile", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> handleFileUpload(@RequestBody MultipartFile file) {
+    public ResponseEntity<String> handleFileUpload(@RequestBody MultipartFile file) {
+        /*
+        MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+                        "serveFile", path.getFileName().toString()).build().toString()
+         */
+
+        String path = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,"serveFile",
+                file.getOriginalFilename().toString()).build().toString();
+
+        logger.warn(MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,"serveFile",
+                   file.getOriginalFilename().toString()).build().toString());
+
         storageService.store(file);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(path);
     }
 
     @GetMapping("/usertest")

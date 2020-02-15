@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {VideoBasicInformation} from '../server/videoappdatabase.service';
+import {VideoBasicInformation, VideoToSend} from '../server/videoappdatabase.service';
 import {AuthenticationService} from '../server/authentication.service';
+import {HttpEvent, HttpUploadProgressEvent} from '@angular/common/http';
+import {Observable, pipe} from 'rxjs';
+import {share, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-addvideo',
@@ -13,7 +16,9 @@ export class AddvideoComponent implements OnInit {
   videoToUpload: File = null;
   photoToUpload: File = null;
 
-  videoBasicInformation: VideoBasicInformation;
+  videoUrl: string;
+  videoToSend: VideoToSend = new VideoToSend(
+    this.authentication.getAuthenticatedUser(),'cos','title','desc',1,'url');
 
   constructor(
     private authentication: AuthenticationService
@@ -26,12 +31,19 @@ export class AddvideoComponent implements OnInit {
     this.videoToUpload = files.item(0);
   }
 
-  sendVideo() {
+  sendVideoFile() {
     this.authentication.sendVideoFile(this.videoToUpload).subscribe(
       data => {
-        //success
-      }, error => {
-        //error
+        this.videoUrl = data.odp;
+        this.videoToSend.url = this.videoUrl;
+      }
+    );
+  }
+
+  sendVideoToDB() {
+    this.authentication.sendVideoToDataBase(this.videoToSend).subscribe(
+      data => {
+
       }
     );
   }

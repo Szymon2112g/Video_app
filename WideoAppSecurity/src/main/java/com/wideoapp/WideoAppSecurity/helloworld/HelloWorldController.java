@@ -1,15 +1,18 @@
 package com.wideoapp.WideoAppSecurity.helloworld;
 
+import com.wideoapp.WideoAppSecurity.Dao.UserDao;
+import com.wideoapp.WideoAppSecurity.Entity.*;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppDB;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppFS;
-import feign.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //Controller
 @CrossOrigin(origins="http://localhost:4200")
@@ -23,6 +26,9 @@ public class HelloWorldController {
 
 	@Autowired
 	private WideoAppFS wideoAppFS;
+
+	@Autowired
+	private UserDao userDao;
 
 	@GetMapping(path = "/hello-world")
 	public String helloWorld() {
@@ -46,16 +52,31 @@ public class HelloWorldController {
 		}
 			wideoAppDB.gettest();
 			wideoAppFS.gettest();
-			wideoAppFS.handleFileUpload(file);
+			ResponseEntity<String> responseEntity = wideoAppFS.handleFileUpload(file);
 
-		return ResponseEntity.ok().build();
+		logger.error("path " + responseEntity.toString());
+
+		return ResponseEntity.ok(new Testowa(responseEntity.getBody()));
 	}
 
+	@PostMapping(path = "/sendvideotodb")
+	public ResponseEntity<?> sendVideoToDB(@RequestBody VideoToSend videoToSend)
+	{
+		logger.warn("wynik to " + videoToSend);
+
+		User user = userDao.findByEmail(videoToSend.getEmail());
+
+		VideoDetail videoDetail = new VideoDetail(0,0,0);
 
 
-	@GetMapping(path = "/hello-world/path-variable/{name}")
-	public HelloWorldBean helloWorldPathVariable(@PathVariable String name) {
-		return new HelloWorldBean(String.format("Hello World, %s", name));
+		Video video = new Video(videoToSend.getUrl(),videoToSend.getTitle(),
+				videoToSend.getDescription(),null,videoDetail,null,videoToSend.getPhotoUrl());
+
+		user.getVideoList().add(video);
+
+		userDao.save(user);
+
+		return ResponseEntity.ok().build();
 	}
 
 }

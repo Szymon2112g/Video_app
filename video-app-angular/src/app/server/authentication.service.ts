@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {VideoBasicInformation} from './videoappdatabase.service';
+import {VideoBasicInformation, VideoToSend} from './videoappdatabase.service';
 
 export const TOKEN = 'token';
 export const AUTHENTICATED_USER = 'authenticaterUser';
@@ -12,7 +12,7 @@ export const AUTHENTICATED_USER = 'authenticaterUser';
 export class AuthenticationService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
   ) { }
 
   /** test */
@@ -20,11 +20,19 @@ export class AuthenticationService {
     return this.http.get<AuthenticationBean>('http://localhost:8100/hello-world-bean');
   }
 
+  sendVideoToDataBase(videoToSend: VideoToSend) {
+    const url = `http://localhost:8100/sendvideotodb`;
+
+    return this.http.post<any>(url, videoToSend);
+  }
+
   sendVideoFile(fileToUpload: File) {
     const url = `http://localhost:8100/sendvideofile`;
     const formData: FormData = new FormData();
 
-    formData.append('file', fileToUpload);
+    let fileName = this.getAuthenticatedUser() + '_' + fileToUpload.name;
+    formData.append('file', fileToUpload, fileName);
+
     return this.http.post<any>(url, formData);
   }
 
