@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.thymeleaf.spring5.expression.Mvc;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -52,24 +50,13 @@ public class FileUploadController {
 
     @PostMapping(path = "/addvideofile", consumes = {"multipart/form-data"})
     public ResponseEntity<String> handleFileUpload(@RequestBody MultipartFile file) {
-        /*
-        MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-                        "serveFile", path.getFileName().toString()).build().toString()
-         */
 
-        String path = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,"serveFile",
-                file.getOriginalFilename().toString()).build().toString();
-
-        logger.warn(MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,"serveFile",
-                   file.getOriginalFilename().toString()).build().toString());
+        String path = MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class,"serveFile",
+                                file.getOriginalFilename().toString()).build().toString();
 
         storageService.store(file);
         return ResponseEntity.ok(path);
-    }
-
-    @GetMapping("/usertest")
-    public String gettest() {
-        return "testowy user do sprawdzenia";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

@@ -9,8 +9,6 @@ import {AuthenticationService} from '../server/authentication.service';
 })
 export class StartpageComponent implements OnInit {
 
-  test = 'brak';
-
   videoBasic: VideoBasicInformation[];
 
   constructor(
@@ -20,15 +18,6 @@ export class StartpageComponent implements OnInit {
 
   ngOnInit() {
     this.getAllVideo();
-    this.getTest();
-  }
-
-  getTest() {
-    this.authentication.getTest().subscribe(
-      response => {
-        this.test = response.message;
-      }
-    );
   }
 
   getAllVideo() {

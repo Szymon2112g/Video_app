@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpEventType, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {VideoBasicInformation, VideoToSend} from './videoappdatabase.service';
+import {VideoToSend} from './model/VideoToSend.model';
 
 export const TOKEN = 'token';
 export const AUTHENTICATED_USER = 'authenticaterUser';
@@ -15,14 +15,8 @@ export class AuthenticationService {
     private http: HttpClient,
   ) { }
 
-  /** test */
-  getTest() {
-    return this.http.get<AuthenticationBean>('http://localhost:8100/hello-world-bean');
-  }
-
   sendVideoToDataBase(videoToSend: VideoToSend) {
     const url = `http://localhost:8100/sendvideotodb`;
-
     return this.http.post<any>(url, videoToSend);
   }
 
@@ -66,8 +60,4 @@ export class AuthenticationService {
     sessionStorage.removeItem(AUTHENTICATED_USER);
     sessionStorage.removeItem(TOKEN);
   }
-}
-
-export class AuthenticationBean {
-  constructor(public message: string) { }
 }

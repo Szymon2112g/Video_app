@@ -1,7 +1,7 @@
-package com.wideoapp.WideoAppDatabase.Service;
+package com.wideoapp.WideoAppDatabase.Controller.Model;
 
 import com.wideoapp.WideoAppDatabase.Entity.Video;
-import com.wideoapp.WideoAppDatabase.Entity.VideoBasicInformation;
+import com.wideoapp.WideoAppDatabase.Service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

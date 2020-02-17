@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {VideoBasicInformation, VideoToSend} from '../server/videoappdatabase.service';
 import {AuthenticationService} from '../server/authentication.service';
-import {HttpEvent, HttpUploadProgressEvent} from '@angular/common/http';
-import {Observable, pipe} from 'rxjs';
-import {share, tap} from 'rxjs/operators';
+import {VideoToSend} from '../server/model/VideoToSend.model';
 
 @Component({
   selector: 'app-addvideo',
@@ -34,7 +31,7 @@ export class AddvideoComponent implements OnInit {
   sendVideoFile() {
     this.authentication.sendVideoFile(this.videoToUpload).subscribe(
       data => {
-        this.videoUrl = data.odp;
+        this.videoUrl = data.message;
         this.videoToSend.url = this.videoUrl;
       }
     );
@@ -47,6 +44,5 @@ export class AddvideoComponent implements OnInit {
       }
     );
   }
-
 
 }

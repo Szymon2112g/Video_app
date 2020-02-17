@@ -1,14 +1,11 @@
 package com.wideoapp.WideoAppDatabase.Controller;
 
-import com.wideoapp.WideoAppDatabase.DAO.VideoDAO;
 import com.wideoapp.WideoAppDatabase.Entity.Video;
-import com.wideoapp.WideoAppDatabase.Entity.VideoBasicInformation;
 import com.wideoapp.WideoAppDatabase.Service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

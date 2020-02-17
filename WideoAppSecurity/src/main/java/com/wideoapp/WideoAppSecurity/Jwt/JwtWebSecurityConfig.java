@@ -63,9 +63,6 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-        httpSecurity.headers().frameOptions().sameOrigin() // H2 Console Needs this setting
-                .cacheControl(); // disable caching
     }
 
     @Override
@@ -74,7 +71,6 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .and().ignoring()
                 .antMatchers(HttpMethod.GET, "/" // Other Stuff You want to Ignore
-                );//.and().ignoring()
-        //.antMatchers("/h2-console/**/**");// Should not be done in Production!
+                );
     }
 }

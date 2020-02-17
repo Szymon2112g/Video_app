@@ -1,33 +1,29 @@
-package com.wideoapp.WideoAppDatabase.Entity;
+package com.wideoapp.WideoAppSecurity.Controller.Model;
 
-public class VideoBasicInformation {
+public class VideoToSend {
 
-    private int id;
+    private String email;
     private String url;
     private String title;
     private String description;
-    private String firstName;
-    private String lastName;
     private int display;
     private String photoUrl;
 
-    public VideoBasicInformation(int id, String url, String title, String description, String firstName, String lastName, int display, String photoUrl) {
-        this.id = id;
+    public VideoToSend(String email, String url, String title, String description, int display, String photoUrl) {
+        this.email = email;
         this.url = url;
         this.title = title;
         this.description = description;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.display = display;
         this.photoUrl = photoUrl;
     }
 
-    public int getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUrl() {
@@ -54,22 +50,6 @@ public class VideoBasicInformation {
         this.description = description;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public int getDisplay() {
         return display;
     }
@@ -84,6 +64,16 @@ public class VideoBasicInformation {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    @Override
+    public String toString() {
+        return email +" "+
+        url +" "+
+        title +" "+
+        description +" "+
+        display +" "+
+        photoUrl ;
     }
 }
 

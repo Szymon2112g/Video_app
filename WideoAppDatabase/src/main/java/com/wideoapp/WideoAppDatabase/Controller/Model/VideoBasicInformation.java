@@ -1,4 +1,4 @@
-package com.wideoapp.WideoAppSecurity.Entity;
+package com.wideoapp.WideoAppDatabase.Controller.Model;
 
 public class VideoBasicInformation {
 

@@ -1,7 +1,5 @@
 package com.wideoapp.WideoAppDatabase.Entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.util.List;
 

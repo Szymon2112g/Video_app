@@ -1,6 +1,4 @@
-package com.wideoapp.WideoAppDatabase.Service;
-
-import com.wideoapp.WideoAppDatabase.Entity.VideoBasicInformation;
+package com.wideoapp.WideoAppDatabase.Controller.Model;
 
 import java.util.List;
 
