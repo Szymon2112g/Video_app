@@ -18,7 +18,7 @@ export class VideoappdatabaseService {
 
   register(firstName, lastName, email, password) {
     const endpoint = `http://localhost:8080/register`;
-      return this.http.post(endpoint,{firstName, lastName, email, password});
+      return this.http.post(endpoint, { firstName, lastName, email, password});
   }
 
 }

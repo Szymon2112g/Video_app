@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpEventType, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {VideoToSend} from './model/VideoToSend.model';
 
@@ -18,13 +18,15 @@ export class AuthenticationService {
   sendVideoToDataBase(videoToSend: VideoToSend) {
     const url = `http://localhost:8100/sendvideotodb`;
     return this.http.post<any>(url, videoToSend);
+    console.log("czemu sie to wykonuje");
   }
 
-  sendVideoFile(fileToUpload: File) {
+  sendFile(fileToUpload: File, fileType: string) {
     const url = `http://localhost:8100/sendvideofile`;
     const formData: FormData = new FormData();
 
-    let fileName = this.getAuthenticatedUser() + '_' + fileToUpload.name;
+    let fileName = this.getAuthenticatedUser() + '_' + fileType + '_' + fileToUpload.name;
+
     formData.append('file', fileToUpload, fileName);
 
     return this.http.post<any>(url, formData);

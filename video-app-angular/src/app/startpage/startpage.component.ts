@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {VideoappdatabaseService, VideoBasicInformation} from '../server/videoappdatabase.service';
-import {AuthenticationService} from '../server/authentication.service';
+import {VideoBasicInformation} from '../server/model/VideoBasicInformation.model';
+import {VideoappdatabaseService} from '../server/videoappdatabase.service';
 
 @Component({
   selector: 'app-startpage',
@@ -12,8 +12,7 @@ export class StartpageComponent implements OnInit {
   videoBasic: VideoBasicInformation[];
 
   constructor(
-    private VideoAppDatabase: VideoappdatabaseService,
-    private authentication: AuthenticationService
+    private VideoAppDatabase: VideoappdatabaseService
     ) { }
 
   ngOnInit() {

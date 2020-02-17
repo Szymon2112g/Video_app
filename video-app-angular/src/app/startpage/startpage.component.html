@@ -14,13 +14,23 @@
   <tbody>
   <tr *ngFor="let tmp of videoBasic">
     <td>{{tmp.id}}</td>
-    <td>{{tmp.url}}</td>
+    <td>{{tmp.url}}
+
+      <video controls>
+        <source src="{{tmp.url}}" type="video/mp4">
+      </video>
+
+    </td>
     <td>{{tmp.title}}</td>
     <td>{{tmp.description}}</td>
     <td>{{tmp.firstName}}</td>
     <td>{{tmp.lastName}}</td>
     <td>{{tmp.display}}</td>
-    <td>{{tmp.photoUrl}}</td>
+    <td>{{tmp.photoUrl}}
+
+    <img src="{{tmp.photoUrl}}" width="200px">
+
+    </td>
   </tr>
   </tbody>
 </table>
