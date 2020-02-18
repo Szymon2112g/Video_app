@@ -25,7 +25,7 @@ export class AddvideoComponent implements OnInit {
   isPhoto = false;
 
   videoToSend: VideoToSend = new VideoToSend(
-    this.authentication.getAuthenticatedUser(),'','','', 0,'');
+    this.authentication.getAuthenticatedUser(), '', '', '', '');
 
   constructor(
     private authentication: AuthenticationService

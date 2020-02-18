@@ -20,8 +20,7 @@ public class VideoDAOImpl implements VideoDAO{
 
         Session currentSession = entityManager.unwrap(Session.class);
 
-        Query<Video> theQuery = currentSession.createQuery("from Video", Video.class);
-
+        Query<Video> theQuery = currentSession.createQuery("from Video order by date DESC", Video.class);
         List<Video> videoList = theQuery.getResultList();
 
         return videoList;

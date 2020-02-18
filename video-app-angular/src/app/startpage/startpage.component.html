@@ -1,3 +1,30 @@
+<div class="container">
+
+  <div class="row">
+    <h2>Najnowsze fimy</h2>
+    <ul class="list-group">
+      <li class="list-group-item col-lg-3"
+          *ngFor="let video of videoBasic">
+        <a routerLink="/register">
+          <img src="{{video.photoUrl}}" width="200px" height="200px" class="col-sm-12">
+        </a>
+
+        <span class="text-center col-lg-12"><b>{{video.title}}</b></span>
+
+        <a routerLink="/login">
+          <span class="text-primary text-center col-lg-12">{{video.firstName + " " +video.lastName}}</span>
+        </a>
+
+        <span class="text-center col-lg-12">{{video.display}} wyświetleń</span>
+        <span class="text-center col-lg-12">{{video.date}}</span>
+
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+<!--
 <table class="table">
   <thead>
   <tr>
@@ -9,6 +36,7 @@
     <th>lastName</th>
     <th>display</th>
     <th>photoUrl</th>
+    <th>date</th>
   </tr>
   </thead>
   <tbody>
@@ -31,6 +59,9 @@
     <img src="{{tmp.photoUrl}}" width="200px">
 
     </td>
+    <td>{{tmp.date}}</td>
+
   </tr>
   </tbody>
 </table>
+-->

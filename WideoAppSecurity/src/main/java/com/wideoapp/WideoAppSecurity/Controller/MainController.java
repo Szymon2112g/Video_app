@@ -3,7 +3,6 @@ package com.wideoapp.WideoAppSecurity.Controller;
 import com.wideoapp.WideoAppSecurity.Dao.UserDao;
 import com.wideoapp.WideoAppSecurity.Entity.User;
 import com.wideoapp.WideoAppSecurity.Entity.Video;
-import com.wideoapp.WideoAppSecurity.Entity.VideoDetail;
 import com.wideoapp.WideoAppSecurity.Controller.Model.VideoToSend;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppDB;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppFS;
@@ -50,10 +49,10 @@ public class MainController {
     {
         User user = userDao.findByEmail(videoToSend.getEmail());
 
-        VideoDetail videoDetail = new VideoDetail(0,0,0);
+        String currentDate = (java.time.LocalDate.now()).toString();
 
         Video video = new Video(videoToSend.getUrl(), videoToSend.getTitle(), videoToSend.getDescription(),
-                            null,videoDetail,null,videoToSend.getPhotoUrl());
+                                0, 0, 0 ,currentDate, null, null, videoToSend.getPhotoUrl());
 
         user.getVideoList().add(video);
         userDao.save(user);

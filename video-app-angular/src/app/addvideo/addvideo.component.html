@@ -1,28 +1,30 @@
 <div class="container">
   <div class="row">
 
+    <h1 class="text-center">Dodaj film</h1>
+    <hr>
+
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-sm-offset-2 col-md-offset-2">
+        <div class="form-group" *ngIf="!isVideo; else videoAdded">
+          <label>Wybierz film</label>
+          <input type="file" id="fileVideo" (change)="handleVideoInput($event.target.files)" accept=".mp4">
+          <button (click)="sendVideoFile()" class="btn btn-success">Wyślij film</button>
+        </div>
+
+        <ng-template #videoAdded><span class="text text-success"><b>Film został dodany</b></span></ng-template>
+        </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-sm-offset-2 col-md-offset-2">
+        <div class="form-group" *ngIf="!isPhoto; else photoAdded">
+          <label>Wybierz zdjęcie</label>
+          <input type="file" id="filePhoto" (change)="handlePhotoInput($event.target.files)" accept=".jpg, .png">
+          <button (click)="sendPhotoFile()" class="btn btn-success">Wyślij zdjęcie</button>
+        </div>
+
+        <ng-template #photoAdded><span class="text text-success"><b>Zdjęcie zostało dodane</b></span></ng-template>
+      </div>
+
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-
-
-      <div class="form-group" *ngIf="!isVideo; else videoAdded">
-        <label>Wybierz film</label>
-        <input type="file" id="fileVideo" (change)="handleVideoInput($event.target.files)" accept=".mp4">
-        <button (click)="sendVideoFile()" class="btn btn-success">Wyślij film</button>
-      </div>
-
-      <ng-template #videoAdded><span class="text text-success"><b>Film został dodany</b></span></ng-template>
-
-      <hr>
-
-      <div class="form-group" *ngIf="!isPhoto; else photoAdded">
-        <label>Wybierz zdjęcie</label>
-        <input type="file" id="filePhoto" (change)="handlePhotoInput($event.target.files)" accept=".jpg, .png">
-        <button (click)="sendPhotoFile()" class="btn btn-success">Wyślij zdjęcie</button>
-      </div>
-
-      <ng-template #photoAdded><span class="text text-success"><b>Zdjęcie zostało dodane</b></span></ng-template>
-
-
       <form (ngSubmit)="sendVideoToDB()" #f="ngForm">
 
           <div class="form-group">

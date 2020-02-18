@@ -21,13 +21,21 @@ public class Video {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "likes")
+    private int likes;
+
+    @Column(name = "dislikes")
+    private int dislikes;
+
+    @Column(name = "display")
+    private int display;
+
+    @Column(name = "date")
+    private String date;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "video_detail_id")
-    private VideoDetail videoDetail;
 
     @OneToMany(fetch = FetchType.LAZY,
                 cascade = CascadeType.ALL)
@@ -40,12 +48,15 @@ public class Video {
     public Video() {
     }
 
-    public Video(String url, String title, String description, User user, VideoDetail videoDetail, List<Review> reviews, String photoUrl) {
+    public Video(String url, String title, String description, int likes, int dislikes, int display, String date, User user, List<Review> reviews, String photoUrl) {
         this.url = url;
         this.title = title;
         this.description = description;
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.display = display;
+        this.date = date;
         this.user = user;
-        this.videoDetail = videoDetail;
         this.reviews = reviews;
         this.photoUrl = photoUrl;
     }
@@ -82,20 +93,44 @@ public class Video {
         this.description = description;
     }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
+    }
+
+    public int getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(int display) {
+        this.display = display;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public VideoDetail getVideoDetail() {
-        return videoDetail;
-    }
-
-    public void setVideoDetail(VideoDetail videoDetail) {
-        this.videoDetail = videoDetail;
     }
 
     public List<Review> getReviews() {

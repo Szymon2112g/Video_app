@@ -10,8 +10,9 @@ public class VideoBasicInformation {
     private String lastName;
     private int display;
     private String photoUrl;
+    private String date;
 
-    public VideoBasicInformation(int id, String url, String title, String description, String firstName, String lastName, int display, String photoUrl) {
+    public VideoBasicInformation(int id, String url, String title, String description, String firstName, String lastName, int display, String photoUrl, String date) {
         this.id = id;
         this.url = url;
         this.title = title;
@@ -20,6 +21,7 @@ public class VideoBasicInformation {
         this.lastName = lastName;
         this.display = display;
         this.photoUrl = photoUrl;
+        this.date = date;
     }
 
     public int getId() {
@@ -85,5 +87,15 @@ public class VideoBasicInformation {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }
+
+
 

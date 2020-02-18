@@ -16,15 +16,6 @@ create table `user` (
 
 )engine=InnoDB auto_increment=1 default charset=latin1;
     
-drop table if exists `video_detail`;
-create table `video_detail` (
-	`id` int(11) not null auto_increment,
-    `likes` int(11) default null,
-    `dislikes` int(11) default null,
-    `display` int(16) default null,
-    primary key(`id`)
-
-)engine=InnoDB auto_increment=1 default charset=latin1;
     
 drop table if exists `video`;
 create table `video` (
@@ -33,17 +24,16 @@ create table `video` (
     `title` varchar(64) default null,
     `description` varchar(256) default null,
     `user_id` int(16) default null,
-    `video_detail_id` int(11) default null,
     `photo_url` varchar(256) default null,
+    `likes` int(11) default null,
+    `dislikes` int(11) default null,
+    `display` int(16) default null,
+	`date` varchar(32) default null,
     primary key(`id`),
     
 	constraint `FK_USER`
     foreign key (`user_id`)
-    references `user`(`id`),
-    
-    constraint `FK_VIDEO_DETAIL`
-    foreign key (`video_detail_id`)
-    references `video_detail`(`id`)
+    references `user`(`id`)
 )engine=InnoDB auto_increment=1 default charset=latin1;
 
 drop table if exists `review`;

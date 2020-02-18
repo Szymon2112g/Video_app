@@ -26,7 +26,7 @@ public class VideoBasicInformationServiceImpl implements VideoBasicInformationSe
             VideoBasicInformation tmp = new VideoBasicInformation(
                     video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
                     video.getUser().getFirstName(), video.getUser().getLastName(),
-                    video.getVideoDetail().getDisplay(), video.getPhotoUrl());
+                    video.getDisplay(), video.getPhotoUrl(), video.getDate());
 
             videoBasicInformations.add(tmp);
         }
