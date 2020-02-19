@@ -37,9 +37,9 @@ public class Video {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY,
-                cascade = CascadeType.ALL)
-    @JoinColumn(name = "video_id")
+    @OneToMany(mappedBy = "video",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private List<Review> reviews;
 
     @Column(name = "photo_url")
@@ -149,4 +149,3 @@ public class Video {
         this.photoUrl = photoUrl;
     }
 }
-

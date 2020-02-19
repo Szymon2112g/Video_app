@@ -1,6 +1,10 @@
 package com.wideoapp.WideoAppSecurity.Controller;
 
+import com.wideoapp.WideoAppSecurity.Controller.Model.AddReview;
+import com.wideoapp.WideoAppSecurity.Dao.ReviewDAO;
 import com.wideoapp.WideoAppSecurity.Dao.UserDao;
+import com.wideoapp.WideoAppSecurity.Dao.VideoDao;
+import com.wideoapp.WideoAppSecurity.Entity.Review;
 import com.wideoapp.WideoAppSecurity.Entity.User;
 import com.wideoapp.WideoAppSecurity.Entity.Video;
 import com.wideoapp.WideoAppSecurity.Controller.Model.VideoToSend;
@@ -14,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
 public class MainController {
@@ -24,12 +27,16 @@ public class MainController {
     private WideoAppDB wideoAppDB;
     private WideoAppFS wideoAppFS;
     private UserDao userDao;
+    private VideoDao videoDao;
+    private ReviewDAO reviewDAO;
 
     @Autowired
-    public MainController(WideoAppDB wideoAppDB, WideoAppFS wideoAppFS, UserDao userDao) {
+    public MainController(WideoAppDB wideoAppDB, WideoAppFS wideoAppFS, UserDao userDao, VideoDao videoDao,  ReviewDAO reviewDAO) {
         this.wideoAppDB = wideoAppDB;
         this.wideoAppFS = wideoAppFS;
         this.userDao = userDao;
+        this.videoDao = videoDao;
+        this.reviewDAO = reviewDAO;
     }
 
     @PostMapping(path = "/sendvideofile", consumes = {"multipart/form-data","application/json"})
@@ -56,6 +63,19 @@ public class MainController {
 
         user.getVideoList().add(video);
         userDao.save(user);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(path = "/addreview/")
+    public ResponseEntity<?> addReview(@RequestBody AddReview addReview) {
+
+        User user = userDao.findByEmail(addReview.getEmail());
+        Video video = videoDao.findById(addReview.getVideoId());
+
+        Review review = new Review(addReview.getComment(),user,video);
+
+        reviewDAO.save(review);
 
         return ResponseEntity.ok().build();
     }

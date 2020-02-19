@@ -21,4 +21,9 @@ public class VideoServiceImpl implements VideoService {
     public List<Video> findAll() {
         return videoDAO.findAll();
     }
+
+    @Override
+    public Video findById(int id) {
+        return videoDAO.findById(id);
+    }
 }

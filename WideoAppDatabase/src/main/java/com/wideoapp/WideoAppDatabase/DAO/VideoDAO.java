@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface VideoDAO {
     public List<Video> findAll();
+    public Video findById(int id);
 }

@@ -25,4 +25,15 @@ public class VideoDAOImpl implements VideoDAO{
 
         return videoList;
     }
+
+    @Override
+    public Video findById(int id) {
+
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        Query<Video> videoQuery = currentSession.createQuery("from Video where id = :id ");
+        videoQuery.setParameter("id",id);
+
+        return videoQuery.getSingleResult();
+    }
 }

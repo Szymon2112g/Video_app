@@ -11,6 +11,7 @@ import {HttpIntercepterBasicAuthService} from './server/http/http-intercepter-ba
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register/register.component';
 import { AddvideoComponent } from './addvideo/addvideo.component';
+import { ShowvideoComponent } from './showvideo/showvideo.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AddvideoComponent } from './addvideo/addvideo.component';
     StartpageComponent,
     LoginComponent,
     RegisterComponent,
-    AddvideoComponent
+    AddvideoComponent,
+    ShowvideoComponent
   ],
   imports: [
     BrowserModule,

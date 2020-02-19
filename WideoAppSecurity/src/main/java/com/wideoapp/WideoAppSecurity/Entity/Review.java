@@ -15,20 +15,21 @@ public class Review {
     @Column(name = "comment")
     private String comment;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name="review_user",
-            joinColumns=@JoinColumn(name="review_id"),
-            inverseJoinColumns=@JoinColumn(name="user_id")
-    )
-    private List<User> users;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "video_id")
+    private Video video;
 
     public Review() {
     }
 
-    public Review(String comment, List<User> users) {
+    public Review(String comment, User user, Video video) {
         this.comment = comment;
-        this.users = users;
+        this.user = user;
+        this.video = video;
     }
 
     public int getId() {
@@ -47,11 +48,19 @@ public class Review {
         this.comment = comment;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Video getVideo() {
+        return video;
+    }
+
+    public void setVideo(Video video) {
+        this.video = video;
     }
 }

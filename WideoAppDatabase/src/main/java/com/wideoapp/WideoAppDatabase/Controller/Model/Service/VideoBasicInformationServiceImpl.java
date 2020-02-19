@@ -1,5 +1,6 @@
-package com.wideoapp.WideoAppDatabase.Controller.Model;
+package com.wideoapp.WideoAppDatabase.Controller.Model.Service;
 
+import com.wideoapp.WideoAppDatabase.Controller.Model.VideoBasicInformation;
 import com.wideoapp.WideoAppDatabase.Entity.Video;
 import com.wideoapp.WideoAppDatabase.Service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,19 @@ public class VideoBasicInformationServiceImpl implements VideoBasicInformationSe
         }
 
         return videoBasicInformations;
+    }
+
+    @Override
+    public VideoBasicInformation findById(int id) {
+
+        Video video = videoService.findById(id);
+
+        VideoBasicInformation videoBasicInformation = new VideoBasicInformation(
+                video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
+                video.getUser().getFirstName(), video.getUser().getLastName(), video.getDisplay(),
+                video.getPhotoUrl(), video.getDate()
+        );
+
+        return videoBasicInformation;
     }
 }

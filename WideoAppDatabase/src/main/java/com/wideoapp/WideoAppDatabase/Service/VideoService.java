@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface VideoService {
     public List<Video> findAll();
+    public Video findById(int id);
+
 }

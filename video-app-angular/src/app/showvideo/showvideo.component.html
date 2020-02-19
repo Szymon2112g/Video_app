@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="row" *ngIf="video; else searchVideo">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <video controls class="col-lg-{{sizeVideo}} col-md-{{sizeVideo}} col-sm-{{sizeVideo}} col-xs-{{sizeVideo}}">
+        <source src="{{video.url}}" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="col-lg-12">
+      <button class="btn btn-success col-lg-1" (click)="changeSizeVideo(6)">Mały</button>
+      <button class="btn btn-primary col-lg-1" (click)="changeSizeVideo(8)">Średni</button>
+      <button class="btn btn-danger col-lg-1" (click)="changeSizeVideo(12)">Duży</button>
+    </div>
+
+    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><h2>{{video.title}}</h2></span>
+
+    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><h4>{{video.description}}</h4></span>
+
+    <a routerLink="/login">
+      <span class="text-primary col-xs-12 col-sm-12 col-md-12 col-lg-12">{{video.firstName + " " +video.lastName}}</span>
+    </a>
+
+    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{video.display}} wyświetleń</span>
+    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Data dodania: {{video.date}}</span>
+
+    <hr class="bg-success col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+    <h4>Napisz komentarz</h4>
+    <textarea class="col-xs-12 col-sm-12 col-md-12 col-lg-12" [(ngModel)]="ownReview">
+
+    </textarea>
+    <button class="btn btn-default" [disabled]="!ownReview" (click)="addReview()">Wyślij komentarz</button>
+
+    <h3>Komentarze</h3>
+
+    <div *ngIf="reviews; else searchReviews">
+      <div *ngFor="let review of reviews">
+        <div class="bg-danger col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <a routerLink="/login"><b>{{review.firstName}} {{review.lastName}}</b></a><br>
+          <span>{{review.comment}}</span>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #searchReviews><span class="text text-info"><b>Wyszukiwanie komentarzy</b></span></ng-template>
+
+  </div>
+  <ng-template #searchVideo><span class="text text-info"><b>Wyszukiwanie filmu</b></span></ng-template>
+
+</div>
+
+

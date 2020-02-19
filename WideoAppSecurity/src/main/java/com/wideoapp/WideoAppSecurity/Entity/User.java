@@ -30,12 +30,9 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Video> videoList;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name="review_user",
-            joinColumns=@JoinColumn(name="user_id"),
-            inverseJoinColumns=@JoinColumn(name="review_id")
-    )
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private List<Review> reviews;
 
     public User() {

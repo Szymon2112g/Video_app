@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {VideoToSend} from './model/VideoToSend.model';
+import {AddReviewInformation} from './model/AddReviewInformation.model';
 
 export const TOKEN = 'token';
 export const AUTHENTICATED_USER = 'authenticaterUser';
@@ -15,10 +16,20 @@ export class AuthenticationService {
     private http: HttpClient,
   ) { }
 
+  addReview(videoId: number, comment: string) {
+      const url = `http://localhost:8100/addreview/`;
+
+      let addReviewInformation = new AddReviewInformation('','',0);
+      addReviewInformation.comment = comment;
+      addReviewInformation.email = this.getAuthenticatedUser();
+      addReviewInformation.videoId = videoId;
+
+      return this.http.post<any>(url, addReviewInformation);
+  }
+
   sendVideoToDataBase(videoToSend: VideoToSend) {
     const url = `http://localhost:8100/sendvideotodb`;
     return this.http.post<any>(url, videoToSend);
-    console.log("czemu sie to wykonuje");
   }
 
   sendFile(fileToUpload: File, fileType: string) {

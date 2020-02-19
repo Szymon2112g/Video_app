@@ -1,6 +1,5 @@
 package com.wideoapp.WideoAppDatabase.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,17 +26,14 @@ public class User {
     private String password;
 
     @OneToMany(fetch=FetchType.LAZY,
-                cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                CascadeType.DETACH, CascadeType.REFRESH})
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private List<Video> videoList;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name="review_user",
-            joinColumns=@JoinColumn(name="user_id"),
-            inverseJoinColumns=@JoinColumn(name="review_id")
-    )
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private List<Review> reviews;
 
     public User() {

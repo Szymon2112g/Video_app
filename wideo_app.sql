@@ -41,25 +41,16 @@ create table `review` (
 	`id` int(11) not null auto_increment,
     `comment` varchar(256) default null,
     `video_id` int(11) default null,
+	`user_id` int(11) default null,
     
     primary key(`id`),
     
     constraint `FK_VIDEO`
     foreign key (`video_id`)
-    references `video`(`id`)    
-)engine=InnoDB auto_increment=1 default charset=latin1;
-
-drop table if exists `review_user`;
-create table `review_user` (
-	`review_id` int(11) not null,
-    `user_id` int(11) not null,
-    primary key(`review_id`,`user_id`),
-    
-    constraint `FK_REVIEW`
-    foreign key (`review_id`)
-    references `review`(`id`),   
-	
-    constraint `FK_USERID`
+    references `video`(`id`),
+        
+	constraint `FK_USER_ID`
     foreign key (`user_id`)
-    references `user`(`id`)   
-)engine=InnoDB default charset=latin1;
+    references `user`(`id`)
+    
+)engine=InnoDB auto_increment=1 default charset=latin1;
