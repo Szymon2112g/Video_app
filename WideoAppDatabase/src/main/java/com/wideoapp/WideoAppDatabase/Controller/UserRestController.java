@@ -45,10 +45,4 @@ public class UserRestController {
 
         return ResponseEntity.ok().build();
     }
-
-    @GetMapping("/usertest")
-    public String gettest() {
-        return "testowy user do sprawdzenia";
-    }
-
 }

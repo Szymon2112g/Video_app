@@ -59,6 +59,21 @@ export class AuthenticationService {
     );
   }
 
+  addViews(id: number) {
+    const url = `http://localhost:8100/addview`;
+    return this.http.post<any>(url, {id});
+  }
+
+  addLikeToVideo(id: number) {
+    const url = `http://localhost:8100/addliketovideo`;
+    return this.http.post<any>(url, {id});
+  }
+
+  addDislikeToVideo(id: number) {
+    const url = `http://localhost:8100/adddisliketovideo`;
+    return this.http.post<any>(url, {id});
+  }
+
   getAuthenticatedUser() { return sessionStorage.getItem(AUTHENTICATED_USER); }
 
   getAuthenticatedToken() { return sessionStorage.getItem(TOKEN); }

@@ -27,7 +27,8 @@ public class VideoBasicInformationServiceImpl implements VideoBasicInformationSe
             VideoBasicInformation tmp = new VideoBasicInformation(
                     video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
                     video.getUser().getFirstName(), video.getUser().getLastName(),
-                    video.getDisplay(), video.getPhotoUrl(), video.getDate());
+                    video.getDisplay(), video.getPhotoUrl(), video.getDate(),
+                    video.getLikes(), video.getDislikes());
 
             videoBasicInformations.add(tmp);
         }
@@ -43,7 +44,7 @@ public class VideoBasicInformationServiceImpl implements VideoBasicInformationSe
         VideoBasicInformation videoBasicInformation = new VideoBasicInformation(
                 video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
                 video.getUser().getFirstName(), video.getUser().getLastName(), video.getDisplay(),
-                video.getPhotoUrl(), video.getDate()
+                video.getPhotoUrl(), video.getDate(), video.getLikes(), video.getDislikes()
         );
 
         return videoBasicInformation;

@@ -11,8 +11,10 @@ public class VideoBasicInformation {
     private int display;
     private String photoUrl;
     private String date;
+    private int likes;
+    private int dislikes;
 
-    public VideoBasicInformation(int id, String url, String title, String description, String firstName, String lastName, int display, String photoUrl, String date) {
+    public VideoBasicInformation(int id, String url, String title, String description, String firstName, String lastName, int display, String photoUrl, String date, int likes, int dislikes) {
         this.id = id;
         this.url = url;
         this.title = title;
@@ -22,6 +24,8 @@ public class VideoBasicInformation {
         this.display = display;
         this.photoUrl = photoUrl;
         this.date = date;
+        this.likes = likes;
+        this.dislikes = dislikes;
     }
 
     public int getId() {
@@ -94,6 +98,22 @@ public class VideoBasicInformation {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
     }
 }
 

@@ -79,4 +79,40 @@ public class MainController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping(path = "/addview")
+    public ResponseEntity<?> addview(@RequestBody Video video) {
+        Video videoToSave = videoDao.findById(video.getId().intValue());
+
+        int display = videoToSave.getDisplay();
+        videoToSave.setDisplay(display + 1);
+
+        videoDao.save(videoToSave);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(path = "/addliketovideo")
+    public ResponseEntity<?> addLikeToVideo(@RequestBody Video video) {
+        Video videoToSave = videoDao.findById(video.getId().intValue());
+
+        int likes = videoToSave.getLikes();
+        videoToSave.setLikes(likes + 1);
+
+        videoDao.save(videoToSave);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(path = "/adddisliketovideo")
+    public ResponseEntity<?> addDislikeToVideo(@RequestBody Video video) {
+        Video videoToSave = videoDao.findById(video.getId().intValue());
+
+        int disLikes = videoToSave.getDislikes();
+        videoToSave.setDislikes(disLikes + 1);
+
+        videoDao.save(videoToSave);
+
+        return ResponseEntity.ok().build();
+    }
 }

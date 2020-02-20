@@ -3,5 +3,5 @@ export class VideoBasicInformation {
               public title: string, public description: string,
               public firstName: string, public lastName: string,
               public display: number, public photoUrl: string,
-              public date: string) { }
+              public date: string, public likes: string, public dislikes: number) { }
 }

@@ -21,7 +21,13 @@
       <span class="text-primary col-xs-12 col-sm-12 col-md-12 col-lg-12">{{video.firstName + " " +video.lastName}}</span>
     </a>
 
-    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{video.display}} wyświetleń</span>
+    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      {{video.display}} wyświetleń |
+      <a class="text-success" (click)="LikeVideo()">Lubię {{video.likes}}</a> |
+      <a class="text-danger" (click)="DisLikeVideo()">Nie lubię {{video.dislikes}}</a>
+    </span>
+
+
     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Data dodania: {{video.date}}</span>
 
     <hr class="bg-success col-xs-12 col-sm-12 col-md-12 col-lg-12">

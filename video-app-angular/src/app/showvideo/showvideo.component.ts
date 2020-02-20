@@ -26,20 +26,29 @@ export class ShowvideoComponent implements OnInit {
 
   ngOnInit() {
    this.id = this.route.snapshot.params['id'];
-   this.videoAppDB.getVideo(this.id)
-     .subscribe(
-       data => {
-         this.video = data;
-         console.log(this.video.url);
-       }
-     );
 
-   this.videoAppDB.getReviewFromVideoId(this.id)
-     .subscribe(
-       data => {
-         this.reviews = data;
-       }
-     );
+   this.getVideo();
+   this.getReview();
+   this.addView();
+  }
+
+  getVideo() {
+    this.videoAppDB.getVideo(this.id)
+      .subscribe(
+        data => {
+          this.video = data;
+          console.log(this.video.url);
+        }
+      );
+  }
+
+  getReview() {
+    this.videoAppDB.getReviewFromVideoId(this.id)
+      .subscribe(
+        data => {
+          this.reviews = data;
+        }
+      );
   }
 
   changeSizeVideo(size: number) {
@@ -50,9 +59,33 @@ export class ShowvideoComponent implements OnInit {
     this.auth.addReview(this.id, this.ownReview)
       .subscribe(
         data => {
-            console.log('dodalo komentarz');
+          this.getReview();
         }
       );
   }
 
+  LikeVideo() {
+    this.auth.addLikeToVideo(this.id)
+      .subscribe(
+        data => {
+        }
+      );
+  }
+
+
+  DisLikeVideo() {
+    this.auth.addDislikeToVideo(this.id)
+      .subscribe(
+        data => {
+        }
+      );
+  }
+
+  addView() {
+    this.auth.addViews(this.id)
+      .subscribe(
+        data => {
+        }
+      );
+  }
 }
