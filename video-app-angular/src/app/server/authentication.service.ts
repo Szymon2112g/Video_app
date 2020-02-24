@@ -59,11 +59,6 @@ export class AuthenticationService {
     );
   }
 
-  addViews(id: number) {
-    const url = `http://localhost:8100/addview`;
-    return this.http.post<any>(url, {id});
-  }
-
   addLikeToVideo(id: number) {
     const url = `http://localhost:8100/addliketovideo`;
     return this.http.post<any>(url, {id});

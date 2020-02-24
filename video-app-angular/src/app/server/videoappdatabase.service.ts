@@ -32,4 +32,9 @@ export class VideoappdatabaseService {
     return this.http.get<ReviewInformation[]>(endpoint);
   }
 
+  addDisplay(id: number) {
+    const url = `http://localhost:8080/adddisplay`;
+    return this.http.post<any>(url, {id});
+  }
+
 }

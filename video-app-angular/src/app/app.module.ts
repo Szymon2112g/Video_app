@@ -12,6 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register/register.component';
 import { AddvideoComponent } from './addvideo/addvideo.component';
 import { ShowvideoComponent } from './showvideo/showvideo.component';
+import { SidelistComponent } from './sidelist/sidelist.component';
+import { LogoutComponent } from './login/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { ShowvideoComponent } from './showvideo/showvideo.component';
     LoginComponent,
     RegisterComponent,
     AddvideoComponent,
-    ShowvideoComponent
+    ShowvideoComponent,
+    SidelistComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

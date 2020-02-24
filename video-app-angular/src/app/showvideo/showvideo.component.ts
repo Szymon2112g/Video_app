@@ -72,7 +72,6 @@ export class ShowvideoComponent implements OnInit {
       );
   }
 
-
   DisLikeVideo() {
     this.auth.addDislikeToVideo(this.id)
       .subscribe(
@@ -82,7 +81,7 @@ export class ShowvideoComponent implements OnInit {
   }
 
   addView() {
-    this.auth.addViews(this.id)
+    this.videoAppDB.addDisplay(this.id)
       .subscribe(
         data => {
         }

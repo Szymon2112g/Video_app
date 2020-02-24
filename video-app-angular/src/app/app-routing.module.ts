@@ -5,6 +5,7 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './login/register/register.component';
 import {AddvideoComponent} from './addvideo/addvideo.component';
 import {ShowvideoComponent} from './showvideo/showvideo.component';
+import {LogoutComponent} from './login/logout/logout.component';
 
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'addvideo', component: AddvideoComponent},
-  {path: 'video/:id', component: ShowvideoComponent}
+  {path: 'video/:id', component: ShowvideoComponent},
+  {path: 'logout', component: LogoutComponent}
 ];
 
 @NgModule({

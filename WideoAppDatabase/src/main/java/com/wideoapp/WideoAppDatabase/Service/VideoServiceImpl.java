@@ -4,6 +4,7 @@ import com.wideoapp.WideoAppDatabase.DAO.VideoDAO;
 import com.wideoapp.WideoAppDatabase.Entity.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,12 +19,20 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Transactional
     public List<Video> findAll() {
         return videoDAO.findAll();
     }
 
     @Override
+    @Transactional
     public Video findById(int id) {
         return videoDAO.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public void increaseDisplay(Video theVideo) {
+        videoDAO.increaseDisplay(theVideo);
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../server/authentication.service';
 import {Router} from '@angular/router';
+import {UserServiceService} from '../services/user-service.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authentication: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private userService: UserServiceService
   ) { }
 
   ngOnInit() {
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
         data => {
           console.log(data);
           this.invalidLogin = false;
+          this.userService.activatedUser.next(this.authentication.getAuthenticatedUser());
           this.router.navigate(['']);
         },
         error => {

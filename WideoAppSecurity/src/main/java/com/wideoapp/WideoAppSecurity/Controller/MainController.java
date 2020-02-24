@@ -80,18 +80,6 @@ public class MainController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(path = "/addview")
-    public ResponseEntity<?> addview(@RequestBody Video video) {
-        Video videoToSave = videoDao.findById(video.getId().intValue());
-
-        int display = videoToSave.getDisplay();
-        videoToSave.setDisplay(display + 1);
-
-        videoDao.save(videoToSave);
-
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping(path = "/addliketovideo")
     public ResponseEntity<?> addLikeToVideo(@RequestBody Video video) {
         Video videoToSave = videoDao.findById(video.getId().intValue());

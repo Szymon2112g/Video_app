@@ -3,6 +3,8 @@ package com.wideoapp.WideoAppDatabase.DAO;
 import com.wideoapp.WideoAppDatabase.Entity.Video;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -14,6 +16,8 @@ public class VideoDAOImpl implements VideoDAO{
     private EntityManager entityManager;
 
     public VideoDAOImpl(EntityManager theEntityManager) { entityManager = theEntityManager;}
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public List<Video> findAll() {
@@ -35,5 +39,12 @@ public class VideoDAOImpl implements VideoDAO{
         videoQuery.setParameter("id",id);
 
         return videoQuery.getSingleResult();
+    }
+
+    @Override
+    public void increaseDisplay(Video theVideo) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        theVideo.setDisplay(theVideo.getDisplay() + 1);
+        currentSession.merge(theVideo);
     }
 }

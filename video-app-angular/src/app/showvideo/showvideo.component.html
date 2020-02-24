@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row" *ngIf="video; else searchVideo">
 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -7,7 +7,7 @@
       </video>
     </div>
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <button class="btn btn-success col-lg-1" (click)="changeSizeVideo(6)">Mały</button>
       <button class="btn btn-primary col-lg-1" (click)="changeSizeVideo(8)">Średni</button>
       <button class="btn btn-danger col-lg-1" (click)="changeSizeVideo(12)">Duży</button>
