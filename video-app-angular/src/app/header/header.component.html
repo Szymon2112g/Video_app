@@ -8,10 +8,10 @@
 
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a routerLink="/login">Zaloguj</a></li>
-        <li><a routerLink="/register">Rejestracja</a></li>
-        <li><a routerLink="/addvideo">Dodaj film</a></li>
-        <li><a routerLink="/logout">Wyloguj</a></li>
+        <li><a routerLink="/login" *ngIf="!auth.isUserLoggedIn()">Zaloguj</a></li>
+        <li><a routerLink="/register" *ngIf="!auth.isUserLoggedIn()">Rejestracja</a></li>
+        <li><a routerLink="/addvideo" *ngIf="auth.isUserLoggedIn()">Dodaj film</a></li>
+        <li><a routerLink="/logout" *ngIf="auth.isUserLoggedIn()">Wyloguj</a></li>
       </ul>
     </div>
 

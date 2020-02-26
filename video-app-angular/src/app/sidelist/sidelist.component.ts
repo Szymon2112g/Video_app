@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserServiceService} from '../services/user-service.service';
 import {Subscription} from 'rxjs';
-import {AuthenticationService} from '../server/authentication.service';
+import {AuthenticationService} from '../services/authentication.service';
+import {GetSubscriptionsUser} from '../services/model/GetSubscriptionsUser.model';
 
 @Component({
   selector: 'app-sidelist',
@@ -10,6 +11,7 @@ import {AuthenticationService} from '../server/authentication.service';
 })
 export class SidelistComponent implements OnInit, OnDestroy {
 
+  subscriptionsUser: GetSubscriptionsUser[];
   userEmail = '';
   private userEmailSub: Subscription;
 
@@ -26,9 +28,30 @@ export class SidelistComponent implements OnInit, OnDestroy {
       this.userEmailSub = this.userService.activatedUser.subscribe(
         data => {
           this.userEmail = data;
+          this.getSubscriptions();
         }
       );
     }
+
+    this.getSubscriptions();
+  }
+
+  getSubscriptions() {
+    if(this.userEmail !== '') {
+      this.auth.getSubscriptionsUser()
+        .subscribe(
+          data => {
+            this.subscriptionsUser = data;
+          }
+        );
+    } else {
+      this.subscriptionsUser = null;
+    }
+  }
+
+
+  showUser(email: string) {
+
   }
 
   ngOnDestroy() {

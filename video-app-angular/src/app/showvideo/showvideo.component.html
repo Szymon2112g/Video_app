@@ -17,9 +17,12 @@
 
     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><h4>{{video.description}}</h4></span>
 
-    <a routerLink="/login">
-      <span class="text-primary col-xs-12 col-sm-12 col-md-12 col-lg-12">{{video.firstName + " " +video.lastName}}</span>
-    </a>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <a routerLink="/login">
+        <span class="text-primary">{{video.firstName + " " +video.lastName}}  </span>
+      </a>
+      <button class="btn btn-success " *ngIf="auth.isUserLoggedIn()" (click)="addSubscribe()">Subskrybuj</button>
+    </div>
 
     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       {{video.display}} wyświetleń |

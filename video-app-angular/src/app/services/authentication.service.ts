@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {VideoToSend} from './model/VideoToSend.model';
 import {AddReviewInformation} from './model/AddReviewInformation.model';
+import {GetSubscriptionsUser} from './model/GetSubscriptionsUser.model';
+import {AddSubscriptionsUser} from './model/AddSubscriptionUser.model';
 
 export const TOKEN = 'token';
 export const AUTHENTICATED_USER = 'authenticaterUser';
@@ -67,6 +69,21 @@ export class AuthenticationService {
   addDislikeToVideo(id: number) {
     const url = `http://localhost:8100/adddisliketovideo`;
     return this.http.post<any>(url, {id});
+  }
+
+  getSubscriptionsUser() {
+    const url = `http://localhost:8100/getsubscription/` + this.getAuthenticatedUser();
+    return this.http.get<GetSubscriptionsUser[]>(url);
+  }
+
+  addSubscriptionsUser(videoId: number) {
+    const url = `http://localhost:8100/addsubscription`;
+
+    let addSubscriptionsUser = new AddSubscriptionsUser('',0);
+    addSubscriptionsUser.email = this.getAuthenticatedUser();
+    addSubscriptionsUser.videoId = videoId;
+
+    return this.http.post<any>(url, addSubscriptionsUser);
   }
 
   getAuthenticatedUser() { return sessionStorage.getItem(AUTHENTICATED_USER); }

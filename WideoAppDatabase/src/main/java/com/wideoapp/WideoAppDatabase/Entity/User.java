@@ -1,6 +1,5 @@
 package com.wideoapp.WideoAppDatabase.Entity;
 
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -31,6 +30,12 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Video> videoList;
 
+    @OneToMany(fetch=FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private List<Subscribe> subscribeList;
+
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
@@ -39,12 +44,13 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, List<Video> videoList, List<Review> reviews) {
+    public User(String firstName, String lastName, String email, String password, List<Video> videoList, List<Subscribe> subscribeList, List<Review> reviews) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.videoList = videoList;
+        this.subscribeList = subscribeList;
         this.reviews = reviews;
     }
 
@@ -96,6 +102,14 @@ public class User {
         this.videoList = videoList;
     }
 
+    public List<Subscribe> getSubscribeList() {
+        return subscribeList;
+    }
+
+    public void setSubscribeList(List<Subscribe> subscribeList) {
+        this.subscribeList = subscribeList;
+    }
+
     public List<Review> getReviews() {
         return reviews;
     }
@@ -104,3 +118,4 @@ public class User {
         this.reviews = reviews;
     }
 }
+

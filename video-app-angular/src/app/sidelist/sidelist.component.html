@@ -1,6 +1,11 @@
 <div class="container-fluid">
 
+  <button routerLink="/" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12">Strona główna</button>
+  <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Wyszukiwarka</button>
+  <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Najlepsze filmy</button>
+
   <div class="col-lg-12">
+    <hr>
     <div *ngIf="userEmail; else logged">
       <p class="text-center text-info">Zalogowany jako:</p>
       <p class="text-center">{{userEmail}}</p>
@@ -11,16 +16,19 @@
 
 
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <button class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12">Wyszukiwarka</button>
-    <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Subskrypcje</button>
+    <button class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12">Subskrypcje</button>
     <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Historia</button>
-    <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Najlepsze filmy</button>
     <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Polubione filmy</button>
   </div>
 
   <<div class="col-lg-12">
   <hr>
   <p class="text-center text-primary">Obserwowane kanały:</p>
+  <ul class="list-group">
+    <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-xs-12"
+        *ngFor="let subscription of subscriptionsUser">
+      <button class="btn btn-default" (click)="showUser(subscription.email)" >{{subscription.name}}</button>
+  </ul>
   </div>
 
 </div>

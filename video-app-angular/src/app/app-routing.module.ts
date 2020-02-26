@@ -6,15 +6,16 @@ import {RegisterComponent} from './login/register/register.component';
 import {AddvideoComponent} from './addvideo/addvideo.component';
 import {ShowvideoComponent} from './showvideo/showvideo.component';
 import {LogoutComponent} from './login/logout/logout.component';
+import {RouteGuardService} from './services/route-guard.service';
 
 
 const routes: Routes = [
   {path: '', component: StartpageComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'addvideo', component: AddvideoComponent},
   {path: 'video/:id', component: ShowvideoComponent},
-  {path: 'logout', component: LogoutComponent}
+  {path: 'addvideo', component: AddvideoComponent, canActivate: [RouteGuardService]},
+  {path: 'logout', component: LogoutComponent, canActivate: [RouteGuardService]}
 ];
 
 @NgModule({

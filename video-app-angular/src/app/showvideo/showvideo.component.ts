@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {VideoappdatabaseService} from '../server/videoappdatabase.service';
-import {VideoBasicInformation} from '../server/model/VideoBasicInformation.model';
-import {ReviewInformation} from '../server/model/ReviewInformation.model';
-import {AuthenticationService} from '../server/authentication.service';
+import {VideoappdatabaseService} from '../services/videoappdatabase.service';
+import {VideoBasicInformation} from '../services/model/VideoBasicInformation.model';
+import {ReviewInformation} from '../services/model/ReviewInformation.model';
+import {AuthenticationService} from '../services/authentication.service';
 
 @Component({
   selector: 'app-showvideo',
@@ -60,6 +60,7 @@ export class ShowvideoComponent implements OnInit {
       .subscribe(
         data => {
           this.getReview();
+          this.ownReview = '';
         }
       );
   }
@@ -84,6 +85,15 @@ export class ShowvideoComponent implements OnInit {
     this.videoAppDB.addDisplay(this.id)
       .subscribe(
         data => {
+        }
+      );
+  }
+
+  addSubscribe() {
+    this.auth.addSubscriptionsUser(this.id)
+      .subscribe(
+        data => {
+
         }
       );
   }

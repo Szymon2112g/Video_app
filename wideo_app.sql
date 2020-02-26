@@ -16,6 +16,17 @@ create table `user` (
 
 )engine=InnoDB auto_increment=1 default charset=latin1;
     
+drop table if exists `subscribe`;
+create table `subscribe` (
+	`id` int(32) not null auto_increment,
+    `user_id` int(32) default null,
+    `subscribe_id` int(32) default null,
+    primary key(`id`),
+    
+    constraint `FK_USER_SUB`  
+    foreign key (`user_id`)
+    references `user`(`id`)
+)engine=InnoDB auto_increment=1 default charset=latin1;
     
 drop table if exists `video`;
 create table `video` (

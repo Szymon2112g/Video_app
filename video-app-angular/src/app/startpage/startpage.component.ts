@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {VideoBasicInformation} from '../server/model/VideoBasicInformation.model';
-import {VideoappdatabaseService} from '../server/videoappdatabase.service';
+import {VideoBasicInformation} from '../services/model/VideoBasicInformation.model';
+import {VideoappdatabaseService} from '../services/videoappdatabase.service';
 
 @Component({
   selector: 'app-startpage',

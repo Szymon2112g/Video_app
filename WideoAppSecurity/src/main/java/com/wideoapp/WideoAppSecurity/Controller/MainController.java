@@ -1,22 +1,24 @@
 package com.wideoapp.WideoAppSecurity.Controller;
 
-import com.wideoapp.WideoAppSecurity.Controller.Model.AddReview;
+import com.wideoapp.WideoAppSecurity.Controller.Model.*;
 import com.wideoapp.WideoAppSecurity.Dao.ReviewDAO;
 import com.wideoapp.WideoAppSecurity.Dao.UserDao;
 import com.wideoapp.WideoAppSecurity.Dao.VideoDao;
 import com.wideoapp.WideoAppSecurity.Entity.Review;
+import com.wideoapp.WideoAppSecurity.Entity.Subscribe;
 import com.wideoapp.WideoAppSecurity.Entity.User;
 import com.wideoapp.WideoAppSecurity.Entity.Video;
-import com.wideoapp.WideoAppSecurity.Controller.Model.VideoToSend;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppDB;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppFS;
-import com.wideoapp.WideoAppSecurity.Controller.Model.ResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
@@ -100,6 +102,36 @@ public class MainController {
         videoToSave.setDislikes(disLikes + 1);
 
         videoDao.save(videoToSave);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(path = "/getsubscription/{email}")
+    public List<GetSubscriptions> getSubscription(@PathVariable("email") String email) {
+
+        User user = userDao.findByEmail(email);
+        List<GetSubscriptions> subscribes = new ArrayList<>();
+
+        for(Subscribe tmpSub :user.getSubscribeList()) {
+            User userTmp = userDao.findById(tmpSub.getSubscribe());
+            String mail = userTmp.getEmail();
+            String name = userTmp.getFirstName() + " " + userTmp.getLastName();
+            subscribes.add(new GetSubscriptions(mail, name));
+        }
+
+        return subscribes;
+    }
+
+    @PostMapping(path = "/addsubscription")
+    public ResponseEntity<?> addSubscription(@RequestBody AddSubscriptions addSubscriptions) {
+
+        Video video = videoDao.findById(addSubscriptions.getVideoId());
+        User userVideo = video.getUser();
+        User user = userDao.findByEmail(addSubscriptions.getEmail());
+
+        user.getSubscribeList().add(new Subscribe(userVideo.getId()));
+
+        userDao.save(user);
 
         return ResponseEntity.ok().build();
     }

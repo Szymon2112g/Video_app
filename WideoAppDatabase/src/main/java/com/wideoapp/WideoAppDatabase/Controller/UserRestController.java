@@ -1,6 +1,5 @@
 package com.wideoapp.WideoAppDatabase.Controller;
 
-import com.wideoapp.WideoAppDatabase.DAO.UserDAO;
 import com.wideoapp.WideoAppDatabase.Entity.User;
 import com.wideoapp.WideoAppDatabase.Service.UserService;
 import org.slf4j.Logger;
@@ -34,15 +33,8 @@ public class UserRestController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-
-        logger.warn("cos dostalo " + user.getFirstName() + " " + user.getLastName() + " " + user.getEmail() + " " + user.getPassword());
-
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
-        logger.warn("password " + user.getFirstName() + " " + user.getLastName() + " " + user.getEmail() + " " + user.getPassword());
-
         userService.addUser(user);
-
         return ResponseEntity.ok().build();
     }
 }

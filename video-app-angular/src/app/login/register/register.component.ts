@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {VideoappdatabaseService} from '../../server/videoappdatabase.service';
+import {VideoappdatabaseService} from '../../services/videoappdatabase.service';
 
 @Component({
   selector: 'app-register',

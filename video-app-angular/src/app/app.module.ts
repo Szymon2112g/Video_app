@@ -7,7 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { StartpageComponent } from './startpage/startpage.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
-import {HttpIntercepterBasicAuthService} from './server/http/http-intercepter-basic-auth.service';
+import {HttpIntercepterBasicAuthService} from './services/http/http-intercepter-basic-auth.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register/register.component';
 import { AddvideoComponent } from './addvideo/addvideo.component';
