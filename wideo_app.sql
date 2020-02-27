@@ -20,7 +20,7 @@ drop table if exists `subscribe`;
 create table `subscribe` (
 	`id` int(32) not null auto_increment,
     `user_id` int(32) default null,
-    `subscribe_id` int(32) default null,
+    `user_subscription_id` int(32) default null,
     primary key(`id`),
     
     constraint `FK_USER_SUB`  
@@ -28,6 +28,42 @@ create table `subscribe` (
     references `user`(`id`)
 )engine=InnoDB auto_increment=1 default charset=latin1;
     
+drop table if exists `history`;
+create table `history` (
+	`id` int(32) not null auto_increment,
+    `user_id` int(32) default null,
+    `video_id` int(32) default null,
+    primary key(`id`),
+    
+    constraint `FK_USER_HIS`  
+    foreign key (`user_id`)
+    references `user`(`id`)
+)engine=InnoDB auto_increment=1 default charset=latin1;    
+
+drop table if exists `likes`;
+create table `like` (
+	`id` int(32) not null auto_increment,
+    `user_id` int(32) default null,
+    `video_id` int(32) default null,
+    primary key(`id`),
+    
+    constraint `FK_USER_LIKE`  
+    foreign key (`user_id`)
+    references `user`(`id`)
+)engine=InnoDB auto_increment=1 default charset=latin1;   
+
+drop table if exists `dislike`;
+create table `dislike` (
+	`id` int(32) not null auto_increment,
+    `user_id` int(32) default null,
+    `video_id` int(32) default null,
+    primary key(`id`),
+    
+    constraint `FK_USER_DISLIKE`  
+    foreign key (`user_id`)
+    references `user`(`id`)
+)engine=InnoDB auto_increment=1 default charset=latin1;      
+   
 drop table if exists `video`;
 create table `video` (
 	`id` int(32) not null auto_increment,

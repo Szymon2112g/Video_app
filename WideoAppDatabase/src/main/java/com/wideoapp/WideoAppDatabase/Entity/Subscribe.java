@@ -11,13 +11,13 @@ public class Subscribe {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "subscribe_id")
-    private int subscribe;
+    @Column(name = "user_subscription_id")
+    private int userSubscriptionId;
 
     public Subscribe() {}
 
-    public Subscribe(int subscribe) {
-        this.subscribe = subscribe;
+    public Subscribe(int userSubscriptionId) {
+        this.userSubscriptionId = userSubscriptionId;
     }
 
     public int getId() {
@@ -28,11 +28,11 @@ public class Subscribe {
         this.id = id;
     }
 
-    public int getSubscribe() {
-        return subscribe;
+    public int getUserSubscriptionId() {
+        return userSubscriptionId;
     }
 
-    public void setSubscribe(int subscribe) {
-        this.subscribe = subscribe;
+    public void setUserSubscriptionId(int userSubscriptionId) {
+        this.userSubscriptionId = userSubscriptionId;
     }
 }

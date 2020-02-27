@@ -4,6 +4,7 @@ import {VideoappdatabaseService} from '../services/videoappdatabase.service';
 import {VideoBasicInformation} from '../services/model/VideoBasicInformation.model';
 import {ReviewInformation} from '../services/model/ReviewInformation.model';
 import {AuthenticationService} from '../services/authentication.service';
+import {GetSubscriptionsUser} from '../services/model/GetSubscriptionsUser.model';
 
 @Component({
   selector: 'app-showvideo',
@@ -17,6 +18,9 @@ export class ShowvideoComponent implements OnInit {
   sizeVideo = 8;
   reviews: ReviewInformation[];
   ownReview: string;
+  isSubscription: boolean;
+  isLike: boolean;
+  isDislike: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,7 +41,9 @@ export class ShowvideoComponent implements OnInit {
       .subscribe(
         data => {
           this.video = data;
-          console.log(this.video.url);
+          this.checkSubscriptions();
+          this.isDislikeToVideo();
+          this.isLikeToVideo();
         }
       );
   }
@@ -69,6 +75,8 @@ export class ShowvideoComponent implements OnInit {
     this.auth.addLikeToVideo(this.id)
       .subscribe(
         data => {
+          this.setLikeView(true);
+          this.video.likes++;
         }
       );
   }
@@ -77,24 +85,109 @@ export class ShowvideoComponent implements OnInit {
     this.auth.addDislikeToVideo(this.id)
       .subscribe(
         data => {
+          this.setDislikeView(true);
+          this.video.dislikes++;
         }
       );
   }
 
   addView() {
-    this.videoAppDB.addDisplay(this.id)
-      .subscribe(
-        data => {
-        }
-      );
+    if(this.auth.isUserLoggedIn()) {
+      this.auth.addDisplayWithUser(this.id)
+        .subscribe(
+          data => {
+          }
+        )
+    }
+    else {
+      this.videoAppDB.addDisplay(this.id)
+        .subscribe(
+          data => {
+          }
+        );
+    }
   }
 
   addSubscribe() {
-    this.auth.addSubscriptionsUser(this.id)
+    this.auth.addSubscriptionsUser(this.video.userId)
       .subscribe(
         data => {
-
+          this.setSubscriptionView(true);
         }
       );
   }
+
+  subtractSubscribe() {
+    this.auth.subtractSubscriptionsUser(this.video.userId)
+      .subscribe(
+        data => {
+          this.setSubscriptionView(false);
+        }
+      );
+  }
+
+  checkSubscriptions() {
+    this.auth.getSubscriptionsUser()
+      .subscribe(
+        data => {
+          for (let tmp of data) {
+            if(this.video.userId === tmp.userId) {
+              this.setSubscriptionView(true);
+              return;
+            }
+          }
+        }
+      );
+  }
+
+  setSubscriptionView(isSubscribe: boolean) {
+    this.isSubscription = isSubscribe;
+  }
+
+  isLikeToVideo() {
+      this.auth.isLikeToVideo(this.id)
+       .subscribe(
+        data => {
+          this.setLikeView(data);
+       }
+    );
+  }
+
+  isDislikeToVideo() {
+    this.auth.isDislikeToVideo(this.id)
+      .subscribe(
+        data => {
+          this.setDislikeView(data);
+        }
+      );
+  }
+
+  subtractLikeToVideo() {
+    this.auth.subtractLikeToVideo(this.id)
+      .subscribe(
+        data => {
+          this.setLikeView(false);
+          this.video.likes--;
+        }
+      );
+  }
+
+  subtractDislikeToVideo() {
+    this.auth.subtractDislikeToVideo(this.id)
+      .subscribe(
+        data => {
+          this.setDislikeView(false);
+          this.video.dislikes--;
+        }
+      );
+  }
+
+  setLikeView(isLike: boolean) {
+    this.isLike = isLike;
+  }
+
+  setDislikeView(isDislike: boolean) {
+    this.isDislike = isDislike;
+  }
+
 }

@@ -1,12 +1,22 @@
 package com.wideoapp.WideoAppSecurity.Controller.Model;
 
 public class GetSubscriptions {
+    private int userId;
     private String email;
     private String name;
 
-    public GetSubscriptions(String email, String name) {
+    public GetSubscriptions(int userId, String email, String name) {
+        this.userId = userId;
         this.email = email;
         this.name = name;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {

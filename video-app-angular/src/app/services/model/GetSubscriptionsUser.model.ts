@@ -1,3 +1,3 @@
 export class GetSubscriptionsUser {
-  constructor(public email: string, public name: string) {}
+  constructor(public userId: number, public email: string, public name: string) {}
 }

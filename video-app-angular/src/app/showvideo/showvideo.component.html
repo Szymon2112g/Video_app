@@ -21,13 +21,16 @@
       <a routerLink="/login">
         <span class="text-primary">{{video.firstName + " " +video.lastName}}  </span>
       </a>
-      <button class="btn btn-success " *ngIf="auth.isUserLoggedIn()" (click)="addSubscribe()">Subskrybuj</button>
+      <button class="btn btn-danger " *ngIf="auth.isUserLoggedIn() && !isSubscription" (click)="addSubscribe()">Subskrybuj</button>
+      <button class="btn btn-success" *ngIf="auth.isUserLoggedIn() && isSubscription" (click)="subtractSubscribe()">Subskrybujesz</button>
     </div>
 
     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       {{video.display}} wyświetleń |
-      <a class="text-success" (click)="LikeVideo()">Lubię {{video.likes}}</a> |
-      <a class="text-danger" (click)="DisLikeVideo()">Nie lubię {{video.dislikes}}</a>
+      <span class="text-success" (click)="subtractLikeToVideo()" *ngIf="isLike && auth.isUserLoggedIn()"><b>Lubię {{video.likes}}</b></span>
+      <span class="text-primary" (click)="LikeVideo()" *ngIf="!isLike && auth.isUserLoggedIn()">Lubię {{video.likes}}</span>|
+      <span class="text-danger" (click)="subtractDislikeToVideo()" *ngIf="isDislike && auth.isUserLoggedIn()">Nie lubię {{video.dislikes}}</span>
+      <span class="text-primary" (click)="DisLikeVideo()" *ngIf="!isDislike && auth.isUserLoggedIn()">Nie lubię {{video.dislikes}}</span>
     </span>
 
 

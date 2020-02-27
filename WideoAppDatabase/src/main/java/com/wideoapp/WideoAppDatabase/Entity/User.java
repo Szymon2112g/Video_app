@@ -36,6 +36,24 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Subscribe> subscribeList;
 
+    @OneToMany(fetch=FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private List<Dislike> dislikeList;
+
+    @OneToMany(fetch=FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private List<History> historyList;
+
+    @OneToMany(fetch=FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private List<Likes> likeList;
+
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
@@ -44,13 +62,25 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, List<Video> videoList, List<Subscribe> subscribeList, List<Review> reviews) {
+    public User(String firstName,
+                String lastName,
+                String email,
+                String password,
+                List<Video> videoList,
+                List<Subscribe> subscribeList,
+                List<Dislike> dislikeList,
+                List<History> historyList,
+                List<Likes> likeList,
+                List<Review> reviews) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.videoList = videoList;
         this.subscribeList = subscribeList;
+        this.dislikeList = dislikeList;
+        this.historyList = historyList;
+        this.likeList = likeList;
         this.reviews = reviews;
     }
 
@@ -108,6 +138,30 @@ public class User {
 
     public void setSubscribeList(List<Subscribe> subscribeList) {
         this.subscribeList = subscribeList;
+    }
+
+    public List<Dislike> getDislikeList() {
+        return dislikeList;
+    }
+
+    public void setDislikeList(List<Dislike> dislikeList) {
+        this.dislikeList = dislikeList;
+    }
+
+    public List<History> getHistoryList() {
+        return historyList;
+    }
+
+    public void setHistoryList(List<History> historyList) {
+        this.historyList = historyList;
+    }
+
+    public List<Likes> getLikeList() {
+        return likeList;
+    }
+
+    public void setLikeList(List<Likes> likeList) {
+        this.likeList = likeList;
     }
 
     public List<Review> getReviews() {

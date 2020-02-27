@@ -1,13 +1,8 @@
 package com.wideoapp.WideoAppSecurity.Controller;
 
 import com.wideoapp.WideoAppSecurity.Controller.Model.*;
-import com.wideoapp.WideoAppSecurity.Dao.ReviewDAO;
-import com.wideoapp.WideoAppSecurity.Dao.UserDao;
-import com.wideoapp.WideoAppSecurity.Dao.VideoDao;
-import com.wideoapp.WideoAppSecurity.Entity.Review;
-import com.wideoapp.WideoAppSecurity.Entity.Subscribe;
-import com.wideoapp.WideoAppSecurity.Entity.User;
-import com.wideoapp.WideoAppSecurity.Entity.Video;
+import com.wideoapp.WideoAppSecurity.Dao.*;
+import com.wideoapp.WideoAppSecurity.Entity.*;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppDB;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppFS;
 import org.slf4j.Logger;
@@ -19,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
@@ -31,14 +27,20 @@ public class MainController {
     private UserDao userDao;
     private VideoDao videoDao;
     private ReviewDAO reviewDAO;
+    private LikesDao likesDao;
+    private DislikesDao dislikesDao;
+    private SubscribeDao subscribeDao;
 
     @Autowired
-    public MainController(WideoAppDB wideoAppDB, WideoAppFS wideoAppFS, UserDao userDao, VideoDao videoDao,  ReviewDAO reviewDAO) {
+    public MainController(WideoAppDB wideoAppDB, WideoAppFS wideoAppFS, UserDao userDao, VideoDao videoDao, ReviewDAO reviewDAO, LikesDao likesDao,DislikesDao dislikesDao, SubscribeDao subscribeDao) {
         this.wideoAppDB = wideoAppDB;
         this.wideoAppFS = wideoAppFS;
         this.userDao = userDao;
         this.videoDao = videoDao;
         this.reviewDAO = reviewDAO;
+        this.likesDao = likesDao;
+        this.dislikesDao = dislikesDao;
+        this.subscribeDao = subscribeDao;
     }
 
     @PostMapping(path = "/sendvideofile", consumes = {"multipart/form-data","application/json"})
@@ -82,26 +84,40 @@ public class MainController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(path = "/addliketovideo")
-    public ResponseEntity<?> addLikeToVideo(@RequestBody Video video) {
-        Video videoToSave = videoDao.findById(video.getId().intValue());
+    @PostMapping(path = "/addliketovideo", consumes = "application/json")
+    public ResponseEntity<?> addLikeToVideo(@RequestBody Map<String, Object> body) {
+        int id = Integer.parseInt(body.get("id").toString());
+        String email = body.get("email").toString();
 
-        int likes = videoToSave.getLikes();
-        videoToSave.setLikes(likes + 1);
+        if(!isLikeToVideo(id, email)) {
+            Video videoToSave = videoDao.findById(id);
+            int likes = videoToSave.getLikes();
+            videoToSave.setLikes(likes + 1);
+            videoDao.save(videoToSave);
 
-        videoDao.save(videoToSave);
+            User user = userDao.findByEmail(email);
+            user.getLikesList().add(new Likes(id,user.getId()));
+            userDao.save(user);
+        }
 
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(path = "/adddisliketovideo")
-    public ResponseEntity<?> addDislikeToVideo(@RequestBody Video video) {
-        Video videoToSave = videoDao.findById(video.getId().intValue());
+    @PostMapping(path = "/adddisliketovideo", consumes = "application/json")
+    public ResponseEntity<?> addDislikeToVideo(@RequestBody Map<String, Object> body) {
+        int id = Integer.parseInt(body.get("id").toString());
+        String email = body.get("email").toString();
 
-        int disLikes = videoToSave.getDislikes();
-        videoToSave.setDislikes(disLikes + 1);
+        if(!isDislikeToVideo(id, email)) {
+            Video videoToSave = videoDao.findById(id);
+            int dislikes = videoToSave.getDislikes();
+            videoToSave.setDislikes(dislikes + 1);
+            videoDao.save(videoToSave);
 
-        videoDao.save(videoToSave);
+            User user = userDao.findByEmail(email);
+            user.getDislikeList().add(new Dislike(id, user.getId()));
+            userDao.save(user);
+        }
 
         return ResponseEntity.ok().build();
     }
@@ -113,25 +129,115 @@ public class MainController {
         List<GetSubscriptions> subscribes = new ArrayList<>();
 
         for(Subscribe tmpSub :user.getSubscribeList()) {
-            User userTmp = userDao.findById(tmpSub.getSubscribe());
-            String mail = userTmp.getEmail();
+            User userTmp = userDao.findById(tmpSub.getUserSubscriptionId());
             String name = userTmp.getFirstName() + " " + userTmp.getLastName();
-            subscribes.add(new GetSubscriptions(mail, name));
+            subscribes.add(new GetSubscriptions(userTmp.getId(), userTmp.getEmail(), name));
         }
 
         return subscribes;
     }
 
     @PostMapping(path = "/addsubscription")
-    public ResponseEntity<?> addSubscription(@RequestBody AddSubscriptions addSubscriptions) {
+    public ResponseEntity<?> addSubscription(@RequestBody Map<String, Object> body) {
+        int userVideoId = Integer.parseInt(body.get("userId").toString());
+        String email = body.get("email").toString();
+        User user = userDao.findByEmail(email);
+        user.getSubscribeList().add(new Subscribe(userVideoId, user.getId()));
+        userDao.save(user);
+        return ResponseEntity.ok().build();
+    }
 
-        Video video = videoDao.findById(addSubscriptions.getVideoId());
-        User userVideo = video.getUser();
-        User user = userDao.findByEmail(addSubscriptions.getEmail());
+    @PostMapping(path = "/subtractsubscription")
+    public ResponseEntity<?> subtractSubscription(@RequestBody Map<String, Object> body) {
+        int userVideoId = Integer.parseInt(body.get("userId").toString());
+        String email = body.get("email").toString();
+        User user = userDao.findByEmail(email);
 
-        user.getSubscribeList().add(new Subscribe(userVideo.getId()));
+        subscribeDao.removeByUserSubscriptionIdAndUserId(userVideoId, user.getId());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(path = "/adddisplaywithuser")
+    public ResponseEntity<?> addDisplayWithUser(@RequestBody AddDisplayWithUser addDisplayWithUser) {
+        User user = userDao.findByEmail(addDisplayWithUser.getEmail());
+        user.getHistoryList().add(new History(addDisplayWithUser.getVideoId()));
+
+        Video video = videoDao.findById(addDisplayWithUser.getVideoId());
+        video.setDisplay(video.getDisplay() + 1);
 
         userDao.save(user);
+        videoDao.save(video);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(path = "/isliketovideo")
+    public boolean isLikeToVideoRest(@RequestParam("id") String idString, @RequestParam("email") String email) {
+
+        int id = Integer.parseInt(idString);
+        return isLikeToVideo(id, email);
+    }
+
+    @GetMapping(path = "/isdisliketovideo")
+    public boolean isDislikeToVideoRest(@RequestParam("id") String idString, @RequestParam("email") String email) {
+
+        int id = Integer.parseInt(idString);
+        return isDislikeToVideo(id, email);
+    }
+
+
+    public boolean isLikeToVideo(int id, String email) {
+
+        User user = userDao.findByEmail(email);
+        for(Likes likes : user.getLikesList()) {
+            if(likes.getVideoId() == id)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isDislikeToVideo(int id, String email) {
+
+        User user = userDao.findByEmail(email);
+        for(Dislike dislike : user.getDislikeList()) {
+            if(dislike.getVideoId() == id)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @PostMapping(path = "/subtractliketovideo", consumes = "application/json")
+    public ResponseEntity<?> subtractLikeToVideo(@RequestBody Map<String, Object> body) {
+        int id = Integer.parseInt(body.get("id").toString());
+        String email = body.get("email").toString();
+        User user = userDao.findByEmail(email);
+        likesDao.removeByVideoIdAndUserId(id, user.getId());
+
+        Video videoToSave = videoDao.findById(id);
+        int likes = videoToSave.getLikes();
+        videoToSave.setLikes(likes - 1);
+        videoDao.save(videoToSave);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(path = "/subtractdisliketovideo", consumes = "application/json")
+    public ResponseEntity<?> subtractDislikeToVideo(@RequestBody Map<String, Object> body) {
+        int id = Integer.parseInt(body.get("id").toString());
+        String email = body.get("email").toString();
+
+        User user = userDao.findByEmail(email);
+        dislikesDao.removeByVideoIdAndUserId(id, user.getId());
+
+        Video videoToSave = videoDao.findById(id);
+        int dislikes = videoToSave.getDislikes();
+        videoToSave.setDislikes(dislikes - 1);
+        videoDao.save(videoToSave);
 
         return ResponseEntity.ok().build();
     }

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {VideoToSend} from './model/VideoToSend.model';
 import {AddReviewInformation} from './model/AddReviewInformation.model';
 import {GetSubscriptionsUser} from './model/GetSubscriptionsUser.model';
 import {AddSubscriptionsUser} from './model/AddSubscriptionUser.model';
+import {AddDisplayWithUser} from './model/AddDisplayWithUser.model';
 
 export const TOKEN = 'token';
 export const AUTHENTICATED_USER = 'authenticaterUser';
@@ -61,14 +62,40 @@ export class AuthenticationService {
     );
   }
 
-  addLikeToVideo(id: number) {
+  addLikeToVideo(videoId: number) {
     const url = `http://localhost:8100/addliketovideo`;
-    return this.http.post<any>(url, {id});
+    return this.http.post<any>(url, {id: videoId, email: this.getAuthenticatedUser()});
   }
 
-  addDislikeToVideo(id: number) {
+  addDislikeToVideo(videoId: number) {
     const url = `http://localhost:8100/adddisliketovideo`;
-    return this.http.post<any>(url, {id});
+    return this.http.post<any>(url, {id: videoId, email: this.getAuthenticatedUser()});
+  }
+
+  subtractLikeToVideo(videoId: number) {
+    const url = `http://localhost:8100/subtractliketovideo`;
+    return this.http.post<any>(url, {id: videoId, email: this.getAuthenticatedUser()});
+  }
+
+  subtractDislikeToVideo(videoId: number) {
+    const url = `http://localhost:8100/subtractdisliketovideo`;
+    return this.http.post<any>(url, {id: videoId, email: this.getAuthenticatedUser()});
+  }
+
+  isLikeToVideo(videoId: number) {
+    const url = `http://localhost:8100/isliketovideo`;
+    let httpParams = new HttpParams()
+      .set('id', videoId.toString())
+      .set('email', this.getAuthenticatedUser());
+    return this.http.get<boolean>(url, { params: httpParams});
+  }
+
+  isDislikeToVideo(videoId: number) {
+    const url = `http://localhost:8100/isdisliketovideo`;
+    let httpParams = new HttpParams()
+      .set('id', videoId.toString())
+      .set('email', this.getAuthenticatedUser());
+    return this.http.get<boolean>(url, { params: httpParams});
   }
 
   getSubscriptionsUser() {
@@ -76,14 +103,22 @@ export class AuthenticationService {
     return this.http.get<GetSubscriptionsUser[]>(url);
   }
 
-  addSubscriptionsUser(videoId: number) {
+  addSubscriptionsUser(id: number) {
     const url = `http://localhost:8100/addsubscription`;
+    return this.http.post<any>(url, {email: this.getAuthenticatedUser(), userId: id});
+  }
 
-    let addSubscriptionsUser = new AddSubscriptionsUser('',0);
-    addSubscriptionsUser.email = this.getAuthenticatedUser();
-    addSubscriptionsUser.videoId = videoId;
+  subtractSubscriptionsUser(id: number) {
+    const url = `http://localhost:8100/subtractsubscription`;
+    return this.http.post<any>(url, {email: this.getAuthenticatedUser(), userId: id});
+  }
 
-    return this.http.post<any>(url, addSubscriptionsUser);
+  addDisplayWithUser(videoId: number) {
+    const url = `http://localhost:8100/adddisplaywithuser`;
+
+    const addDisplayWithUser = new AddDisplayWithUser(this.getAuthenticatedUser(), videoId);
+
+    return this.http.post<any>(url, addDisplayWithUser);
   }
 
   getAuthenticatedUser() { return sessionStorage.getItem(AUTHENTICATED_USER); }

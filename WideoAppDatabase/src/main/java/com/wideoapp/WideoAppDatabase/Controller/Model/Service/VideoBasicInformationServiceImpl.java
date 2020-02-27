@@ -26,7 +26,7 @@ public class VideoBasicInformationServiceImpl implements VideoBasicInformationSe
         for (Video video: videoService.findAll()) {
             VideoBasicInformation tmp = new VideoBasicInformation(
                     video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
-                    video.getUser().getFirstName(), video.getUser().getLastName(),
+                    video.getUser().getFirstName(), video.getUser().getLastName(), video.getUser().getId(),
                     video.getDisplay(), video.getPhotoUrl(), video.getDate(),
                     video.getLikes(), video.getDislikes());
 
@@ -43,8 +43,8 @@ public class VideoBasicInformationServiceImpl implements VideoBasicInformationSe
 
         VideoBasicInformation videoBasicInformation = new VideoBasicInformation(
                 video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
-                video.getUser().getFirstName(), video.getUser().getLastName(), video.getDisplay(),
-                video.getPhotoUrl(), video.getDate(), video.getLikes(), video.getDislikes()
+                video.getUser().getFirstName(), video.getUser().getLastName(), video.getUser().getId(),
+                video.getDisplay(), video.getPhotoUrl(), video.getDate(), video.getLikes(), video.getDislikes()
         );
 
         return videoBasicInformation;

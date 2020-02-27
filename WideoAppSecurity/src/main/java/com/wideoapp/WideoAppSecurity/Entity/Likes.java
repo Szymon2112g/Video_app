@@ -3,24 +3,25 @@ package com.wideoapp.WideoAppSecurity.Entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subscribe")
-public class Subscribe {
+@Table(name = "likes")
+public class Likes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_subscription_id")
-    private int userSubscriptionId;
+    @Column(name = "video_id")
+    private int videoId;
 
     @Column(name = "user_id")
     private int userId;
 
-    public Subscribe() {}
+    public Likes() {
+    }
 
-    public Subscribe(int userSubscriptionId, int userId) {
-        this.userSubscriptionId = userSubscriptionId;
+    public Likes(int videoId, int userId) {
+        this.videoId = videoId;
         this.userId = userId;
     }
 
@@ -32,12 +33,12 @@ public class Subscribe {
         this.id = id;
     }
 
-    public int getUserSubscriptionId() {
-        return userSubscriptionId;
+    public int getVideoId() {
+        return videoId;
     }
 
-    public void setUserSubscriptionId(int userSubscriptionId) {
-        this.userSubscriptionId = userSubscriptionId;
+    public void setVideoId(int videoId) {
+        this.videoId = videoId;
     }
 
     public int getUserId() {
