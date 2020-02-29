@@ -29,4 +29,10 @@ public class UserServiceImpl implements UserService {
     public String addUser(User user) {
         return userDAO.addUser(user);
     }
+
+    @Override
+    @Transactional
+    public User findByEmail(String email) {
+        return userDAO.findByEmail(email);
+    }
 }

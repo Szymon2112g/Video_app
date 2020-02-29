@@ -1,0 +1,12 @@
+<a routerLink="/video/{{videoElement.id}}">
+  <img src="{{videoElement.photoUrl}}" width="200px" height="200px" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+</a>
+
+<span class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12"><b>{{videoElement.title}}</b></span>
+
+<a routerLink="/login">
+  <span class="text-primary text-center col-lg-12">{{videoElement.firstName + " " +videoElement.lastName}}</span>
+</a>
+
+<span class="text-center col-lg-12">{{videoElement.display}} wyświetleń</span>
+<span class="text-center col-lg-12">{{videoElement.date}}</span>

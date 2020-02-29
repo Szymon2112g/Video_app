@@ -12,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
@@ -30,9 +28,11 @@ public class MainController {
     private LikesDao likesDao;
     private DislikesDao dislikesDao;
     private SubscribeDao subscribeDao;
+    private HistoryDao historyDao;
+
 
     @Autowired
-    public MainController(WideoAppDB wideoAppDB, WideoAppFS wideoAppFS, UserDao userDao, VideoDao videoDao, ReviewDAO reviewDAO, LikesDao likesDao,DislikesDao dislikesDao, SubscribeDao subscribeDao) {
+    public MainController(WideoAppDB wideoAppDB, WideoAppFS wideoAppFS, UserDao userDao, VideoDao videoDao, ReviewDAO reviewDAO, LikesDao likesDao,DislikesDao dislikesDao, SubscribeDao subscribeDao, HistoryDao historyDao) {
         this.wideoAppDB = wideoAppDB;
         this.wideoAppFS = wideoAppFS;
         this.userDao = userDao;
@@ -41,6 +41,7 @@ public class MainController {
         this.likesDao = likesDao;
         this.dislikesDao = dislikesDao;
         this.subscribeDao = subscribeDao;
+        this.historyDao = historyDao;
     }
 
     @PostMapping(path = "/sendvideofile", consumes = {"multipart/form-data","application/json"})
@@ -69,6 +70,11 @@ public class MainController {
         userDao.save(user);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(path = "/get-address-url-file-server")
+    public ResponseMessage getAddressUrlFileServer(){
+        return new ResponseMessage(wideoAppFS.getAddressUrl());
     }
 
     @PostMapping(path = "/addreview/")
@@ -161,7 +167,7 @@ public class MainController {
     @PostMapping(path = "/adddisplaywithuser")
     public ResponseEntity<?> addDisplayWithUser(@RequestBody AddDisplayWithUser addDisplayWithUser) {
         User user = userDao.findByEmail(addDisplayWithUser.getEmail());
-        user.getHistoryList().add(new History(addDisplayWithUser.getVideoId()));
+        user.getHistoryList().add(new History(user.getId(), addDisplayWithUser.getVideoId()));
 
         Video video = videoDao.findById(addDisplayWithUser.getVideoId());
         video.setDisplay(video.getDisplay() + 1);
@@ -240,5 +246,134 @@ public class MainController {
         videoDao.save(videoToSave);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(path = "/get-video-feed/{category}/{id}")
+    public List<VideoBasicInformation> getVideoFeed(@PathVariable("category") String category,
+                                                    @PathVariable("id") int id,
+                                                    @RequestParam("email") String email) {
+
+        switch (category) {
+            case "history":
+                return getVideoFeedHistory(category, id, email);
+            case "liked":
+                return getVideoFeedLiked(category, id, email);
+            case "subscription":
+                return getVideoFeedSubscription(category, id, email);
+        }
+
+        return null;
+    }
+
+    public List<VideoBasicInformation> getVideoFeedHistory(String category, int id, String email) {
+        User user = userDao.findByEmail(email);
+
+        List<History> historyList = historyDao.findAllByUserIdOrderByIdDesc(user.getId());
+
+        List<VideoBasicInformation> videoBasicInformations = new ArrayList<>();
+
+        for (int i = (id-1)*10; i < id*10; i++) {
+
+            if(i >= historyList.size()) {
+                logger.warn("poza lista ");
+                continue;
+            }
+
+            logger.warn(historyList.get(i).getVideoId() + " wynik");
+
+
+            Video video = videoDao.findById(historyList.get(i).getVideoId());
+
+            VideoBasicInformation tmp = new VideoBasicInformation(
+                    video.getId().intValue(), video.getUrl(), video.getTitle(), video.getDescription(),
+                    video.getUser().getFirstName(), video.getUser().getLastName(), video.getUser().getId(),
+                    video.getDisplay(), video.getPhotoUrl(), video.getDate(), video.getLikes(), video.getDislikes()
+            );
+
+            videoBasicInformations.add(tmp);
+        }
+
+        return videoBasicInformations;
+    }
+
+    public List<VideoBasicInformation> getVideoFeedLiked(String category, int id, String email) {
+        User user = userDao.findByEmail(email);
+
+        List<Likes> likes = likesDao.findAllByUserIdOrderByIdDesc(user.getId());
+
+        List<VideoBasicInformation> videoBasicInformations = new ArrayList<>();
+
+        for (int i = (id-1)*10; i < id*10; i++) {
+
+            if(i >= likes.size()) {
+                logger.warn("poza lista ");
+                continue;
+            }
+
+            logger.warn(likes.get(i).getVideoId() + " wynik");
+
+
+            Video video = videoDao.findById(likes.get(i).getVideoId());
+
+            VideoBasicInformation tmp = new VideoBasicInformation(
+                    video.getId().intValue(), video.getUrl(), video.getTitle(), video.getDescription(),
+                    video.getUser().getFirstName(), video.getUser().getLastName(), video.getUser().getId(),
+                    video.getDisplay(), video.getPhotoUrl(), video.getDate(), video.getLikes(), video.getDislikes()
+            );
+
+            videoBasicInformations.add(tmp);
+        }
+
+        return videoBasicInformations;
+    }
+
+    public List<VideoBasicInformation> getVideoFeedSubscription(String category, int id, String email) {
+        User user = userDao.findByEmail(email);
+
+        List<Subscribe> subscribes = subscribeDao.findAllByUserId(user.getId());
+
+        List<VideoBasicInformation> videoBasicInformations = new ArrayList<>();
+
+        List<User> users = new ArrayList<>();
+
+        List<Video> videos = new ArrayList<>();
+
+        for(Subscribe subscribe: subscribes) {
+            User tmp = userDao.findById(subscribe.getUserSubscriptionId());
+            users.add(tmp);
+            videos.addAll(videoDao.findAllByUserIdOrderByDateDesc(tmp.getId()));
+        }
+
+        Collections.sort(videos, new Comparator<Video>() {
+            @Override
+            public int compare(Video o1, Video o2) {
+                return o1.getId()>o2.getId() ? -1 : o1.getId()==o2.getId() ? 0 : 1;
+            }
+        });
+
+        for (Video video: videos) {
+            logger.warn(video.getTitle());
+        }
+
+
+        for (int i = (id-1)*10; i < id*10; i++) {
+
+            if(i >= videos.size()) {
+                logger.warn("poza lista ");
+                continue;
+            }
+
+            Video video = videos.get(i);
+
+            VideoBasicInformation tmp = new VideoBasicInformation(
+                    video.getId().intValue(), video.getUrl(), video.getTitle(), video.getDescription(),
+                    video.getUser().getFirstName(), video.getUser().getLastName(), video.getUser().getId(),
+                    video.getDisplay(), video.getPhotoUrl(), video.getDate(), video.getLikes(), video.getDislikes()
+            );
+
+            videoBasicInformations.add(tmp);
+        }
+
+        return videoBasicInformations;
     }
 }

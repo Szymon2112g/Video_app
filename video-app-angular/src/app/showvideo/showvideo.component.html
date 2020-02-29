@@ -28,16 +28,17 @@
     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       {{video.display}} wyświetleń |
       <span class="text-success" (click)="subtractLikeToVideo()" *ngIf="isLike && auth.isUserLoggedIn()"><b>Lubię {{video.likes}}</b></span>
-      <span class="text-primary" (click)="LikeVideo()" *ngIf="!isLike && auth.isUserLoggedIn()">Lubię {{video.likes}}</span>|
+      <span class="text-primary" (click)="LikeVideo()" *ngIf="!isLike && auth.isUserLoggedIn()">Lubię {{video.likes}}</span>
+      <span class="text-primary" *ngIf="!auth.isUserLoggedIn()">Lubię {{video.likes}}</span>|
       <span class="text-danger" (click)="subtractDislikeToVideo()" *ngIf="isDislike && auth.isUserLoggedIn()">Nie lubię {{video.dislikes}}</span>
       <span class="text-primary" (click)="DisLikeVideo()" *ngIf="!isDislike && auth.isUserLoggedIn()">Nie lubię {{video.dislikes}}</span>
+      <span class="text-primary" *ngIf="!auth.isUserLoggedIn()">Nie lubię {{video.dislikes}}</span>
     </span>
 
-
-    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Data dodania: {{video.date}}</span>
-
-    <hr class="bg-success col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
+    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      Data dodania: {{video.date}}
+      <hr style="height: 2px; background-color:lightgray;" />
+    </span>
 
     <h4>Napisz komentarz</h4>
     <textarea class="col-xs-12 col-sm-12 col-md-12 col-lg-12" [(ngModel)]="ownReview">

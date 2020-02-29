@@ -1,35 +1,38 @@
 <div class="container-fluid">
 
-  <button routerLink="/" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12">Strona główna</button>
-  <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Wyszukiwarka</button>
-  <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Najlepsze filmy</button>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <button routerLink="/"  class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12">Strona główna</button>
+    <button routerLink="/feed/browser"  class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Wyszukiwarka</button>
+    <button routerLink="/feed/ontime" class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Na czasie</button>
+  </div>
 
   <div class="col-lg-12">
-    <hr>
+    <hr style="height: 2px; background-color:lightgray;" />
     <div *ngIf="userEmail; else logged">
       <p class="text-center text-info">Zalogowany jako:</p>
       <p class="text-center">{{userEmail}}</p>
     </div>
     <ng-template #logged><span class="text text-center text-danger"><b>Nie jesteś zalogowany</b></span></ng-template>
-    <hr>
+    <hr style="height: 2px; background-color:lightgray;" />
   </div>
 
 
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <button class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12">Subskrypcje</button>
-    <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Historia</button>
-    <button class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Polubione filmy</button>
+    <button routerLink="/feed/subscription" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12">Subskrypcje</button>
+    <button routerLink="/feed/history" class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Historia</button>
+    <button routerLink="/feed/liked" class="btn btn-default col-lg-12 col-md-12 col-sm-12 col-xs-12">Polubione filmy</button>
   </div>
 
-  <<div class="col-lg-12">
-  <hr>
+  <div class="col-lg-12">
+  <hr style="height: 2px; background-color:lightgray;" />
   <p class="text-center text-primary">Obserwowane kanały:</p>
   <ul class="list-group">
     <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-xs-12"
         *ngFor="let subscription of subscriptionsUser">
-      <button class="btn btn-default" (click)="showUser(subscription.email)" >{{subscription.name}}</button>
+      <button class="btn btn-default center-block" (click)="showUser(subscription.email)" >{{subscription.name}}</button>
   </ul>
   </div>
 
 </div>
+
 

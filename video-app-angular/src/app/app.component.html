@@ -1,10 +1,13 @@
 <div class="container-fluid">
   <app-header></app-header>
-  <div class="col-lg-2 col-md-3 col-sm-4 cols-xs-4">
-    <app-sidelist></app-sidelist>
-  </div>
 
-  <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8">
-    <router-outlet></router-outlet>
+  <div class="row">
+    <div class="col-lg-2 col-md-3 col-sm-4 cols-xs-4" style="margin-top: 75px;">
+      <app-sidelist></app-sidelist>
+    </div>
+
+    <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8" style="margin-top: 75px;">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

@@ -9,21 +9,9 @@ import {VideoappdatabaseService} from '../services/videoappdatabase.service';
 })
 export class StartpageComponent implements OnInit {
 
-  videoBasic: VideoBasicInformation[];
-
-  constructor(
-    private VideoAppDatabase: VideoappdatabaseService
-    ) { }
+  constructor( ) { }
 
   ngOnInit() {
-    this.getAllVideo();
   }
 
-  getAllVideo() {
-    this.VideoAppDatabase.getAllVideo().subscribe(
-      response => {
-        this.videoBasic = response;
-      }
-    );
-  }
 }

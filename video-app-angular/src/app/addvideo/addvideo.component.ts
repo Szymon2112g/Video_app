@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../services/authentication.service';
 import {VideoToSend} from '../services/model/VideoToSend.model';
 import {NgForm} from '@angular/forms';
+import {map, tap} from 'rxjs/operators';
+import {HttpEventType} from '@angular/common/http';
 
 @Component({
   selector: 'app-addvideo',
@@ -24,6 +26,11 @@ export class AddvideoComponent implements OnInit {
   isVideo = false;
   isPhoto = false;
 
+  valueProgressVideo = 0;
+  valueProgressImage = 0;
+
+  bookedAddressUrlFileServer: string;
+
   videoToSend: VideoToSend = new VideoToSend(
     this.authentication.getAuthenticatedUser(), '', '', '', '');
 
@@ -32,6 +39,7 @@ export class AddvideoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.bookAddressUrl();
   }
 
   handleVideoInput(files: FileList) {
@@ -43,9 +51,28 @@ export class AddvideoComponent implements OnInit {
   }
 
   sendVideoFile() {
-    this.authentication.sendFile(this.videoToUpload, 'video').subscribe(
+    this.authentication.sendFile(this.videoToUpload, 'video', this.bookedAddressUrlFileServer).pipe(map((event) => {
+
+        switch (event.type) {
+
+          case HttpEventType.UploadProgress:
+            const progress = Math.round(100 * event.loaded / event.total);
+            this.valueProgressVideo = progress;
+            return { status: 'progress', message: event };
+
+          case HttpEventType.Response:
+            return event.body;
+
+          default:
+            return `Unhandled event: ${event.type}`;
+        }
+      })
+    ).subscribe(
       data => {
         this.videoUrl = data.message;
+      }, error => {
+
+      }, () => {
         this.videoToSend.url = this.videoUrl;
         this.isVideo = true;
       }
@@ -53,9 +80,28 @@ export class AddvideoComponent implements OnInit {
   }
 
   sendPhotoFile() {
-    this.authentication.sendFile(this.photoToUpload, 'photo').subscribe(
+    this.authentication.sendFile(this.photoToUpload, 'photo', this.bookedAddressUrlFileServer).pipe(map((event) => {
+
+        switch (event.type) {
+
+          case HttpEventType.UploadProgress:
+            const progress = Math.round(100 * event.loaded / event.total);
+            this.valueProgressImage = progress;
+            return { status: 'progress', message: event };
+
+          case HttpEventType.Response:
+            return event.body;
+
+          default:
+            return `Unhandled event: ${event.type}`;
+        }
+      })
+    ).subscribe(
       data => {
         this.photoUrl = data.message;
+      }, error => {
+
+      }, () => {
         this.videoToSend.photoUrl = this.photoUrl;
         this.isPhoto = true;
       }
@@ -74,4 +120,11 @@ export class AddvideoComponent implements OnInit {
     );
   }
 
+  bookAddressUrl() {
+    this.authentication.getAddressUrlFileServer().subscribe(
+      data => {
+        this.bookedAddressUrlFileServer =  data.message;
+      }
+    );;
+  }
 }

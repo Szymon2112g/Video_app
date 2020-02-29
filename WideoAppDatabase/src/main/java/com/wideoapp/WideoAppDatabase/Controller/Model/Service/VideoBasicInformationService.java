@@ -7,4 +7,5 @@ import java.util.List;
 public interface VideoBasicInformationService {
     public List<VideoBasicInformation> findAll();
     public VideoBasicInformation findById(int id);
+    public List<VideoBasicInformation> findByCategory(String category);
 }

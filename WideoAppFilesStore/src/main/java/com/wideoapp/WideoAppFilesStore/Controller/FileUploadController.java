@@ -48,15 +48,19 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping(path = "/addvideofile", consumes = {"multipart/form-data"})
-    public ResponseEntity<String> handleFileUpload(@RequestBody MultipartFile file) {
+    @PostMapping(path = "/sendfile", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> handleFileUpload(@RequestBody MultipartFile file) {
 
         String path = MvcUriComponentsBuilder
                 .fromMethodName(FileUploadController.class,"serveFile",
                                 file.getOriginalFilename().toString()).build().toString();
-
         storageService.store(file);
-        return ResponseEntity.ok(path);
+        return ResponseEntity.ok(new ResponseMessage(path));
+    }
+
+    @GetMapping(path = "/get-address-url")
+    public String getAddressUrl() {
+        return MvcUriComponentsBuilder.fromController(FileUploadController.class).build().toString();
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

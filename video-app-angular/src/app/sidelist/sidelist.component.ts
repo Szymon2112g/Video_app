@@ -23,17 +23,15 @@ export class SidelistComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if(this.auth.getAuthenticatedUser()) {
       this.userEmail = this.auth.getAuthenticatedUser();
-    }
-    else {
-      this.userEmailSub = this.userService.activatedUser.subscribe(
-        data => {
-          this.userEmail = data;
-          this.getSubscriptions();
-        }
-      );
+      this.getSubscriptions();
     }
 
-    this.getSubscriptions();
+    this.userEmailSub = this.userService.activatedUser.subscribe(
+      data => {
+        this.userEmail = data;
+        this.getSubscriptions();
+        }
+    );
   }
 
   getSubscriptions() {

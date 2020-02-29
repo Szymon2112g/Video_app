@@ -9,4 +9,6 @@ public interface UserDAO {
     public List<User> findAll();
 
     public String addUser(User user);
+
+    public User findByEmail(String email);
 }

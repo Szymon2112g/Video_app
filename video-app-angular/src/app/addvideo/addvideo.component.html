@@ -1,12 +1,17 @@
 <div class="container">
-  <div class="row">
+  <div class="row" *ngIf="this.bookedAddressUrlFileServer !== ''">
 
     <h1 class="text-center">Dodaj film</h1>
     <hr>
 
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-sm-offset-2 col-md-offset-2">
+        <label>Wybierz film</label>
+        <div class="progress">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [style.width.%]="valueProgressVideo">
+            <span class="sr-only">{{valueProgressVideo}}%</span>
+          </div>
+        </div>
         <div class="form-group" *ngIf="!isVideo; else videoAdded">
-          <label>Wybierz film</label>
           <input type="file" id="fileVideo" (change)="handleVideoInput($event.target.files)" accept=".mp4">
           <button (click)="sendVideoFile()" class="btn btn-success">Wyślij film</button>
         </div>
@@ -15,8 +20,13 @@
         </div>
 
       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-sm-offset-2 col-md-offset-2">
+        <label>Wybierz zdjęcie</label>
+        <div class="progress">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [style.width.%]="valueProgressImage">
+            <span class="sr-only">{{valueProgressImage}}%</span>
+          </div>
+        </div>
         <div class="form-group" *ngIf="!isPhoto; else photoAdded">
-          <label>Wybierz zdjęcie</label>
           <input type="file" id="filePhoto" (change)="handlePhotoInput($event.target.files)" accept=".jpg, .png">
           <button (click)="sendPhotoFile()" class="btn btn-success">Wyślij zdjęcie</button>
         </div>

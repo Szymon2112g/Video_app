@@ -35,4 +35,10 @@ public class VideoServiceImpl implements VideoService {
     public void increaseDisplay(Video theVideo) {
         videoDAO.increaseDisplay(theVideo);
     }
+
+    @Override
+    @Transactional
+    public List<Video> findByTableColumn(String category) {
+        return videoDAO.findByTableColumn(category);
+    }
 }

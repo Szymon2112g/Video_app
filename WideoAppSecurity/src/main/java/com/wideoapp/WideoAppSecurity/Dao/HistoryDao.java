@@ -1,6 +1,6 @@
 package com.wideoapp.WideoAppSecurity.Dao;
 
-import com.wideoapp.WideoAppSecurity.Entity.Subscribe;
+import com.wideoapp.WideoAppSecurity.Entity.History;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,11 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface SubscribeDao extends JpaRepository<Subscribe, Long> {
+public interface HistoryDao extends JpaRepository<History, Long> {
 
     @Transactional
-    public void removeByUserSubscriptionIdAndUserId(int VideoId, int UserId);
+    public List<History> findAllByUserIdOrderByIdDesc(int userId);
 
-    @Transactional
-    public List<Subscribe> findAllByUserId(int userId);
 }

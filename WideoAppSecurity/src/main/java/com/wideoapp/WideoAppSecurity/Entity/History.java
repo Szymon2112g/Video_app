@@ -11,13 +11,17 @@ public class History {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "user_id")
+    private int userId;
+
     @Column(name = "video_id")
     private int videoId;
 
     public History() {
     }
 
-    public History(int videoId) {
+    public History(int userId, int videoId) {
+        this.userId = userId;
         this.videoId = videoId;
     }
 
@@ -27,6 +31,14 @@ public class History {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getVideoId() {

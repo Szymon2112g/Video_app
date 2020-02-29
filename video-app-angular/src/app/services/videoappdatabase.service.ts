@@ -12,8 +12,13 @@ export class VideoappdatabaseService {
     private http: HttpClient
   ) { }
 
-  getAllVideo() {
-    const endpoint = `http://localhost:8080/videobasicinformation`;
+  getVideos(category: string) {
+    const endpoint = `http://localhost:8080/videobasicinformation/` + category;
+    return this.http.get<VideoBasicInformation[]>(endpoint);
+  }
+
+  getVideosFeedOffAuthorization(category: string) {
+    const endpoint = `http://localhost:8080/get-video-feed/` + category;
     return this.http.get<VideoBasicInformation[]>(endpoint);
   }
 

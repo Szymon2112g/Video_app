@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {VideoToSend} from './model/VideoToSend.model';
 import {AddReviewInformation} from './model/AddReviewInformation.model';
 import {GetSubscriptionsUser} from './model/GetSubscriptionsUser.model';
-import {AddSubscriptionsUser} from './model/AddSubscriptionUser.model';
 import {AddDisplayWithUser} from './model/AddDisplayWithUser.model';
+import {VideoBasicInformation} from './model/VideoBasicInformation.model';
 
 export const TOKEN = 'token';
 export const AUTHENTICATED_USER = 'authenticaterUser';
@@ -35,15 +35,32 @@ export class AuthenticationService {
     return this.http.post<any>(url, videoToSend);
   }
 
-  sendFile(fileToUpload: File, fileType: string) {
-    const url = `http://localhost:8100/sendvideofile`;
+  sendFile(fileToUpload: File, fileType: string, address: string) {
+
+    const url = address + '/sendfile';
+    console.log('czy dobry adress ' + url);
     const formData: FormData = new FormData();
 
     let fileName = this.getAuthenticatedUser() + '_' + fileType + '_' + fileToUpload.name;
 
     formData.append('file', fileToUpload, fileName);
 
-    return this.http.post<any>(url, formData);
+    return this.http.post<any>(url, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  getVideosFeedOnAuthorization(category: string, id: number) {
+    const endpoint = `http://localhost:8100/get-video-feed/` + category + '/' + id;
+    let httpParams = new HttpParams().set('email', this.getAuthenticatedUser());
+    return this.http.get<VideoBasicInformation[]>(endpoint, { params: httpParams});
+  }
+
+
+  getAddressUrlFileServer() {
+    const url = `http://localhost:8100/get-address-url-file-server`;
+    return this.http.get<any>(url);
   }
 
   executeJWTAuthenticationService(username, password) {

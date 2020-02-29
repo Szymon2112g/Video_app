@@ -48,4 +48,18 @@ public class UserDAOImpl implements UserDAO {
 
         return "correct";
     }
+
+    @Override
+    public User findByEmail(String email) {
+
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        Query<User> theQuery =
+                currentSession.createQuery("from User where email = :email", User.class);
+        theQuery.setParameter("email", email);
+
+        User user = theQuery.getSingleResult();
+
+        return user;
+    }
 }

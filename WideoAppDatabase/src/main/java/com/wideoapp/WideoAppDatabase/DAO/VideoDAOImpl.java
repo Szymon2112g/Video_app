@@ -47,4 +47,36 @@ public class VideoDAOImpl implements VideoDAO{
         theVideo.setDisplay(theVideo.getDisplay() + 1);
         currentSession.merge(theVideo);
     }
+
+    @Override
+    public List<Video> findByTableColumn(String category) {
+
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        Query<Video> theQuery;
+
+        switch (category) {
+            case "most-views":
+                theQuery = currentSession.createQuery("from Video order by display DESC",Video.class);
+                break;
+            case "most-likes":
+                theQuery = currentSession.createQuery("from Video order by likes DESC",Video.class);
+                break;
+            case "most-dislikes":
+                theQuery = currentSession.createQuery("from Video order by dislikes DESC",Video.class);
+                break;
+            case "latest":
+                theQuery = currentSession.createQuery("from Video order by date DESC",Video.class);
+                break;
+            default:
+                theQuery = currentSession.createQuery("from Video order by display DESC",Video.class);
+                break;
+        }
+
+        theQuery.setMaxResults(4);
+
+        List<Video> videoList = theQuery.getResultList();
+
+        return videoList;
+    }
 }
