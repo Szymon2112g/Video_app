@@ -18,6 +18,7 @@ import { SmallIconVideoComponent } from './list-video/small-icon-video/small-ico
 import { HorizontalListVideoComponent } from './list-video/horizontal-list-video/horizontal-list-video.component';
 import { VerticalListVideoComponent } from './list-video/vertical-list-video/vertical-list-video.component';
 import { WideIconVideoComponent } from './list-video/wide-icon-video/wide-icon-video.component';
+import { SearchVideoComponent } from './list-video/search-video/search-video.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { WideIconVideoComponent } from './list-video/wide-icon-video/wide-icon-v
     SmallIconVideoComponent,
     HorizontalListVideoComponent,
     VerticalListVideoComponent,
-    WideIconVideoComponent
+    WideIconVideoComponent,
+    SearchVideoComponent
   ],
   imports: [
     BrowserModule,

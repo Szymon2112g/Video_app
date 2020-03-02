@@ -42,4 +42,13 @@ export class VideoappdatabaseService {
     return this.http.post<any>(url, {id});
   }
 
+  getTipsByKey(key: string) {
+    const url = `http://localhost:8080/search/tips/` + key;
+    return this.http.get<string[]>(url);
+  }
+
+  getVideoByKey(key: string) {
+    const url = `http://localhost:8080/search/search/` + key;
+    return this.http.get<VideoBasicInformation[]>(url);
+  }
 }

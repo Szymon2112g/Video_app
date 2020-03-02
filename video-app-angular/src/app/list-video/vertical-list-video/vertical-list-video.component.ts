@@ -1,8 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {VideoappdatabaseService} from '../../services/videoappdatabase.service';
 import {VideoBasicInformation} from '../../services/model/VideoBasicInformation.model';
 import {AuthenticationService} from '../../services/authentication.service';
+import {fromEvent, Observable, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-vertical-list-video',
@@ -16,16 +28,16 @@ export class VerticalListVideoComponent implements OnInit {
 
   categoryNameToView: string;
   isBrowser = false;
+  canLoadMoreVideo = false;
 
   videoBasicInformation: VideoBasicInformation[];
-  videoToAdd: VideoBasicInformation[];
   idLoad: number;
-
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private videoDataBase: VideoappdatabaseService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -40,44 +52,60 @@ export class VerticalListVideoComponent implements OnInit {
   getVideoFromCategory() {
     this.category = this.activatedRoute.snapshot.params['category'];
     this.idLoad = 0;
+    this.canLoadMoreVideo = true;
 
     switch (this.category) {
-      case 'browser':
-        this.prepareSiteForBrowser();
-        this.categoryNameToView = 'Wyszukiwarka';
-        break;
       case 'ontime':
-        this.prepareSiteForConstantSite();
+        this.prepareSiteWithoutAuthorization();
         this.categoryNameToView = 'Na czasie';
+        this.canLoadMoreVideo = false;
         break;
       case 'subscription':
-        this.prepareSiteForConstantSite();
+        this.prepareSiteWithAuthorization();
         this.categoryNameToView = 'Subskrypcje';
         break;
       case 'history':
-        this.prepareSiteForConstantSite();
+        this.prepareSiteWithAuthorization();
         this.categoryNameToView = 'Historia';
         break;
       case 'liked':
-        this.prepareSiteForConstantSite();
+        this.prepareSiteWithAuthorization();
         this.categoryNameToView = 'Polubione';
         break;
       default:
-        this.prepareSiteForBrowser();
-        this.categoryNameToView = 'Wyszukiwarka';
+        this.category = 'ontime';
+        this.prepareSiteWithoutAuthorization();
+        this.categoryNameToView = 'Na czasie';
+        this.canLoadMoreVideo = false;
         break;
     }
   }
 
-  prepareSiteForBrowser() {
-    this.search = this.activatedRoute.snapshot.queryParams['search'];
-    this.isBrowser = true;
-  }
-
-  prepareSiteForConstantSite() {
+  prepareSiteWithAuthorization() {
     this.isBrowser = false;
     this.idLoad++;
+
+    if (!this.auth.isUserLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.auth.getVideosFeedOnAuthorization(this.category, this.idLoad).subscribe(
+      data => {
+        this.videoBasicInformation = data;
+      }, error => {
+
+      }, () => {
+        console.log('complete');
+      }
+    );
+  }
+
+  prepareSiteWithoutAuthorization() {
+    this.isBrowser = false;
+    this.idLoad++;
+
+    this.videoDataBase.getVideosFeedOffAuthorization(this.category).subscribe(
       data => {
         this.videoBasicInformation = data;
       }, error => {
@@ -101,4 +129,5 @@ export class VerticalListVideoComponent implements OnInit {
       }
     );
   }
+
 }

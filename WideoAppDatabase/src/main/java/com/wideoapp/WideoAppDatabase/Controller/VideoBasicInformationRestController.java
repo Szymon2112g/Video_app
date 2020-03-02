@@ -1,5 +1,6 @@
 package com.wideoapp.WideoAppDatabase.Controller;
 
+import com.wideoapp.WideoAppDatabase.Controller.Model.ResponseMessage;
 import com.wideoapp.WideoAppDatabase.Controller.Model.VideoBasicInformation;
 import com.wideoapp.WideoAppDatabase.Controller.Model.Service.VideoBasicInformationService;
 import org.slf4j.Logger;
@@ -31,5 +32,20 @@ public class VideoBasicInformationRestController {
     @GetMapping("/getvideo/{id}")
     public VideoBasicInformation getVideo(@PathVariable("id") int id) {
         return videoBasicInformationService.findById(id);
+    }
+
+    @GetMapping("/get-video-feed/ontime")
+    public List<VideoBasicInformation> getVideosOnTime() {
+        return videoBasicInformationService.getVideosOnTime();
+    }
+
+    @GetMapping("/search/tips/{key}")
+    public List<String> findTipsByKey(@PathVariable("key") String key) {
+        return videoBasicInformationService.findTipsByKey(key);
+    }
+
+    @GetMapping("/search/search/{key}")
+    public List<VideoBasicInformation> getVideosOnTime(@PathVariable("key") String key) {
+        return videoBasicInformationService.findVideoByKey(key);
     }
 }

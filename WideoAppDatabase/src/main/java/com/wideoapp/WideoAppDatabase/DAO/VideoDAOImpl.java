@@ -1,6 +1,7 @@
 package com.wideoapp.WideoAppDatabase.DAO;
 
 import com.wideoapp.WideoAppDatabase.Entity.Video;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -8,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class VideoDAOImpl implements VideoDAO{
@@ -75,6 +78,51 @@ public class VideoDAOImpl implements VideoDAO{
 
         theQuery.setMaxResults(4);
 
+        List<Video> videoList = theQuery.getResultList();
+
+        return videoList;
+    }
+
+    @Override
+    public List<Video> findAllOrderByDateDesc() {
+
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query<Video> theQuery = currentSession.createQuery("from Video order by date DESC", Video.class);
+        theQuery.setMaxResults(100);
+        List<Video> videoList = theQuery.getResultList();
+        return videoList;
+    }
+
+    @Override
+    public List<String> findTipsByKey(String key) {
+
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        Query<Video> theQuery = currentSession.createQuery("from Video where title LIKE :key", Video.class);
+        theQuery.setParameter("key","%" + key + "%");
+        theQuery.setMaxResults(5);
+        List<Video> videoList = theQuery.getResultList();
+
+
+        List<String> tipsList = new ArrayList<>();
+
+        for(Video video: videoList) {
+            tipsList.add(video.getTitle());
+        }
+
+        tipsList = tipsList.stream().distinct().collect(Collectors.toList());
+
+        return tipsList;
+    }
+
+    @Override
+    public List<Video> findVideoByKey(String key) {
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        Query<Video> theQuery = currentSession.createQuery("from Video where title LIKE :keyfirst or description like :keyseconds", Video.class);
+        theQuery.setParameter("keyfirst","%" + key + "%");
+        theQuery.setParameter("keyseconds","%" + key + "%");
+        theQuery.setMaxResults(50);
         List<Video> videoList = theQuery.getResultList();
 
         return videoList;

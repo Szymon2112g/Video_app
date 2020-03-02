@@ -1,11 +1,6 @@
 <div class="container">
 
   <h2>{{categoryNameToView}}</h2>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="isBrowser">
-    <input class="input-lg col-lg-6 col-md-6 col-sm-6 col-xs-6" [(ngModel)]="search">
-    <button class="btn btn-danger btn-lg" [replaceUrl]="true" routerLink="/feed/browser" [queryParams]="{search: this.search}">Wyszukaj</button>
-  </div>
-
   <div class="row">
     <ul class="list-group">
       <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-xs-12"
@@ -14,7 +9,7 @@
       </li>
     </ul>
 
-    <button (click)="addData()" class="btn btn-danger center-block" *ngIf="!isBrowser">Wczytaj następne</button>
+    <button (click)="addData()" class="btn btn-danger center-block" *ngIf="canLoadMoreVideo">Wczytaj następne</button>
 
   </div>
 </div>

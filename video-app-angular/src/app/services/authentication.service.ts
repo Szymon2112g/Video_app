@@ -16,7 +16,7 @@ export const AUTHENTICATED_USER = 'authenticaterUser';
 export class AuthenticationService {
 
   constructor(
-    private http: HttpClient,
+    private http: HttpClient
   ) { }
 
   addReview(videoId: number, comment: string) {

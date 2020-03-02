@@ -41,4 +41,22 @@ public class VideoServiceImpl implements VideoService {
     public List<Video> findByTableColumn(String category) {
         return videoDAO.findByTableColumn(category);
     }
+
+    @Override
+    @Transactional
+    public List<Video> findAllOrderByDateDesc() {
+        return videoDAO.findAllOrderByDateDesc();
+    }
+
+    @Override
+    @Transactional
+    public List<String> findTipsByKey(String key) {
+        return videoDAO.findTipsByKey(key);
+    }
+
+    @Override
+    @Transactional
+    public List<Video> findVideoByKey(String key) {
+        return videoDAO.findVideoByKey(key);
+    }
 }

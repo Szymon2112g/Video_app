@@ -8,6 +8,7 @@ import {ShowvideoComponent} from './showvideo/showvideo.component';
 import {LogoutComponent} from './login/logout/logout.component';
 import {RouteGuardService} from './services/route-guard.service';
 import {VerticalListVideoComponent} from './list-video/vertical-list-video/vertical-list-video.component';
+import {SearchVideoComponent} from './list-video/search-video/search-video.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'video/:id', component: ShowvideoComponent},
   {path: 'feed/:category', component: VerticalListVideoComponent},
+  {path: 'search', component: SearchVideoComponent},
   {path: 'addvideo', component: AddvideoComponent, canActivate: [RouteGuardService]},
   {path: 'logout', component: LogoutComponent, canActivate: [RouteGuardService]}
 ];
