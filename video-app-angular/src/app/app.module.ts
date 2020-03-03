@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { StartpageComponent } from './startpage/startpage.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpIntercepterBasicAuthService} from './services/http/http-intercepter-basic-auth.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register/register.component';
@@ -19,6 +19,7 @@ import { HorizontalListVideoComponent } from './list-video/horizontal-list-video
 import { VerticalListVideoComponent } from './list-video/vertical-list-video/vertical-list-video.component';
 import { WideIconVideoComponent } from './list-video/wide-icon-video/wide-icon-video.component';
 import { SearchVideoComponent } from './list-video/search-video/search-video.component';
+import { UserSiteComponent } from './user-site/user-site.component';
 
 @NgModule({
   declarations: [
@@ -35,13 +36,15 @@ import { SearchVideoComponent } from './list-video/search-video/search-video.com
     HorizontalListVideoComponent,
     VerticalListVideoComponent,
     WideIconVideoComponent,
-    SearchVideoComponent
+    SearchVideoComponent,
+    UserSiteComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterBasicAuthService, multi: true}

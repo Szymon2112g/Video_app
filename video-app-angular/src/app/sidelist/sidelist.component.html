@@ -29,7 +29,7 @@
   <ul class="list-group">
     <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-xs-12"
         *ngFor="let subscription of subscriptionsUser">
-      <button class="btn btn-default center-block" (click)="showUser(subscription.email)" >{{subscription.name}}</button>
+      <button class="btn btn-default center-block" routerLink="/user/{{subscription.userId}}" >{{subscription.name}}</button>
   </ul>
   </div>
 

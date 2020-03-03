@@ -127,4 +127,21 @@ public class VideoBasicInformationServiceImpl implements VideoBasicInformationSe
 
         return videoBasicInformations;
     }
+
+    @Override
+    public List<VideoBasicInformation> findVideoByUserId(int userId) {
+
+        List<VideoBasicInformation> videoBasicInformations  = new ArrayList<>();
+
+        for(Video video: videoService.findVideoByUserId(userId)) {
+            VideoBasicInformation tmp = new VideoBasicInformation(
+                    video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
+                    video.getUser().getFirstName(), video.getUser().getLastName(), video.getUser().getId(),
+                    video.getDisplay(), video.getPhotoUrl(), video.getDate(),
+                    video.getLikes(), video.getDislikes());
+            videoBasicInformations.add(tmp);
+        }
+
+        return videoBasicInformations;
+    }
 }

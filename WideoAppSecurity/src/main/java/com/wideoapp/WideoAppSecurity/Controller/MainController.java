@@ -249,9 +249,10 @@ public class MainController {
     }
 
     @GetMapping(path = "/get-video-feed/{category}/{id}")
-    public List<VideoBasicInformation> getVideoFeed(@PathVariable("category") String category,
-                                                    @PathVariable("id") int id,
-                                                    @RequestParam("email") String email) {
+    public List<VideoBasicInformation> getVideoFeed(
+            @PathVariable("category") String category,
+            @PathVariable("id") int id,
+            @RequestParam("email") String email) {
 
         switch (category) {
             case "history":

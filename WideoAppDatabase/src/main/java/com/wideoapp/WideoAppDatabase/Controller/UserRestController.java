@@ -37,4 +37,11 @@ public class UserRestController {
         userService.addUser(user);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/user/get-username/{id}")
+    public String getUsernameById(@PathVariable("id") int id) {
+        User user = userService.findUserById(id);
+        String result = user.getFirstName() + " " + user.getLastName();
+        return result;
+    }
 }

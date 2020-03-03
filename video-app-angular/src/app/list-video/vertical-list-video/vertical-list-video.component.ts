@@ -43,7 +43,6 @@ export class VerticalListVideoComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(
       data => {
-        console.log(data);
         this.getVideoFromCategory();
       }
     );

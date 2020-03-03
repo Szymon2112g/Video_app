@@ -48,4 +48,9 @@ public class VideoBasicInformationRestController {
     public List<VideoBasicInformation> getVideosOnTime(@PathVariable("key") String key) {
         return videoBasicInformationService.findVideoByKey(key);
     }
+
+    @GetMapping("/user/getvideo/{userid}")
+    public List<VideoBasicInformation> findVideoByUserId(@PathVariable("userid") int userId) {
+        return videoBasicInformationService.findVideoByUserId(userId);
+    }
 }

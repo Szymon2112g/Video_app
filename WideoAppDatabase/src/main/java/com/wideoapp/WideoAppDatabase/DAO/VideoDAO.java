@@ -12,4 +12,5 @@ public interface VideoDAO {
     public List<Video> findAllOrderByDateDesc();
     public List<String> findTipsByKey(String key);
     public List<Video> findVideoByKey(String key);
+    public List<Video> findVideoByUserId(int id);
 }

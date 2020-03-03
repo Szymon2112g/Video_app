@@ -3,6 +3,7 @@ import {UserServiceService} from '../services/user-service.service';
 import {Subscription} from 'rxjs';
 import {AuthenticationService} from '../services/authentication.service';
 import {GetSubscriptionsUser} from '../services/model/GetSubscriptionsUser.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sidelist',
@@ -17,7 +18,8 @@ export class SidelistComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserServiceService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -45,11 +47,6 @@ export class SidelistComponent implements OnInit, OnDestroy {
     } else {
       this.subscriptionsUser = null;
     }
-  }
-
-
-  showUser(email: string) {
-
   }
 
   ngOnDestroy() {

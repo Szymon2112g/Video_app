@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../services/authentication.service';
 import {Router} from '@angular/router';
 import {UserServiceService} from '../services/user-service.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +11,7 @@ import {UserServiceService} from '../services/user-service.service';
 })
 export class LoginComponent implements OnInit {
 
-  username = 'szymon2112g@o2.pl';
-  password = '';
-  errorMessage = 'Invalid Credentials';
-  invalidLogin = false;
+  signInForm: FormGroup;
 
   constructor(
     private authentication: AuthenticationService,
@@ -22,20 +20,24 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.signInForm = new FormGroup( {
+      'userData': new FormGroup({
+        'email': new FormControl(null, [Validators.required, Validators.email]),
+        'password': new FormControl(null, [Validators.required])
+      })
+    });
   }
 
-  handleJWTAuthLogin() {
-    this.authentication.executeJWTAuthenticationService(this.username, this.password)
+  onSubmit() {
+    this.authentication.executeJWTAuthenticationService(
+      this.signInForm.get('userData.email').value,
+      this.signInForm.get('userData.password').value)
       .subscribe(
         data => {
-          console.log(data);
-          this.invalidLogin = false;
           this.userService.activatedUser.next(this.authentication.getAuthenticatedUser());
           this.router.navigate(['']);
         },
         error => {
-          console.log(error);
-          this.invalidLogin = true;
         }
       );
   }

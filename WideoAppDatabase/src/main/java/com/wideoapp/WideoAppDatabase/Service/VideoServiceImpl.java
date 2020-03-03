@@ -59,4 +59,10 @@ public class VideoServiceImpl implements VideoService {
     public List<Video> findVideoByKey(String key) {
         return videoDAO.findVideoByKey(key);
     }
+
+    @Override
+    @Transactional
+    public List<Video> findVideoByUserId(int id) {
+        return videoDAO.findVideoByUserId(id);
+    }
 }

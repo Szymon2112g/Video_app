@@ -51,4 +51,14 @@ export class VideoappdatabaseService {
     const url = `http://localhost:8080/search/search/` + key;
     return this.http.get<VideoBasicInformation[]>(url);
   }
+
+  getVideoByUserId(userId: number) {
+    const url = `http://localhost:8080/user/getvideo/` + userId;
+    return this.http.get<VideoBasicInformation[]>(url);
+  }
+
+  getUsernameById(userId: number) {
+    const url = `http://localhost:8080/user/get-username/` + userId;
+    return this.http.get(url, {responseType: 'text'});
+  }
 }

@@ -12,4 +12,5 @@ public interface VideoBasicInformationService {
     public List<VideoBasicInformation> getVideosOnTime();
     public List<String> findTipsByKey(String key);
     public List<VideoBasicInformation> findVideoByKey(String key);
+    public List<VideoBasicInformation> findVideoByUserId(int userId);
 }
