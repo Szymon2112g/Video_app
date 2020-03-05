@@ -8,18 +8,18 @@ import { StartpageComponent } from './startpage/startpage.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpIntercepterBasicAuthService} from './services/http/http-intercepter-basic-auth.service';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './login/register/register.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegisterComponent } from './user/register/register.component';
 import { AddvideoComponent } from './addvideo/addvideo.component';
-import { ShowvideoComponent } from './showvideo/showvideo.component';
+import { ShowvideoComponent } from './list-video/showvideo/showvideo.component';
 import { SidelistComponent } from './sidelist/sidelist.component';
-import { LogoutComponent } from './login/logout/logout.component';
+import { LogoutComponent } from './user/logout/logout.component';
 import { SmallIconVideoComponent } from './list-video/small-icon-video/small-icon-video.component';
 import { HorizontalListVideoComponent } from './list-video/horizontal-list-video/horizontal-list-video.component';
 import { VerticalListVideoComponent } from './list-video/vertical-list-video/vertical-list-video.component';
 import { WideIconVideoComponent } from './list-video/wide-icon-video/wide-icon-video.component';
 import { SearchVideoComponent } from './list-video/search-video/search-video.component';
-import { UserSiteComponent } from './user-site/user-site.component';
+import { UserSiteComponent } from './user/user-site/user-site.component';
 
 @NgModule({
   declarations: [

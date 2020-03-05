@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {VideoappdatabaseService} from '../services/videoappdatabase.service';
-import {VideoBasicInformation} from '../services/model/VideoBasicInformation.model';
+import {VideoInformation} from '../../services/model/VideoInformation.model';
 import {ActivatedRoute} from '@angular/router';
+import {UserActionsService} from '../services/user-actions.service';
 
 @Component({
   selector: 'app-user-site',
@@ -10,12 +10,12 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class UserSiteComponent implements OnInit {
 
-  videoBasicInformation: VideoBasicInformation[];
+  videoInformations: VideoInformation[];
   userName: string;
   userId: number;
 
   constructor(
-    private videoDataBase: VideoappdatabaseService,
+    private userActions: UserActionsService,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -31,21 +31,20 @@ export class UserSiteComponent implements OnInit {
   }
 
   getVideo() {
-    this.videoDataBase.getVideoByUserId(this.userId)
+    this.userActions.getVideoByUserId(this.userId)
       .subscribe(
         data => {
-          this.videoBasicInformation = data;
+          this.videoInformations = data;
         }
       );
   }
 
   getUsername() {
-    this.videoDataBase.getUsernameById(this.userId)
+    this.userActions.getUsernameById(this.userId)
       .subscribe(
         data => {
           this.userName = data;
         }
       );
   }
-
 }

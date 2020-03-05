@@ -23,7 +23,7 @@
             formControlName="password"
             class="form-control">
           <span *ngIf="!signInForm.get('userData.password').valid && signInForm.get('userData.password').touched"
-                class="help-block">Proszę wprowadzić hasło!</span>
+                class="help-block">Hasło musi zawierać przynajmniej 6 znaków!</span>
         </div>
       </div>
       <button class="btn btn-primary" type="submit">Zaloguj</button>

@@ -1,10 +1,9 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {fromEvent, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, min} from 'rxjs/operators';
-import {VideoBasicInformation} from '../../services/model/VideoBasicInformation.model';
-import {ActivatedRoute, Router} from '@angular/router';
-import {VideoappdatabaseService} from '../../services/videoappdatabase.service';
-import {AuthenticationService} from '../../services/authentication.service';
+import {debounceTime, distinctUntilChanged, filter} from 'rxjs/operators';
+import {VideoInformation} from '../../services/model/VideoInformation.model';
+import {ActivatedRoute} from '@angular/router';
+import {ListVideoActionsService} from '../services/list-video-actions.service';
 
 @Component({
   selector: 'app-search-video',
@@ -22,25 +21,24 @@ export class SearchVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   isBrowser = false;
   canLoadMoreVideo = false;
 
-  videoBasicInformation: VideoBasicInformation[];
+  videoInformations: VideoInformation[];
   tips: string[];
   idLoad: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private videoDataBase: VideoappdatabaseService,
-    private auth: AuthenticationService,
-    private router: Router
+    private listVideoActions: ListVideoActionsService,
   ) { }
 
   ngOnInit() {
-    this.search = this.activatedRoute.snapshot.queryParams['search'];
+
+    if (this.activatedRoute.snapshot.queryParams['search']) {
+      this.search = this.activatedRoute.snapshot.queryParams['search'];
+    }
 
     this.activatedRoute.queryParams.subscribe(
       data => {
-        if (this.search !== '') {
-          this.findVideoByKey();
-        }
+        this.findVideoByKey();
       }
     );
   }
@@ -48,9 +46,9 @@ export class SearchVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   addData() {
     this.isBrowser = false;
     this.idLoad++;
-    this.auth.getVideosFeedOnAuthorization(this.category, this.idLoad).subscribe(
+    this.listVideoActions.getVideosFeedOnAuthorization(this.category, this.idLoad).subscribe(
       data => {
-        this.videoBasicInformation = this.videoBasicInformation.concat(data);
+        this.videoInformations = this.videoInformations.concat(data);
       }, error => {
 
       }, () => {
@@ -63,7 +61,7 @@ export class SearchVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     const terms$ = fromEvent<any>(this.browser.nativeElement, 'keyup')
       .pipe(
         filter(data =>  {
-          return this.search.length >= 2 ? true : false;
+          return this.search.length >= 2;
         }),
         debounceTime(500),
         distinctUntilChanged()
@@ -86,7 +84,7 @@ export class SearchVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   findTips() {
-    this.videoDataBase.getTipsByKey(this.search).subscribe(
+    this.listVideoActions.getTipsByKey(this.search).subscribe(
       data => {
         this.tips = data;
       }
@@ -94,11 +92,14 @@ export class SearchVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   findVideoByKey() {
-    this.videoDataBase.getVideoByKey(this.search)
-      .subscribe(
-        data => {
-          this.videoBasicInformation = data;
-        }
-      );
+    if (this.search.length >= 1) {
+      this.listVideoActions.getVideoByKey(this.search)
+        .subscribe(
+          data => {
+            this.videoInformations = data;
+          }
+        );
+    }
   }
+
 }

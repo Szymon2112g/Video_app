@@ -12,10 +12,10 @@ export class HttpIntercepterBasicAuthService implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    let authHeaderString = this.authenticationService.getAuthenticatedToken();
-    let username = this.authenticationService.getAuthenticatedUser();
+    const authHeaderString = this.authenticationService.getAuthenticatedToken();
+    const username = this.authenticationService.getAuthenticatedUser();
 
-    if(authHeaderString && username) {
+    if (authHeaderString && username) {
       req = req.clone( {
         setHeaders : {
           Authorization : authHeaderString

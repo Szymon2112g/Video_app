@@ -1,6 +1,8 @@
-package com.wideoapp.WideoAppDatabase.Controller.Model;
+package com.wideoapp.WideoAppSecurity.Controller.Model;
 
-public class VideoBasicInformation {
+import com.wideoapp.WideoAppSecurity.Entity.Video;
+
+public class VideoInformation {
 
     private int id;
     private String url;
@@ -15,18 +17,19 @@ public class VideoBasicInformation {
     private int likes;
     private int dislikes;
 
-    public VideoBasicInformation(int id,
-                                 String url,
-                                 String title,
-                                 String description,
-                                 String firstName,
-                                 String lastName,
-                                 int userId,
-                                 int display,
-                                 String photoUrl,
-                                 String date,
-                                 int likes,
-                                 int dislikes) {
+    public VideoInformation(
+            int id,
+            String url,
+            String title,
+            String description,
+            String firstName,
+            String lastName,
+            int userId,
+            int display,
+            String photoUrl,
+            String date,
+            int likes,
+            int dislikes) {
         this.id = id;
         this.url = url;
         this.title = title;
@@ -39,6 +42,21 @@ public class VideoBasicInformation {
         this.date = date;
         this.likes = likes;
         this.dislikes = dislikes;
+    }
+
+    public VideoInformation(Video video) {
+        this.id = video.getId().intValue();
+        this.url = video.getUrl();
+        this.title = video.getTitle();
+        this.description = video.getDescription();
+        this.firstName = video.getUser().getFirstName();
+        this.lastName = video.getUser().getLastName();
+        this.userId = video.getUser().getId();
+        this.display = video.getDisplay();
+        this.photoUrl = video.getPhotoUrl();
+        this.date = video.getDate();
+        this.likes = video.getLikes();
+        this.dislikes = video.getDislikes();
     }
 
     public int getId() {
@@ -137,6 +155,3 @@ public class VideoBasicInformation {
         this.dislikes = dislikes;
     }
 }
-
-
-

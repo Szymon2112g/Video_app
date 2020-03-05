@@ -21,7 +21,7 @@ public class ReviewInformationRestController {
         this.reviewInformationService = reviewInformationService;
     }
 
-    @GetMapping(path = "/getreviews/{videoId}")
+    @GetMapping(path = "/get-reviews/{videoId}")
     public List<ReviewInformation> getReviews(@PathVariable("videoId") int videoId) {
         return reviewInformationService.getAllReviewByVideoId(videoId);
     }

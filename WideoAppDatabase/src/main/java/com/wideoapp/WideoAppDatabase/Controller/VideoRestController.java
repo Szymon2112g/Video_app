@@ -24,7 +24,7 @@ public class VideoRestController {
         return videoService.findAll();
     }
 
-    @PostMapping(path = "/adddisplay")
+    @PostMapping(path = "/add-display")
     public ResponseEntity<?> addDisplay(@RequestBody Video video) {
         Video videoToSave = videoService.findById(video.getId());
 

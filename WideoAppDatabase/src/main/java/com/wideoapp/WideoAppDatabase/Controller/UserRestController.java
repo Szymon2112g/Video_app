@@ -16,8 +16,8 @@ import java.util.List;
 public class UserRestController {
 
     private UserService userService;
-
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public UserRestController(UserService userService) {
@@ -28,8 +28,6 @@ public class UserRestController {
     public List<User> findAll() {
         return userService.findAll();
     }
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {

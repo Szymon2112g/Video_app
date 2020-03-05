@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {VideoBasicInformation} from '../../services/model/VideoBasicInformation.model';
+import {VideoInformation} from '../../services/model/VideoInformation.model';
 
 @Component({
   selector: 'app-small-icon-video',
@@ -8,7 +8,7 @@ import {VideoBasicInformation} from '../../services/model/VideoBasicInformation.
 })
 export class SmallIconVideoComponent implements OnInit {
 
-  @Input() videoElement: VideoBasicInformation;
+  @Input() videoInformation: VideoInformation;
   constructor() { }
 
   ngOnInit() {

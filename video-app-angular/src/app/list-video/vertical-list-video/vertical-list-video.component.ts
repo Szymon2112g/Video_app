@@ -1,20 +1,8 @@
-import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {VideoappdatabaseService} from '../../services/videoappdatabase.service';
-import {VideoBasicInformation} from '../../services/model/VideoBasicInformation.model';
+import {VideoInformation} from '../../services/model/VideoInformation.model';
 import {AuthenticationService} from '../../services/authentication.service';
-import {fromEvent, Observable, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {ListVideoActionsService} from '../services/list-video-actions.service';
 
 @Component({
   selector: 'app-vertical-list-video',
@@ -30,13 +18,13 @@ export class VerticalListVideoComponent implements OnInit {
   isBrowser = false;
   canLoadMoreVideo = false;
 
-  videoBasicInformation: VideoBasicInformation[];
+  videoInformations: VideoInformation[];
   idLoad: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private videoDataBase: VideoappdatabaseService,
     private auth: AuthenticationService,
+    private listVideoActions: ListVideoActionsService,
     private router: Router
   ) { }
 
@@ -89,13 +77,13 @@ export class VerticalListVideoComponent implements OnInit {
       return;
     }
 
-    this.auth.getVideosFeedOnAuthorization(this.category, this.idLoad).subscribe(
+    this.listVideoActions.getVideosFeedOnAuthorization(this.category, this.idLoad).subscribe(
       data => {
-        this.videoBasicInformation = data;
+        this.videoInformations = data;
       }, error => {
 
       }, () => {
-        console.log('complete');
+
       }
     );
   }
@@ -104,13 +92,13 @@ export class VerticalListVideoComponent implements OnInit {
     this.isBrowser = false;
     this.idLoad++;
 
-    this.videoDataBase.getVideosFeedOffAuthorization(this.category).subscribe(
+    this.listVideoActions.getVideosFeedOffAuthorization(this.category).subscribe(
       data => {
-        this.videoBasicInformation = data;
+        this.videoInformations = data;
       }, error => {
 
       }, () => {
-        console.log('complete');
+
       }
     );
   }
@@ -118,15 +106,14 @@ export class VerticalListVideoComponent implements OnInit {
   addData() {
     this.isBrowser = false;
     this.idLoad++;
-    this.auth.getVideosFeedOnAuthorization(this.category, this.idLoad).subscribe(
+    this.listVideoActions.getVideosFeedOnAuthorization(this.category, this.idLoad).subscribe(
       data => {
-        this.videoBasicInformation = this.videoBasicInformation.concat(data);
+        this.videoInformations = this.videoInformations.concat(data);
       }, error => {
 
       }, () => {
-        console.log('complete');
+
       }
     );
   }
-
 }

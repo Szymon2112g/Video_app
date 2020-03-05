@@ -2,14 +2,15 @@
 
   <h2>{{categoryNameToView}}</h2>
   <div class="row">
+
     <ul class="list-group">
       <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-xs-12"
-          *ngFor="let video of videoBasicInformation">
-        <app-wide-icon-video [videoElement]="video"></app-wide-icon-video>
+          *ngFor="let video of videoInformations">
+        <app-wide-icon-video [videoInformation]="video"></app-wide-icon-video>
       </li>
     </ul>
 
     <button (click)="addData()" class="btn btn-danger center-block" *ngIf="canLoadMoreVideo">Wczytaj następne</button>
-
   </div>
+
 </div>

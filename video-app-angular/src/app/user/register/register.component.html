@@ -1,0 +1,50 @@
+<div class="container">
+
+  <form [formGroup]="signOnForm" (ngSubmit)="onSubmit()">
+    <div formGroupName="userData">
+
+      <div class="form-group">
+        <label for="firstName">Imię</label>
+        <input
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          class="form-control">
+        <span *ngIf="!signOnForm.get('userData.firstName').valid && signOnForm.get('userData.firstName').touched"
+              class="help-block">Proszę wprowadzić imię!</span>
+      </div>
+      <div class="form-group">
+        <label for="email">Nazwisko</label>
+        <input
+          type="text"
+          id="lastName"
+          formControlName="lastName"
+          class="form-control">
+        <span *ngIf="!signOnForm.get('userData.lastName').valid && signOnForm.get('userData.lastName').touched"
+              class="help-block">Proszę wprowadzić nazwisko!</span>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          formControlName="email"
+          class="form-control">
+        <span *ngIf="!signOnForm.get('userData.email').valid && signOnForm.get('userData.email').touched"
+              class="help-block">Proszę wprowadzić prawidłowy email!</span>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control">
+        <span *ngIf="!signOnForm.get('userData.password').valid && signOnForm.get('userData.password').touched"
+              class="help-block">Hasło musi zawierać przynajmniej 6 znaków!</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Zaloguj</button>
+  </form>
+</div>
+

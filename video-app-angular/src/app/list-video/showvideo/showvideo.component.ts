@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {VideoappdatabaseService} from '../services/videoappdatabase.service';
-import {VideoBasicInformation} from '../services/model/VideoBasicInformation.model';
-import {ReviewInformation} from '../services/model/ReviewInformation.model';
-import {AuthenticationService} from '../services/authentication.service';
-import {GetSubscriptionsUser} from '../services/model/GetSubscriptionsUser.model';
+import {VideoInformation} from '../../services/model/VideoInformation.model';
+import {ReviewInformation} from '../../services/model/ReviewInformation.model';
+import {AuthenticationService} from '../../services/authentication.service';
+import {ShowVideoActionsService} from '../services/show-video-actions.service';
 
 @Component({
   selector: 'app-showvideo',
@@ -14,7 +13,7 @@ import {GetSubscriptionsUser} from '../services/model/GetSubscriptionsUser.model
 export class ShowvideoComponent implements OnInit {
 
   id: number;
-  video: VideoBasicInformation;
+  videoInformation: VideoInformation;
   sizeVideo = 8;
   reviews: ReviewInformation[];
   ownReview: string;
@@ -24,7 +23,7 @@ export class ShowvideoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private videoAppDB: VideoappdatabaseService,
+    private showVideoActions: ShowVideoActionsService,
     private auth: AuthenticationService
   ) { }
 
@@ -37,19 +36,25 @@ export class ShowvideoComponent implements OnInit {
   }
 
   getVideo() {
-    this.videoAppDB.getVideo(this.id)
+    this.showVideoActions.getVideo(this.id)
       .subscribe(
         data => {
-          this.video = data;
-          this.checkSubscriptions();
-          this.isDislikeToVideo();
-          this.isLikeToVideo();
+          this.videoInformation = data;
+          this.loadDataForAuthenticatedUser();
         }
       );
   }
 
+  loadDataForAuthenticatedUser() {
+    if (this.auth.isUserLoggedIn()) {
+      this.checkSubscriptions();
+      this.isDislikeToVideo();
+      this.isLikeToVideo();
+    }
+  }
+
   getReview() {
-    this.videoAppDB.getReviewFromVideoId(this.id)
+    this.showVideoActions.getReviewFromVideoId(this.id)
       .subscribe(
         data => {
           this.reviews = data;
@@ -62,7 +67,7 @@ export class ShowvideoComponent implements OnInit {
   }
 
   addReview() {
-    this.auth.addReview(this.id, this.ownReview)
+    this.showVideoActions.addReview(this.id, this.ownReview)
       .subscribe(
         data => {
           this.getReview();
@@ -72,35 +77,34 @@ export class ShowvideoComponent implements OnInit {
   }
 
   LikeVideo() {
-    this.auth.addLikeToVideo(this.id)
+    this.showVideoActions.addLikeToVideo(this.id)
       .subscribe(
         data => {
           this.setLikeView(true);
-          this.video.likes++;
+          this.videoInformation.likes++;
         }
       );
   }
 
   DisLikeVideo() {
-    this.auth.addDislikeToVideo(this.id)
+    this.showVideoActions.addDislikeToVideo(this.id)
       .subscribe(
         data => {
           this.setDislikeView(true);
-          this.video.dislikes++;
+          this.videoInformation.dislikes++;
         }
       );
   }
 
   addView() {
     if(this.auth.isUserLoggedIn()) {
-      this.auth.addDisplayWithUser(this.id)
+      this.showVideoActions.addDisplayWithUser(this.id)
         .subscribe(
           data => {
           }
-        )
-    }
-    else {
-      this.videoAppDB.addDisplay(this.id)
+        );
+    } else {
+      this.showVideoActions.addDisplay(this.id)
         .subscribe(
           data => {
           }
@@ -109,7 +113,7 @@ export class ShowvideoComponent implements OnInit {
   }
 
   addSubscribe() {
-    this.auth.addSubscriptionsUser(this.video.userId)
+    this.showVideoActions.addSubscriptionsUser(this.videoInformation.userId)
       .subscribe(
         data => {
           this.setSubscriptionView(true);
@@ -118,7 +122,7 @@ export class ShowvideoComponent implements OnInit {
   }
 
   subtractSubscribe() {
-    this.auth.subtractSubscriptionsUser(this.video.userId)
+    this.showVideoActions.subtractSubscriptionsUser(this.videoInformation.userId)
       .subscribe(
         data => {
           this.setSubscriptionView(false);
@@ -131,7 +135,7 @@ export class ShowvideoComponent implements OnInit {
       .subscribe(
         data => {
           for (let tmp of data) {
-            if(this.video.userId === tmp.userId) {
+            if(this.videoInformation.userId === tmp.userId) {
               this.setSubscriptionView(true);
               return;
             }
@@ -145,7 +149,7 @@ export class ShowvideoComponent implements OnInit {
   }
 
   isLikeToVideo() {
-      this.auth.isLikeToVideo(this.id)
+      this.showVideoActions.isLikeToVideo(this.id)
        .subscribe(
         data => {
           this.setLikeView(data);
@@ -154,7 +158,7 @@ export class ShowvideoComponent implements OnInit {
   }
 
   isDislikeToVideo() {
-    this.auth.isDislikeToVideo(this.id)
+    this.showVideoActions.isDislikeToVideo(this.id)
       .subscribe(
         data => {
           this.setDislikeView(data);
@@ -163,21 +167,21 @@ export class ShowvideoComponent implements OnInit {
   }
 
   subtractLikeToVideo() {
-    this.auth.subtractLikeToVideo(this.id)
+    this.showVideoActions.subtractLikeToVideo(this.id)
       .subscribe(
         data => {
           this.setLikeView(false);
-          this.video.likes--;
+          this.videoInformation.likes--;
         }
       );
   }
 
   subtractDislikeToVideo() {
-    this.auth.subtractDislikeToVideo(this.id)
+    this.showVideoActions.subtractDislikeToVideo(this.id)
       .subscribe(
         data => {
           this.setDislikeView(false);
-          this.video.dislikes--;
+          this.videoInformation.dislikes--;
         }
       );
   }
@@ -189,5 +193,4 @@ export class ShowvideoComponent implements OnInit {
   setDislikeView(isDislike: boolean) {
     this.isDislike = isDislike;
   }
-
 }

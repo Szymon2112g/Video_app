@@ -2,8 +2,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../services/authentication.service';
 import {VideoToSend} from '../services/model/VideoToSend.model';
 import {NgForm} from '@angular/forms';
-import {map, tap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {HttpEventType} from '@angular/common/http';
+import {AddVideoActionsService} from './services/add-video-actions.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-addvideo',
@@ -35,7 +37,9 @@ export class AddvideoComponent implements OnInit {
     this.authentication.getAuthenticatedUser(), '', '', '', '');
 
   constructor(
-    private authentication: AuthenticationService
+    private router: Router,
+    private authentication: AuthenticationService,
+    private addVideoActions: AddVideoActionsService
   ) { }
 
   ngOnInit() {
@@ -51,21 +55,23 @@ export class AddvideoComponent implements OnInit {
   }
 
   sendVideoFile() {
-    this.authentication.sendFile(this.videoToUpload, 'video', this.bookedAddressUrlFileServer).pipe(map((event) => {
+    this.addVideoActions.sendFile(this.videoToUpload, 'video', this.bookedAddressUrlFileServer)
+      .pipe(
+        map(
+          (event) => {
+          switch (event.type) {
 
-        switch (event.type) {
+            case HttpEventType.UploadProgress:
+              const progress = Math.round(100 * event.loaded / event.total);
+              this.valueProgressVideo = progress;
+              return { status: 'progress', message: event };
 
-          case HttpEventType.UploadProgress:
-            const progress = Math.round(100 * event.loaded / event.total);
-            this.valueProgressVideo = progress;
-            return { status: 'progress', message: event };
+            case HttpEventType.Response:
+              return event.body;
 
-          case HttpEventType.Response:
-            return event.body;
-
-          default:
-            return `Unhandled event: ${event.type}`;
-        }
+            default:
+              return `Unhandled event: ${event.type}`;
+          }
       })
     ).subscribe(
       data => {
@@ -80,21 +86,23 @@ export class AddvideoComponent implements OnInit {
   }
 
   sendPhotoFile() {
-    this.authentication.sendFile(this.photoToUpload, 'photo', this.bookedAddressUrlFileServer).pipe(map((event) => {
+    this.addVideoActions.sendFile(this.photoToUpload, 'photo', this.bookedAddressUrlFileServer)
+      .pipe(
+        map(
+          (event) => {
+          switch (event.type) {
 
-        switch (event.type) {
+            case HttpEventType.UploadProgress:
+              const progress = Math.round(100 * event.loaded / event.total);
+              this.valueProgressImage = progress;
+              return { status: 'progress', message: event };
 
-          case HttpEventType.UploadProgress:
-            const progress = Math.round(100 * event.loaded / event.total);
-            this.valueProgressImage = progress;
-            return { status: 'progress', message: event };
+            case HttpEventType.Response:
+              return event.body;
 
-          case HttpEventType.Response:
-            return event.body;
-
-          default:
-            return `Unhandled event: ${event.type}`;
-        }
+            default:
+              return `Unhandled event: ${event.type}`;
+          }
       })
     ).subscribe(
       data => {
@@ -113,18 +121,18 @@ export class AddvideoComponent implements OnInit {
     this.videoToSend.description = this.description;
     this.videoToSend.title = this.title;
 
-    this.authentication.sendVideoToDataBase(this.videoToSend).subscribe(
+    this.addVideoActions.sendVideoToDataBase(this.videoToSend).subscribe(
       data => {
-
+          this.router.navigate(['/']);
       }
     );
   }
 
   bookAddressUrl() {
-    this.authentication.getAddressUrlFileServer().subscribe(
+    this.addVideoActions.getAddressUrlFileServer().subscribe(
       data => {
         this.bookedAddressUrlFileServer =  data.message;
       }
-    );;
+    );
   }
 }

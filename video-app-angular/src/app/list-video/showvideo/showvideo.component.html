@@ -1,9 +1,9 @@
-<div class="container-fluid">
-  <div class="row" *ngIf="video; else searchVideo">
+<div class="container">
+  <div class="row" *ngIf="videoInformation; else searchVideo">
 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <video controls class="col-lg-{{sizeVideo}} col-md-{{sizeVideo}} col-sm-{{sizeVideo}} col-xs-{{sizeVideo}}">
-        <source src="{{video.url}}" type="video/mp4">
+        <source src="{{videoInformation.url}}" type="video/mp4">
       </video>
     </div>
 
@@ -13,38 +13,38 @@
       <button class="btn btn-danger col-lg-1" (click)="changeSizeVideo(12)">Duży</button>
     </div>
 
-    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><h2>{{video.title}}</h2></span>
+    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><h2>{{videoInformation.title}}</h2></span>
 
-    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><h4>{{video.description}}</h4></span>
+    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><h4>{{videoInformation.description}}</h4></span>
 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <a routerLink="/login">
-        <span class="text-primary">{{video.firstName + " " +video.lastName}}  </span>
+        <span class="text-primary">{{videoInformation.firstName + " " +videoInformation.lastName}}  </span>
       </a>
       <button class="btn btn-danger " *ngIf="auth.isUserLoggedIn() && !isSubscription" (click)="addSubscribe()">Subskrybuj</button>
       <button class="btn btn-success" *ngIf="auth.isUserLoggedIn() && isSubscription" (click)="subtractSubscribe()">Subskrybujesz</button>
     </div>
 
     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      {{video.display}} wyświetleń |
-      <span class="text-success" (click)="subtractLikeToVideo()" *ngIf="isLike && auth.isUserLoggedIn()"><b>Lubię {{video.likes}}</b></span>
-      <span class="text-primary" (click)="LikeVideo()" *ngIf="!isLike && auth.isUserLoggedIn()">Lubię {{video.likes}}</span>
-      <span class="text-primary" *ngIf="!auth.isUserLoggedIn()">Lubię {{video.likes}}</span>|
-      <span class="text-danger" (click)="subtractDislikeToVideo()" *ngIf="isDislike && auth.isUserLoggedIn()">Nie lubię {{video.dislikes}}</span>
-      <span class="text-primary" (click)="DisLikeVideo()" *ngIf="!isDislike && auth.isUserLoggedIn()">Nie lubię {{video.dislikes}}</span>
-      <span class="text-primary" *ngIf="!auth.isUserLoggedIn()">Nie lubię {{video.dislikes}}</span>
+      {{videoInformation.display}} wyświetleń |
+      <span class="text-success" (click)="subtractLikeToVideo()" *ngIf="isLike && auth.isUserLoggedIn()"><b>Lubię {{videoInformation.likes}}</b></span>
+      <span class="text-primary" (click)="LikeVideo()" *ngIf="!isLike && auth.isUserLoggedIn()">Lubię {{videoInformation.likes}}</span>
+      <span class="text-primary" *ngIf="!auth.isUserLoggedIn()">Lubię {{videoInformation.likes}}</span>|
+      <span class="text-danger" (click)="subtractDislikeToVideo()" *ngIf="isDislike && auth.isUserLoggedIn()">Nie lubię {{videoInformation.dislikes}}</span>
+      <span class="text-primary" (click)="DisLikeVideo()" *ngIf="!isDislike && auth.isUserLoggedIn()">Nie lubię {{videoInformation.dislikes}}</span>
+      <span class="text-primary" *ngIf="!auth.isUserLoggedIn()">Nie lubię {{videoInformation.dislikes}}</span>
     </span>
 
     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      Data dodania: {{video.date}}
+      Data dodania: {{videoInformation.date}}
       <hr style="height: 2px; background-color:lightgray;" />
     </span>
 
-    <h4>Napisz komentarz</h4>
-    <textarea class="col-xs-12 col-sm-12 col-md-12 col-lg-12" [(ngModel)]="ownReview">
-
-    </textarea>
-    <button class="btn btn-default" [disabled]="!ownReview" (click)="addReview()">Wyślij komentarz</button>
+    <div *ngIf="auth.isUserLoggedIn()">
+      <h4>Napisz komentarz</h4>
+      <textarea class="col-xs-12 col-sm-12 col-md-12 col-lg-12" [(ngModel)]="ownReview"></textarea>
+      <button class="btn btn-default" [disabled]="!ownReview" (click)="addReview()">Wyślij komentarz</button>
+    </div>
 
     <h3>Komentarze</h3>
 

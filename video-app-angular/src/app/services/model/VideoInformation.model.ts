@@ -1,4 +1,4 @@
-export class VideoBasicInformation {
+export class VideoInformation {
   constructor(public id: number, public url: string,
               public title: string, public description: string,
               public firstName: string, public lastName: string,

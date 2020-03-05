@@ -12,5 +12,4 @@ public interface VideoDao extends JpaRepository<Video, Long> {
     public Video findById(long id);
 
     public List<Video> findAllByUserIdOrderByDateDesc(int userId);
-
 }

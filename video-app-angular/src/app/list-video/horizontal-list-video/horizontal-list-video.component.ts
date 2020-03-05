@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {VideoBasicInformation} from '../../services/model/VideoBasicInformation.model';
-import {VideoappdatabaseService} from '../../services/videoappdatabase.service';
+import {VideoInformation} from '../../services/model/VideoInformation.model';
+import {ListVideoActionsService} from '../services/list-video-actions.service';
 
 @Component({
   selector: 'app-horizontal-list-video',
@@ -13,10 +13,10 @@ export class HorizontalListVideoComponent implements OnInit {
 
   categoryName: string;
 
-  videoBasic: VideoBasicInformation[];
+  videoInformations: VideoInformation[];
 
   constructor(
-    private VideoAppDatabase: VideoappdatabaseService
+    private listVideoActions: ListVideoActionsService
   ) { }
 
   ngOnInit() {
@@ -49,9 +49,9 @@ export class HorizontalListVideoComponent implements OnInit {
   }
 
   getAllVideoCategory(theCategory: string) {
-    this.VideoAppDatabase.getVideos(theCategory).subscribe(
+    this.listVideoActions.getVideos(theCategory).subscribe(
       response => {
-        this.videoBasic = response;
+        this.videoInformations = response;
       }
     );
   }

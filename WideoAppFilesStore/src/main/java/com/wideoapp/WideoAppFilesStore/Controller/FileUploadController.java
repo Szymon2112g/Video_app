@@ -48,7 +48,7 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping(path = "/sendfile", consumes = {"multipart/form-data"})
+    @PostMapping(path = "/send-file", consumes = {"multipart/form-data"})
     public ResponseEntity<?> handleFileUpload(@RequestBody MultipartFile file) {
 
         String path = MvcUriComponentsBuilder

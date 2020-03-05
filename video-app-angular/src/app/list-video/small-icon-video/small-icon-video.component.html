@@ -1,12 +1,12 @@
-<a routerLink="/video/{{videoElement.id}}">
-  <img src="{{videoElement.photoUrl}}" width="200px" height="200px" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<a routerLink="/video/{{videoInformation.id}}">
+  <img src="{{videoInformation.photoUrl}}" width="200px" height="200px" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 </a>
 
-<span class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12"><b>{{videoElement.title}}</b></span>
+<span class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12"><b>{{videoInformation.title}}</b></span>
 
-<a routerLink="/user/{{videoElement.userId}}">
-  <span class="text-primary text-center col-lg-12" >{{videoElement.firstName + " " +videoElement.lastName}}</span>
+<a routerLink="/user/{{videoInformation.userId}}">
+  <span class="text-primary text-center col-lg-12" >{{videoInformation.firstName + " " +videoInformation.lastName}}</span>
 </a>
 
-<span class="text-center col-lg-12">{{videoElement.display}} wyświetleń</span>
-<span class="text-center col-lg-12">{{videoElement.date}}</span>
+<span class="text-center col-lg-12">{{videoInformation.display}} wyświetleń</span>
+<span class="text-center col-lg-12">{{videoInformation.date}}</span>
