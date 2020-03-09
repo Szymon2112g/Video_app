@@ -41,7 +41,7 @@ create table `history` (
 )engine=InnoDB auto_increment=1 default charset=latin1;    
 
 drop table if exists `likes`;
-create table `like` (
+create table `likes` (
 	`id` int(32) not null auto_increment,
     `user_id` int(32) default null,
     `video_id` int(32) default null,

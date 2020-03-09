@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@RestController
+@CrossOrigin(origins="http://localhost:4200")
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -53,7 +55,6 @@ public class UserController {
         Review review = new Review(addReview.getComment(), user, video);
 
         reviewDAO.save(review);
-
         return ResponseEntity.ok().build();
     }
 
