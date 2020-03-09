@@ -9,3 +9,7 @@ What do you need install to run this application?
 Mysql Workbench,
 Java,
 Zipkin
+
+You have to create second configuration for WideoAppZull
+
+in VM options paste this "-Dspring.application.name="netflix-zuul-api-gateway-server2" -Dserver.port="8766""
