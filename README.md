@@ -1,23 +1,8 @@
 # Video_app
-
-Used technology:
-
-Spring Hibernate,JPA,Security,JWT,REST,Cloud("Netflix"),
-
-Angular CLI,RxJs,
-
-Mysql
-
+Used technology:Spring Hibernate,JPA,Security,JWT,REST,Cloud("Netflix"),Angular CLI,RxJs,Mysql
 
 What do you need install to run this application?
-
-Mysql Workbench,
-
-Java,
-
-Zipkin,
-
-RabitMQ
+Mysql Workbench,Java,Zipkin,RabitMQ
 
 You have to create second configuration for WideoAppZull
 
@@ -38,15 +23,10 @@ https://imgur.com/5Csa69F
 
 
 What applicaton offer:
-
 Add video and photo
-
 Login,Register,Logout
-
 Show likes videos,history and ontime video on time
-
 Subscribe channel,add comment,likes,dislikes
-
 Video search engine
 
 
