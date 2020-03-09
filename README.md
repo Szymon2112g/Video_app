@@ -8,6 +8,7 @@ Angular CLI,RxJs,
 
 Mysql
 
+
 What do you need install to run this application?
 
 Mysql Workbench,
