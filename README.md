@@ -1,8 +1,13 @@
 # Video_app
-Used technology:Spring Hibernate,JPA,Security,JWT,REST,Cloud("Netflix"),Angular CLI,RxJs,Mysql
+Used technology:
+
+Spring Hibernate,JPA,Security,JWT,REST,Cloud("Netflix"),Angular CLI,RxJs,Mysql
 
 What do you need install to run this application?
+
 Mysql Workbench,Java,Zipkin,RabitMQ
+
+
 
 You have to create second configuration for WideoAppZull
 
