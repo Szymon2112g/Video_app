@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {VideoInformation} from '../../services/model/VideoInformation.model';
+import {VideoInformation} from '../../services/models/VideoInformation.model';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({

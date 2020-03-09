@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter} from 'rxjs/operators';
-import {VideoInformation} from '../../services/model/VideoInformation.model';
+import {VideoInformation} from '../../services/models/VideoInformation.model';
 import {ActivatedRoute} from '@angular/router';
 import {ListVideoActionsService} from '../services/list-video-actions.service';
 

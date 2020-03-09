@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {VideoInformation} from '../../services/model/VideoInformation.model';
-import {ReviewInformation} from '../../services/model/ReviewInformation.model';
+import {VideoInformation} from '../../services/models/VideoInformation.model';
+import {ReviewInformation} from '../../services/models/ReviewInformation.model';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ShowVideoActionsService} from '../services/show-video-actions.service';
 

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import {VideoInformation} from '../../services/model/VideoInformation.model';
-import {ReviewInformation} from '../../services/model/ReviewInformation.model';
+import {VideoInformation} from '../../services/models/VideoInformation.model';
+import {ReviewInformation} from '../../services/models/ReviewInformation.model';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {AddReviewInformation} from '../../services/model/AddReviewInformation.model';
-import {GetSubscriptionsUser} from '../../services/model/GetSubscriptionsUser.model';
-import {AddDisplayWithUser} from '../../services/model/AddDisplayWithUser.model';
+import {AddReviewInformation} from '../../services/models/AddReviewInformation.model';
+import {GetSubscriptionsUser} from '../../services/models/SubscriptionsUser.model';
+import {AddDisplayWithUser} from '../../services/models/AddDisplayWithUser.model';
 import {AuthenticationService} from '../../services/authentication.service';
 
 @Injectable({

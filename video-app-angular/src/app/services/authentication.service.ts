@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {GetSubscriptionsUser} from './model/GetSubscriptionsUser.model';
+import {GetSubscriptionsUser} from './models/SubscriptionsUser.model';
 
 export const TOKEN = 'token';
 export const AUTHENTICATED_USER = 'authenticaterUser';

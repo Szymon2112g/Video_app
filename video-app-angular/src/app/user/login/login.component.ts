@@ -12,6 +12,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   signInForm: FormGroup;
+  invalidLogin = false;
 
   constructor(
     private authentication: AuthenticationService,
@@ -39,6 +40,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['']);
           },
           error => {
+            this.invalidLogin = true;
           }
         );
     }

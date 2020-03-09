@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../services/authentication.service';
-import {VideoToSend} from '../services/model/VideoToSend.model';
+import {VideoToSend} from '../services/models/VideoToSend.model';
 import {NgForm} from '@angular/forms';
 import {map} from 'rxjs/operators';
 import {HttpEventType} from '@angular/common/http';

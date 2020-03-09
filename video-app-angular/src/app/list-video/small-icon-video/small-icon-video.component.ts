@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {VideoInformation} from '../../services/model/VideoInformation.model';
+import {VideoInformation} from '../../services/models/VideoInformation.model';
 
 @Component({
   selector: 'app-small-icon-video',

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserServiceService} from '../services/user-service.service';
 import {Subscription} from 'rxjs';
 import {AuthenticationService} from '../services/authentication.service';
-import {GetSubscriptionsUser} from '../services/model/GetSubscriptionsUser.model';
+import {GetSubscriptionsUser} from '../services/models/SubscriptionsUser.model';
 
 @Component({
   selector: 'app-sidelist',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {VideoToSend} from '../../services/model/VideoToSend.model';
+import {VideoToSend} from '../../services/models/VideoToSend.model';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../services/authentication.service';
 

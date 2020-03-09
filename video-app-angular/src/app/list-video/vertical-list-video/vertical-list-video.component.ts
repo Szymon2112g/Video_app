@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {VideoInformation} from '../../services/model/VideoInformation.model';
+import {VideoInformation} from '../../services/models/VideoInformation.model';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ListVideoActionsService} from '../services/list-video-actions.service';
 
