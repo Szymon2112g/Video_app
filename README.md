@@ -28,10 +28,15 @@ https://imgur.com/5Csa69F
 
 
 What applicaton offer:
+
 -Add video and photo
+
 -Login,Register,Logout
+
 -Show likes videos,history and ontime video on time
+
 -Subscribe channel,add comment,likes,dislikes
+
 -Video search engine
 
 
