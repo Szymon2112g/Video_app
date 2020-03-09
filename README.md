@@ -8,7 +8,8 @@ Mysql
 What do you need install to run this application?
 Mysql Workbench,
 Java,
-Zipkin
+Zipkin,
+RabitMQ
 
 You have to create second configuration for WideoAppZull
 
