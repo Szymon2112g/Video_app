@@ -1,23 +1,24 @@
-# Video_app
-Used technology:
+## Video_app
+# Used technology:
 
 Spring Hibernate,JPA,Security,JWT,REST,Cloud("Netflix"),Angular CLI,RxJs,Mysql
 
-What do you need install to run this application?
+# What do you need install to run this application?
 
 Mysql Workbench,Java,Zipkin,RabitMQ
 
 
 
-You have to create second configuration for WideoAppZull
+# Note 
+*You have to create second configuration for WideoAppZull*
 
-in VM options paste this "-Dspring.application.name="netflix-zuul-api-gateway-server2" -Dserver.port="8766""
-
-
-
+_in VM options paste this "-Dspring.application.name="netflix-zuul-api-gateway-server2" -Dserver.port="8766""_
 
 
-Below are links to some photo of applications:
+
+
+
+# Below are links to some photo of applications:
 
 https://imgur.com/WFJwcOw
 
@@ -27,7 +28,7 @@ https://imgur.com/5Csa69F
 
 
 
-What applicaton offer:
+# What applicaton offer:
 
 -Add video and photo
 
