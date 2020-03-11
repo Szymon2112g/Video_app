@@ -9,15 +9,6 @@ Mysql Workbench,Java,Zipkin,RabitMQ
 
 
 
-# Note 
-*You have to create second configuration for WideoAppZull*
-
-_in VM options paste this "-Dspring.application.name="netflix-zuul-api-gateway-server2" -Dserver.port="8766""_
-
-
-
-
-
 # Below are links to some photo of applications:
 
 https://imgur.com/WFJwcOw
