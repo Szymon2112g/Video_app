@@ -31,8 +31,6 @@ export class AddvideoComponent implements OnInit {
   valueProgressVideo = 0;
   valueProgressImage = 0;
 
-  bookedAddressUrlFileServer: string;
-
   videoToSend: VideoToSend = new VideoToSend(
     this.authentication.getAuthenticatedUser(), '', '', '', '');
 
@@ -43,7 +41,6 @@ export class AddvideoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.bookAddressUrl();
   }
 
   handleVideoInput(files: FileList) {
@@ -55,7 +52,7 @@ export class AddvideoComponent implements OnInit {
   }
 
   sendVideoFile() {
-    this.addVideoActions.sendFile(this.videoToUpload, 'video', this.bookedAddressUrlFileServer)
+    this.addVideoActions.sendFile(this.videoToUpload, 'video')
       .pipe(
         map(
           (event) => {
@@ -86,7 +83,7 @@ export class AddvideoComponent implements OnInit {
   }
 
   sendPhotoFile() {
-    this.addVideoActions.sendFile(this.photoToUpload, 'photo', this.bookedAddressUrlFileServer)
+    this.addVideoActions.sendFile(this.photoToUpload, 'photo')
       .pipe(
         map(
           (event) => {
@@ -128,11 +125,4 @@ export class AddvideoComponent implements OnInit {
     );
   }
 
-  bookAddressUrl() {
-    this.addVideoActions.getAddressUrlFileServer().subscribe(
-      data => {
-        this.bookedAddressUrlFileServer =  data.message;
-      }
-    );
-  }
 }

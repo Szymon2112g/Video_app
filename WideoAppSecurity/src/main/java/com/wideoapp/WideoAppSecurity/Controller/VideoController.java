@@ -69,11 +69,6 @@ public class VideoController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(path = "/get-address-url-file-server")
-    public ResponseMessage getAddressUrlFileServer(){
-        return new ResponseMessage(wideoAppFS.getAddressUrl());
-    }
-
     @GetMapping(path = "/get-video-feed/{category}/{id}")
     public List<VideoInformation> getVideoFeed(
             @PathVariable("category") String category,
@@ -164,5 +159,12 @@ public class VideoController {
         }
 
         return videoInformations;
+    }
+
+    @PostMapping(path = "/send-file", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> handleFileUpload2(@RequestBody MultipartFile file) {
+
+        String response = wideoAppFS.handleFileUpload(file);
+        return ResponseEntity.ok(new ResponseMessage(response));
     }
 }

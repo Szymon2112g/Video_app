@@ -49,13 +49,13 @@ public class FileUploadController {
     }
 
     @PostMapping(path = "/send-file", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> handleFileUpload(@RequestBody MultipartFile file) {
+    public String handleFileUpload(@RequestBody MultipartFile file) {
 
         String path = MvcUriComponentsBuilder
                 .fromMethodName(FileUploadController.class,"serveFile",
-                                file.getOriginalFilename().toString()).build().toString();
+                        file.getOriginalFilename().toString()).build().toString();
         storageService.store(file);
-        return ResponseEntity.ok(new ResponseMessage(path));
+        return path;
     }
 
     @GetMapping(path = "/get-address-url")

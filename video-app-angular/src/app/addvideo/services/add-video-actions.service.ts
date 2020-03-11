@@ -13,8 +13,8 @@ export class AddVideoActionsService {
     private auth: AuthenticationService
   ) { }
 
-  sendFile(fileToUpload: File, fileType: string, address: string) {
-    const url = address + '/send-file';
+  sendFile(fileToUpload: File, fileType: string) {
+    const url = 'http://localhost:8100/send-file';
     const formData: FormData = new FormData();
     const fileName = this.auth.getAuthenticatedUser() + '_' + fileType + '_' + fileToUpload.name;
     formData.append('file', fileToUpload, fileName);
