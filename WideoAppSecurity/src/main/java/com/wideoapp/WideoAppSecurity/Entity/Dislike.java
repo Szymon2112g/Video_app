@@ -1,6 +1,11 @@
 package com.wideoapp.WideoAppSecurity.Entity;
 
 import javax.persistence.*;
+import java.util.EmptyStackException;
+
+/**
+ * @author Szymon2112g
+ */
 
 @Entity
 @Table(name = "dislike")
@@ -25,10 +30,16 @@ public class Dislike {
         this.userId = userId;
     }
 
+    @Deprecated
     public int getId() {
         return id;
     }
 
+    /**
+     * @author Szymcio Godziński
+     * @param id a co cie to
+     * @deprecated
+    */
     public void setId(int id) {
         this.id = id;
     }
