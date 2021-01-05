@@ -17,11 +17,13 @@ public class Subscribe {
     @Column(name = "user_id")
     private int userId;
 
-    public Subscribe() {}
-
-    public Subscribe(int userSubscriptionId, int userId) {
+    public Subscribe(int id, int userSubscriptionId, int userId) {
+        this.id = id;
         this.userSubscriptionId = userSubscriptionId;
         this.userId = userId;
+    }
+
+    public Subscribe() {
     }
 
     public int getId() {

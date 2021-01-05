@@ -11,18 +11,19 @@ public class History {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_id")
-    private int userId;
-
     @Column(name = "video_id")
     private int videoId;
 
-    public History() {
+    @Column(name = "user_id")
+    private int userId;
+
+    public History(int id, int videoId, int userId) {
+        this.id = id;
+        this.videoId = videoId;
+        this.userId = userId;
     }
 
-    public History(int userId, int videoId) {
-        this.userId = userId;
-        this.videoId = videoId;
+    public History() {
     }
 
     public int getId() {
@@ -33,19 +34,19 @@ public class History {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public int getVideoId() {
         return videoId;
     }
 
     public void setVideoId(int videoId) {
         this.videoId = videoId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

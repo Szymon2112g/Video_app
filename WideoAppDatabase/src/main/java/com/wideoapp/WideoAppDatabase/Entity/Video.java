@@ -33,22 +33,18 @@ public class Video {
     @Column(name = "date")
     private String date;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private int userId;
 
-    @OneToMany(mappedBy = "video",
-            fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    @JoinColumn(name = "video_id")
     private List<Review> reviews;
 
     @Column(name = "photo_url")
     private String photoUrl;
 
-    public Video() {
-    }
-
-    public Video(String url, String title, String description, int likes, int dislikes, int display, String date, User user, List<Review> reviews, String photoUrl) {
+    public Video(String url, String title, String description, int likes, int dislikes, int display, String date, int userId, List<Review> reviews, String photoUrl) {
         this.url = url;
         this.title = title;
         this.description = description;
@@ -56,9 +52,12 @@ public class Video {
         this.dislikes = dislikes;
         this.display = display;
         this.date = date;
-        this.user = user;
+        this.userId = userId;
         this.reviews = reviews;
         this.photoUrl = photoUrl;
+    }
+
+    public Video() {
     }
 
     public int getId() {
@@ -125,12 +124,12 @@ public class Video {
         this.date = date;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public List<Review> getReviews() {

@@ -14,11 +14,11 @@ public class History {
     @Column(name = "video_id")
     private int videoId;
 
-    public History() {
-    }
-
     public History(int videoId) {
         this.videoId = videoId;
+    }
+
+    public History() {
     }
 
     public int getId() {

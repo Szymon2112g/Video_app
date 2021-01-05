@@ -17,12 +17,12 @@ public class Likes {
     @Column(name = "user_id")
     private int userId;
 
-    public Likes() {
-    }
-
     public Likes(int videoId, int userId) {
         this.videoId = videoId;
         this.userId = userId;
+    }
+
+    public Likes() {
     }
 
     public int getId() {

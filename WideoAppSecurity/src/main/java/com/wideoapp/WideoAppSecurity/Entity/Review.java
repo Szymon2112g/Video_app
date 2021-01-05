@@ -1,7 +1,6 @@
 package com.wideoapp.WideoAppSecurity.Entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "review")
@@ -15,21 +14,19 @@ public class Review {
     @Column(name = "comment")
     private String comment;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private int userId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "video_id")
-    private Video video;
+    @Column(name = "video_id")
+    private int videoId;
 
-    public Review() {
+    public Review(String comment, int userId, int videoId) {
+        this.comment = comment;
+        this.userId = userId;
+        this.videoId = videoId;
     }
 
-    public Review(String comment, User user, Video video) {
-        this.comment = comment;
-        this.user = user;
-        this.video = video;
+    public Review() {
     }
 
     public int getId() {
@@ -48,19 +45,19 @@ public class Review {
         this.comment = comment;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public Video getVideo() {
-        return video;
+    public int getVideoId() {
+        return videoId;
     }
 
-    public void setVideo(Video video) {
-        this.video = video;
+    public void setVideoId(int videoId) {
+        this.videoId = videoId;
     }
 }

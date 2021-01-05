@@ -1,7 +1,6 @@
 package com.wideoapp.WideoAppSecurity.Jwt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.wideoapp.WideoAppSecurity.Entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

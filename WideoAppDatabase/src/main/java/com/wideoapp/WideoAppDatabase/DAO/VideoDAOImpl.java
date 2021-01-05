@@ -1,7 +1,7 @@
 package com.wideoapp.WideoAppDatabase.DAO;
 
 import com.wideoapp.WideoAppDatabase.Entity.Video;
-import org.hibernate.Criteria;
+import com.wideoapp.WideoAppDatabase.Web.Model.VideoDto;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -38,17 +38,21 @@ public class VideoDAOImpl implements VideoDAO{
 
         Session currentSession = entityManager.unwrap(Session.class);
 
-        Query<Video> videoQuery = currentSession.createQuery("from Video where id = :id ");
+        Query<Video> videoQuery = currentSession.createQuery("from Video where id = :id ", Video.class);
         videoQuery.setParameter("id", id);
 
         return videoQuery.getSingleResult();
     }
 
     @Override
-    public void increaseDisplay(Video theVideo) {
+    public void increaseDisplay(Video video) {
         Session currentSession = entityManager.unwrap(Session.class);
-        theVideo.setDisplay(theVideo.getDisplay() + 1);
-        currentSession.merge(theVideo);
+
+        Query<Video> videoQuery = currentSession.createQuery("update Video v set v.display = :keydisplay where v.id = :keyid");
+        videoQuery.setParameter("keydisplay", video.getDisplay() + 1);
+        videoQuery.setParameter("keyid", video.getId());
+
+        videoQuery.executeUpdate();
     }
 
     @Override

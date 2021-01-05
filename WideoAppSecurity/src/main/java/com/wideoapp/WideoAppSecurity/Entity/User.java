@@ -30,40 +30,37 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Video> videoList;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private List<Subscribe> subscribeList;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private List<Dislike> dislikeList;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private List<History> historyList;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-    private List<Likes> likesList;
+    private List<Likes> likeList;
 
-    @OneToMany(mappedBy = "user",
-            fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<Review> reviews;
 
-    public User() {
-    }
-
-    public User(String firstName,
-                String lastName,
-                String email,
-                String password,
-                List<Video> videoList,
-                List<Subscribe> subscribeList,
-                List<Dislike> dislikeList,
-                List<History> historyList,
-                List<Likes> likesList,
-                List<Review> reviews) {
+    public User(int id, String firstName, String lastName, String email, String password, List<Video> videoList, List<Subscribe> subscribeList, List<Dislike> dislikeList, List<History> historyList, List<Likes> likeList, List<Review> reviews) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -72,8 +69,11 @@ public class User {
         this.subscribeList = subscribeList;
         this.dislikeList = dislikeList;
         this.historyList = historyList;
-        this.likesList = likesList;
+        this.likeList = likeList;
         this.reviews = reviews;
+    }
+
+    public User() {
     }
 
     public int getId() {
@@ -148,12 +148,12 @@ public class User {
         this.historyList = historyList;
     }
 
-    public List<Likes> getLikesList() {
-        return likesList;
+    public List<Likes> getLikeList() {
+        return likeList;
     }
 
-    public void setLikesList(List<Likes> likesList) {
-        this.likesList = likesList;
+    public void setLikeList(List<Likes> likeList) {
+        this.likeList = likeList;
     }
 
     public List<Review> getReviews() {
@@ -164,3 +164,4 @@ public class User {
         this.reviews = reviews;
     }
 }
+

@@ -54,24 +54,13 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Likes> likeList;
 
-    @OneToMany(mappedBy = "user",
-            fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<Review> reviews;
 
-    public User() {
-    }
-
-    public User(String firstName,
-                String lastName,
-                String email,
-                String password,
-                List<Video> videoList,
-                List<Subscribe> subscribeList,
-                List<Dislike> dislikeList,
-                List<History> historyList,
-                List<Likes> likeList,
-                List<Review> reviews) {
+    public User(int id, String firstName, String lastName, String email, String password, List<Video> videoList, List<Subscribe> subscribeList, List<Dislike> dislikeList, List<History> historyList, List<Likes> likeList, List<Review> reviews) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -82,6 +71,9 @@ public class User {
         this.historyList = historyList;
         this.likeList = likeList;
         this.reviews = reviews;
+    }
+
+    public User() {
     }
 
     public int getId() {

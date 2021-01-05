@@ -1,7 +1,6 @@
 package com.wideoapp.WideoAppSecurity.Jwt;
 
 import com.wideoapp.WideoAppSecurity.Dao.UserDao;
-import com.wideoapp.WideoAppSecurity.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

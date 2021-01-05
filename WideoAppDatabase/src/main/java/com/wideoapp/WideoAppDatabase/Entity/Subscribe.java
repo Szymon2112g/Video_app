@@ -14,10 +14,11 @@ public class Subscribe {
     @Column(name = "user_subscription_id")
     private int userSubscriptionId;
 
-    public Subscribe() {}
-
     public Subscribe(int userSubscriptionId) {
         this.userSubscriptionId = userSubscriptionId;
+    }
+
+    public Subscribe() {
     }
 
     public int getId() {
