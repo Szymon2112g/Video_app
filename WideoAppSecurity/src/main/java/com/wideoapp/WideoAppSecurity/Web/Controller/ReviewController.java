@@ -1,7 +1,7 @@
 package com.wideoapp.WideoAppSecurity.Web.Controller;
 
 import com.wideoapp.WideoAppSecurity.Service.ReviewService;
-import com.wideoapp.WideoAppSecurity.Web.Model.AddReview;
+import com.wideoapp.WideoAppSecurity.Web.Model.ReviewToAdd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,8 +22,12 @@ public class ReviewController {
 
     //@PostMapping(path = "/add-review/")
     @PostMapping(path = "/review/add")
-    public ResponseEntity<?> addReview(@RequestBody AddReview addReview) {
-        reviewService.save(addReview);
+    public ResponseEntity<?> addReview(@RequestBody ReviewToAdd reviewToAdd) {
+        if (reviewToAdd == null) {
+            ResponseEntity.badRequest().build();
+        }
+
+        reviewService.save(reviewToAdd);
         return ResponseEntity.ok().build();
     }
 }

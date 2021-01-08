@@ -1,12 +1,17 @@
 package com.wideoapp.WideoAppSecurity.Web.Model;
 
-public class AddDisplayWithUser {
-    String email;
-    int videoId;
+public class ReviewToAdd {
+    private String email;
+    private String comment;
+    private int videoId;
 
-    public AddDisplayWithUser(String email, int videoId) {
+    public ReviewToAdd(String email, String comment, int videoId) {
         this.email = email;
+        this.comment = comment;
         this.videoId = videoId;
+    }
+
+    public ReviewToAdd() {
     }
 
     public String getEmail() {
@@ -15,6 +20,14 @@ public class AddDisplayWithUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public int getVideoId() {

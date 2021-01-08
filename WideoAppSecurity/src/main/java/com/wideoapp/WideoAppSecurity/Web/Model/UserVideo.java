@@ -1,10 +1,10 @@
 package com.wideoapp.WideoAppSecurity.Web.Model;
 
-public class AddSubscriptions {
+public class UserVideo {
     private String email;
     private int videoId;
 
-    public AddSubscriptions(String email, int videoId) {
+    public UserVideo(String email, int videoId) {
         this.email = email;
         this.videoId = videoId;
     }

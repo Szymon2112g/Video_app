@@ -1,6 +1,5 @@
 package com.wideoapp.WideoAppSecurity.Web.Model;
 
-
 public class ReviewDto {
     private int id;
     private String comment;

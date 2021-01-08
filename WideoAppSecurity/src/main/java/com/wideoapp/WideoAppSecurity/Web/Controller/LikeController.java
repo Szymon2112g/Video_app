@@ -21,6 +21,19 @@ public class LikeController {
     //@PostMapping(path = "/add-like-to-video", consumes = "application/json")
     @PostMapping(path = "/like/add/video", consumes = "application/json")
     public ResponseEntity<?> addLikeToVideo(@RequestBody Map<String, Object> body) {
+
+        if (body.get("id") == null || body.get("email") == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!checkIfStringIsNumber(body.get(("id")).toString())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (checkIfStringIsEmail(body.get("email").toString())) {
+            return ResponseEntity.badRequest().build();
+        }
+
         int id = Integer.parseInt(body.get("id").toString());
         String email = body.get("email").toString();
 
@@ -31,20 +44,55 @@ public class LikeController {
 
     //@GetMapping(path = "/is-like-to-video")
     @GetMapping(path = "/like/video")
-    public boolean isLikeToVideoRest(@RequestParam("id") String idString, @RequestParam("email") String email) {
+    public ResponseEntity<?> isLikeToVideoRest(@RequestParam("id") String idString, @RequestParam("email") String email) {
+
+        if (idString == null || email == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!checkIfStringIsNumber(idString)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (checkIfStringIsEmail(email)) {
+            return ResponseEntity.badRequest().build();
+        }
+
         int id = Integer.parseInt(idString);
         boolean isLike = likesService.isLikeToVideo(id, email);
-        return isLike;
+
+        return ResponseEntity.ok(isLike);
     }
 
     //@PostMapping(path = "/subtract-like-to-video", consumes = "application/json")
     @PostMapping(path = "/like/subtract/video", consumes = "application/json")
     public ResponseEntity<?> subtractLikeToVideo(@RequestBody Map<String, Object> body) {
+        if (body.get("id") == null || body.get("email") == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!checkIfStringIsNumber(body.get(("id")).toString())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (checkIfStringIsEmail(body.get("email").toString())) {
+            return ResponseEntity.badRequest().build();
+        }
+
         int id = Integer.parseInt(body.get("id").toString());
         String email = body.get("email").toString();
 
         likesService.subtractLike(id, email);
 
         return ResponseEntity.ok().build();
+    }
+
+    private boolean checkIfStringIsNumber(String number) {
+        return number.matches("\\d+");
+    }
+
+    @Deprecated
+    private boolean checkIfStringIsEmail(String email) {
+        return true;
     }
 }

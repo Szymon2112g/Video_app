@@ -8,10 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VideoToSend {
+public class SmallVideoInformation {
 
     @Builder
-    public VideoToSend(String email, String url, String title, String description, int display, String photoUrl) {
+    public SmallVideoInformation(String email, String url, String title, String description, int display, String photoUrl) {
         this.email = email;
         this.url = url;
         this.title = title;

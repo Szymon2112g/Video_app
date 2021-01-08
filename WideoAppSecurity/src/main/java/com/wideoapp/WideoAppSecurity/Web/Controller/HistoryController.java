@@ -1,7 +1,7 @@
 package com.wideoapp.WideoAppSecurity.Web.Controller;
 
 import com.wideoapp.WideoAppSecurity.Service.HistoryService;
-import com.wideoapp.WideoAppSecurity.Web.Model.AddDisplayWithUser;
+import com.wideoapp.WideoAppSecurity.Web.Model.UserVideo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,8 +22,13 @@ public class HistoryController {
 
     //@PostMapping(path = "/add-display-with-user")
     @PostMapping(path = "/history/add/video")
-    public ResponseEntity<?> addDisplayWithUser(@RequestBody AddDisplayWithUser addDisplayWithUser) {
-        historyService.addHistory(addDisplayWithUser.getEmail(), addDisplayWithUser.getVideoId());
+    public ResponseEntity<?> addDisplayWithUser(@RequestBody UserVideo userVideo) {
+
+        if (userVideo == null) {
+            ResponseEntity.badRequest().build();
+        }
+
+        historyService.addHistory(userVideo.getEmail(), userVideo.getVideoId());
         return ResponseEntity.ok().build();
     }
 }

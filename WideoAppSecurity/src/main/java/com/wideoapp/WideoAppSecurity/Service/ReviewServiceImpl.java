@@ -6,7 +6,7 @@ import com.wideoapp.WideoAppSecurity.Dao.VideoDao;
 import com.wideoapp.WideoAppSecurity.Entity.Review;
 import com.wideoapp.WideoAppSecurity.Entity.User;
 import com.wideoapp.WideoAppSecurity.Entity.Video;
-import com.wideoapp.WideoAppSecurity.Web.Model.AddReview;
+import com.wideoapp.WideoAppSecurity.Web.Model.ReviewToAdd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +25,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void save(AddReview addReview) {
-        Video video = videoDao.findById(addReview.getVideoId());
-        User user = userDao.findByEmail(addReview.getEmail());
+    public void save(ReviewToAdd reviewToAdd) {
+        Video video = videoDao.findById(reviewToAdd.getVideoId());
+        User user = userDao.findByEmail(reviewToAdd.getEmail());
 
-        Review review = new Review(addReview.getComment(), user.getId(), video.getId());
+        Review review = new Review(reviewToAdd.getComment(), user.getId(), video.getId());
 
         reviewDAO.save(review);
     }

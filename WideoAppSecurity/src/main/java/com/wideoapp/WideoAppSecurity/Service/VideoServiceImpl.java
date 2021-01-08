@@ -3,7 +3,7 @@ package com.wideoapp.WideoAppSecurity.Service;
 import com.wideoapp.WideoAppSecurity.Dao.*;
 import com.wideoapp.WideoAppSecurity.Entity.*;
 import com.wideoapp.WideoAppSecurity.Web.Model.ExtendedVideoInformation;
-import com.wideoapp.WideoAppSecurity.Web.Model.VideoToSend;
+import com.wideoapp.WideoAppSecurity.Web.Model.SmallVideoInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,22 +29,22 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public void addSpecificVideoToDB(VideoToSend videoToSend) {
-        User user = userDao.findByEmail(videoToSend.getEmail());
+    public void addSpecificVideoToDB(SmallVideoInformation smallVideoInformation) {
+        User user = userDao.findByEmail(smallVideoInformation.getEmail());
 
         String currentDate = (java.time.LocalDate.now()).toString();
 
         Video video = new Video(
-                videoToSend.getUrl(),
-                videoToSend.getTitle(),
-                videoToSend.getDescription(),
+                smallVideoInformation.getUrl(),
+                smallVideoInformation.getTitle(),
+                smallVideoInformation.getDescription(),
                 0,
                 0,
                 0,
                 currentDate,
                 user.getId(),
                 null,
-                videoToSend.getPhotoUrl()
+                smallVideoInformation.getPhotoUrl()
         );
 
         user.getVideoList().add(video);

@@ -4,7 +4,7 @@ import com.wideoapp.WideoAppSecurity.Dao.SubscribeDao;
 import com.wideoapp.WideoAppSecurity.Dao.UserDao;
 import com.wideoapp.WideoAppSecurity.Entity.Subscribe;
 import com.wideoapp.WideoAppSecurity.Entity.User;
-import com.wideoapp.WideoAppSecurity.Web.Model.GetSubscriptions;
+import com.wideoapp.WideoAppSecurity.Web.Model.SubscribedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +24,16 @@ public class SubscribeServiceImpl implements SubscribeService{
     }
 
     @Override
-    public List<GetSubscriptions> getUserSubscriptions(String email) {
+    public List<SubscribedUser> getUserSubscriptions(String email) {
 
         User user = userDao.findByEmail(email);
-        List<GetSubscriptions> subscribes = new ArrayList<>();
+        List<SubscribedUser> subscribes = new ArrayList<>();
 
-        for(Subscribe tmpSub : user.getSubscribeList()) {
-            User userTmp = userDao.findById(tmpSub.getUserSubscriptionId());
-            String name = userTmp.getFirstName() + " " + userTmp.getLastName();
-            GetSubscriptions  getSubscriptions = new GetSubscriptions(userTmp.getId(), userTmp.getEmail(), name);
-            subscribes.add(getSubscriptions);
+        for(Subscribe subscribe : user.getSubscribeList()) {
+            User subUser = userDao.findById(subscribe.getUserSubscriptionId());
+            String name = subUser.getFirstName() + " " + subUser.getLastName();
+            SubscribedUser subscribedUser = new SubscribedUser(subUser.getId(), subUser.getEmail(), name);
+            subscribes.add(subscribedUser);
         }
 
         return subscribes;

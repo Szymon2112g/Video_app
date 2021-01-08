@@ -1,7 +1,8 @@
 package com.wideoapp.WideoAppSecurity.Service;
 
-import com.wideoapp.WideoAppSecurity.Web.Model.AddReview;
+import com.wideoapp.WideoAppSecurity.Web.Model.ReviewToAdd;
 
 public interface ReviewService {
-    public void save(AddReview addReview);
+    @Deprecated
+    public void save(ReviewToAdd reviewToAdd);
 }
