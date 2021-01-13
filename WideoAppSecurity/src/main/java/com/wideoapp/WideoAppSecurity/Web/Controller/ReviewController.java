@@ -21,7 +21,7 @@ public class ReviewController {
     }
 
     //@PostMapping(path = "/add-review/")
-    @PostMapping(path = "/review/add")
+    @PostMapping(path = "/review")
     public ResponseEntity<?> addReview(@RequestBody ReviewToAdd reviewToAdd) {
         if (reviewToAdd == null) {
             ResponseEntity.badRequest().build();

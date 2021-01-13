@@ -29,7 +29,7 @@ public class VideoController {
     }
 
     //@PostMapping(path = "/send-video-to-db")
-    @PostMapping(path = "/video/add/db")
+    @PostMapping(path = "/video/file/db")
     public ResponseEntity<?> sendVideoToDB(@RequestBody SmallVideoInformation smallVideoInformation) {
         if (smallVideoInformation == null) {
             ResponseEntity.badRequest().build();
@@ -40,7 +40,7 @@ public class VideoController {
     }
 
     //@GetMapping(path = "/get-video-feed/{category}/{id}")
-    @GetMapping(path = "/video/get/feed/{category}/{id}")
+    @GetMapping(path = "/video/feed/{category}/{id}")
     public ResponseEntity<?> getVideoFeed(
             @PathVariable("category") String category,
             @PathVariable("id") int id,

@@ -21,7 +21,7 @@ public class HistoryController {
     }
 
     //@PostMapping(path = "/add-display-with-user")
-    @PostMapping(path = "/history/add/video")
+    @PostMapping(path = "/history/video")
     public ResponseEntity<?> addDisplayWithUser(@RequestBody UserVideo userVideo) {
 
         if (userVideo == null) {

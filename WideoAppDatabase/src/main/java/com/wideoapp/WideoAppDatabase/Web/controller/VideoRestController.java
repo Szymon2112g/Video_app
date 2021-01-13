@@ -20,7 +20,7 @@ public class VideoRestController {
 
     // Raczej do skasowania
     //@PostMapping(path = "/add-display")
-    @PostMapping(path = "/display/add")
+    @PostMapping(path = "/display")
     public ResponseEntity<?> addDisplay(@RequestBody VideoDto video) {
         VideoDto videoToSave = videoService.findById(video.getId());
         videoService.increaseDisplay(videoToSave);

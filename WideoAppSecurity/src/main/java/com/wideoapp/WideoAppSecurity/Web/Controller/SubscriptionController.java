@@ -22,7 +22,7 @@ public class SubscriptionController {
 
 
     //@GetMapping(path = "/get-subscription/{email}")
-    @GetMapping(path = "/subscription/get/{email}")
+    @GetMapping(path = "/subscription/{email}")
     public ResponseEntity<?> getSubscriptions(@PathVariable("email") String email) {
         if (email == null) {
             return ResponseEntity.badRequest().build();
