@@ -31,22 +31,8 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public String addUser(User user) {
-
-        Session currentSession = entityManager.unwrap(Session.class);
-
-        Query theQuery = currentSession
-                .createNativeQuery("insert into user(`id`,`first_name`,`last_name`,`email`,`password`)" +
-                        " values (0,:fName,:lName,:email,:password)");
-
-        theQuery.setParameter("fName",user.getFirstName());
-        theQuery.setParameter("lName",user.getLastName());
-        theQuery.setParameter("email",user.getEmail());
-        theQuery.setParameter("password",user.getPassword());
-
-        int response = theQuery.executeUpdate();
-
-        return "correct";
+    public void addUser(User user) {
+        entityManager.persist(user);
     }
 
     @Override

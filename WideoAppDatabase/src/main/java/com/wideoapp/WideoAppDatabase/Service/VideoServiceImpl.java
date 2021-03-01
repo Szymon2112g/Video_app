@@ -40,8 +40,8 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     @Transactional
-    public List<VideoDto> findByTableColumn(String category) {
-        List<Video> videoList = videoDAO.findByTableColumn(category);
+    public List<VideoDto> findLatestVideo() {
+        List<Video> videoList = videoDAO.findLatestVideo();
         List<VideoDto> videoDtoList = new ArrayList<>(videoList.size());
 
         for (Video video: videoList) {
@@ -51,6 +51,49 @@ public class VideoServiceImpl implements VideoService {
 
         return videoDtoList;
     }
+
+    @Override
+    @Transactional
+    public List<VideoDto> findTheMostDisplayVideo() {
+        List<Video> videoList = videoDAO.findTheMostDisplayVideo();
+        List<VideoDto> videoDtoList = new ArrayList<>(videoList.size());
+
+        for (Video video: videoList) {
+            VideoDto videoDto = videoMapper.videoToVideoDto(video);
+            videoDtoList.add(videoDto);
+        }
+
+        return videoDtoList;
+    }
+
+    @Override
+    @Transactional
+    public List<VideoDto> findTheMostLikesVideo() {
+        List<Video> videoList = videoDAO.findTheMostLikesVideo();
+        List<VideoDto> videoDtoList = new ArrayList<>(videoList.size());
+
+        for (Video video: videoList) {
+            VideoDto videoDto = videoMapper.videoToVideoDto(video);
+            videoDtoList.add(videoDto);
+        }
+
+        return videoDtoList;
+    }
+
+    @Override
+    @Transactional
+    public List<VideoDto> findTheMostDislikesVideo() {
+        List<Video> videoList = videoDAO.findTheMostDislikesVideo();
+        List<VideoDto> videoDtoList = new ArrayList<>(videoList.size());
+
+        for (Video video: videoList) {
+            VideoDto videoDto = videoMapper.videoToVideoDto(video);
+            videoDtoList.add(videoDto);
+        }
+
+        return videoDtoList;
+    }
+
 
     @Override
     @Transactional

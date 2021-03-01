@@ -6,11 +6,8 @@ import java.util.List;
 
 public interface UserDAO {
 
-    public List<User> findAll();
-
-    public String addUser(User user);
-
-    public User findByEmail(String email);
-
-    public User findUserById(int id);
+    List<User> findAll();
+    void addUser(User user);
+    User findByEmail(String email);
+    User findUserById(int id);
 }

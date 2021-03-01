@@ -2,6 +2,7 @@ package com.wideoapp.WideoAppDatabase.Web.controller;
 
 import com.wideoapp.WideoAppDatabase.Web.Model.ExtendedVideoInformation;
 import com.wideoapp.WideoAppDatabase.Service.VideoInformationService;
+import com.wideoapp.WideoAppDatabase.Web.Model.VideoDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,27 +16,43 @@ public class VideoInformationRestController {
 
     private VideoInformationService videoInformationService;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     public VideoInformationRestController(VideoInformationService videoInformationService) {
         this.videoInformationService = videoInformationService;
     }
 
-    //@GetMapping("/get-video-information/{category}")
-    @GetMapping("/videos-extended-information/category/{category}")
-    public List<ExtendedVideoInformation> findVideoByCategory(@PathVariable("category") String category) {
-        return videoInformationService.findByCategory(category);
+    @GetMapping("/videos/category/latest")
+    public List<ExtendedVideoInformation> findLatestVideo() {
+        return videoInformationService.findLatestVideo();
+    }
+
+    @GetMapping("/videos/category/most-display")
+    public List<ExtendedVideoInformation> findTheMostDisplayVideo() {
+        return videoInformationService.findTheMostDisplayVideo();
+    }
+
+    @GetMapping("/videos/category/most-likes")
+    public List<ExtendedVideoInformation> findTheMostLikesVideo() {
+        return videoInformationService.findTheMostLikesVideo();
+    }
+
+    @GetMapping("/videos/category/most-dislikes")
+    public List<ExtendedVideoInformation> findTheMostDislikesVideo() {
+        return videoInformationService.findTheMostDislikesVideo();
     }
 
     //@GetMapping("/get-video/{id}")
-    @GetMapping("/video/{id}")
+    @GetMapping("/video/watch/{id}")
     public ExtendedVideoInformation getVideo(@PathVariable("id") int id) {
-        return videoInformationService.findById(id);
+
+        ExtendedVideoInformation extendedVideoInformation = videoInformationService.findById(id);
+        videoInformationService.increaseDisplay(extendedVideoInformation);
+
+        return extendedVideoInformation;
     }
 
     //@GetMapping("/get-video-feed/ontime")
-    @GetMapping("/videos/ontime")
+    @GetMapping(path = "/videos/ontime", produces = { "application/json" })
     public List<ExtendedVideoInformation> getVideosOnTime() {
         return videoInformationService.getVideosOnTime();
     }
@@ -54,7 +71,7 @@ public class VideoInformationRestController {
 
     //@GetMapping("/user/get-video/{userid}")
     @GetMapping("/user/videos/{userid}")
-    public List<ExtendedVideoInformation> findVideoByUserId(@PathVariable("userid") int userId) {
+    public List<ExtendedVideoInformation> findVideosByUserId(@PathVariable("userid") int userId) {
         return videoInformationService.findVideoByUserId(userId);
     }
 }

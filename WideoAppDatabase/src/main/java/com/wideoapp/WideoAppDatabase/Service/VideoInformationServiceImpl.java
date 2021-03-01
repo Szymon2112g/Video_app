@@ -5,8 +5,6 @@ import com.wideoapp.WideoAppDatabase.DAO.VideoDAO;
 import com.wideoapp.WideoAppDatabase.Entity.User;
 import com.wideoapp.WideoAppDatabase.Web.Model.ExtendedVideoInformation;
 import com.wideoapp.WideoAppDatabase.Entity.Video;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +16,6 @@ public class VideoInformationServiceImpl implements VideoInformationService {
 
     private VideoDAO videoDAO;
     private UserDAO userDAO;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public VideoInformationServiceImpl(VideoDAO videoDAO, UserDAO userDAO) {
@@ -34,18 +30,61 @@ public class VideoInformationServiceImpl implements VideoInformationService {
         Video video = videoDAO.findById(id);
         User user = userDAO.findUserById(video.getUserId());
 
-        ExtendedVideoInformation extendedVideoInformation =
-                new ExtendedVideoInformation(video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
-                        user.getFirstName(),user.getLastName(), user.getId(), video.getDisplay(),
-                        video.getPhotoUrl(), video.getDate(), video.getLikes(), video.getDislikes());
+        ExtendedVideoInformation extendedVideoInformation = ExtendedVideoInformation.getBuilder()
+                .setId(video.getId())
+                .setUrl(video.getUrl())
+                .setTitle(video.getTitle())
+                .setDescription(video.getDescription())
+                .setFirstName(user.getFirstName())
+                .setLastName(user.getLastName())
+                .setUserId(user.getId())
+                .setDisplay(video.getDisplay())
+                .setPhotoUrl(video.getPhotoUrl())
+                .setDate(video.getDate())
+                .setLikes(video.getLikes())
+                .setDislikes(video.getDislikes())
+                .build();
 
         return extendedVideoInformation;
     }
 
     @Override
     @Transactional
-    public List<ExtendedVideoInformation> findByCategory(String category) {
-        List<Video> videoList = videoDAO.findByTableColumn(category);
+    public List<ExtendedVideoInformation> findLatestVideo() {
+        List<Video> videoList = videoDAO.findLatestVideo();
+
+        List<ExtendedVideoInformation> extendedVideoInformations =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformations;
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findTheMostDisplayVideo() {
+        List<Video> videoList = videoDAO.findTheMostDisplayVideo();
+
+        List<ExtendedVideoInformation> extendedVideoInformations =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformations;
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findTheMostLikesVideo() {
+        List<Video> videoList = videoDAO.findTheMostLikesVideo();
+
+        List<ExtendedVideoInformation> extendedVideoInformations =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformations;
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findTheMostDislikesVideo() {
+        List<Video> videoList = videoDAO.findTheMostDislikesVideo();
 
         List<ExtendedVideoInformation> extendedVideoInformations =
                 swapVideoListToExtendedVideoInformationList(videoList);
@@ -89,6 +128,15 @@ public class VideoInformationServiceImpl implements VideoInformationService {
 
     @Override
     @Transactional
+    public void increaseDisplay(ExtendedVideoInformation theVideo) {
+        Video video = new Video();
+        video.setId(theVideo.getId());
+        video.setDisplay(theVideo.getDisplay());
+        videoDAO.increaseDisplay(video);
+    }
+
+    @Override
+    @Transactional
     public List<ExtendedVideoInformation> findVideoByUserId(int userId) {
 
         List<Video> videoList = videoDAO.findVideoByUserId(userId);
@@ -104,10 +152,20 @@ public class VideoInformationServiceImpl implements VideoInformationService {
         for(Video video: videoList) {
             User user = userDAO.findUserById(video.getUserId());
 
-            ExtendedVideoInformation extendedVideoInformation =
-                    new ExtendedVideoInformation(video.getId(), video.getUrl(), video.getTitle(), video.getDescription(),
-                            user.getFirstName(),user.getLastName(), user.getId(), video.getDisplay(),
-                            video.getPhotoUrl(), video.getDate(), video.getLikes(), video.getDislikes());
+            ExtendedVideoInformation extendedVideoInformation = ExtendedVideoInformation.getBuilder()
+                    .setId(video.getId())
+                    .setUrl(video.getUrl())
+                    .setTitle(video.getTitle())
+                    .setDescription(video.getDescription())
+                    .setFirstName(user.getFirstName())
+                    .setLastName(user.getLastName())
+                    .setUserId(user.getId())
+                    .setDisplay(video.getDisplay())
+                    .setPhotoUrl(video.getPhotoUrl())
+                    .setDate(video.getDate())
+                    .setLikes(video.getLikes())
+                    .setDislikes(video.getDislikes())
+                    .build();
 
             extendedVideoInformations.add(extendedVideoInformation);
         }

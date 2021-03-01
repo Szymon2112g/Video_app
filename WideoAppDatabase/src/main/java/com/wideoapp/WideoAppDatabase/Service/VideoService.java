@@ -7,7 +7,10 @@ import java.util.List;
 public interface VideoService {
     public VideoDto findById(int id);
     public void increaseDisplay(VideoDto theVideo);
-    public List<VideoDto> findByTableColumn(String category);
+    List<VideoDto> findLatestVideo();
+    List<VideoDto> findTheMostDisplayVideo();
+    List<VideoDto> findTheMostLikesVideo();
+    List<VideoDto> findTheMostDislikesVideo();
     public List<VideoDto> findAllOrderByDateDesc();
     public List<String> findTipsByKey(String key);
     public List<VideoDto> findVideoByKey(String key);

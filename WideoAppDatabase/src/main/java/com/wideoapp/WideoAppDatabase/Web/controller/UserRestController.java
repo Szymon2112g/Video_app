@@ -9,12 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 //@CrossOrigin( origins = {"http://localhost:4200", "http://localhost:8100"})
 public class UserRestController {
 
     private UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Autowired

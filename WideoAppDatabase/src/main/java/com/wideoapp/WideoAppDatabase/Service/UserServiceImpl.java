@@ -22,9 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public String addUser(UserDto userDTO) {
+    public void addUser(UserDto userDTO) {
         User user = userMapper.userDtoToUser(userDTO);
-        return userDAO.addUser(user);
+        userDAO.addUser(user);
     }
 
     @Override
