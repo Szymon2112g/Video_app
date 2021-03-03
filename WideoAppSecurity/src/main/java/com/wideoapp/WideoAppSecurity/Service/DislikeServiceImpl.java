@@ -9,6 +9,8 @@ import com.wideoapp.WideoAppSecurity.Entity.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class DislikeServiceImpl implements DislikeService {
 
@@ -25,40 +27,73 @@ public class DislikeServiceImpl implements DislikeService {
 
     @Override
     public void addDislike(int videoId, String email) {
-        Video videoToSave = videoDao.findById(videoId);
+
+        User user = findUserByEmail(email);
+
+        if (dislikesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
+            return;
+        }
+
+        Video videoToSave = findVideoById(videoId);
+
         int dislikes = videoToSave.getDislikes();
         videoToSave.setDislikes(dislikes + 1);
         videoDao.save(videoToSave);
 
-        User user = userDao.findByEmail(email);
         user.getDislikeList().add(new Dislike(videoId, user.getId()));
         userDao.save(user);
     }
 
     @Override
-    public boolean isDislikeToVideo(int id, String email) {
+    public boolean isDislikeToVideo(int videoId, String email) {
 
-        User user = userDao.findByEmail(email);
+        User user = findUserByEmail(email);
 
-        for(Dislike dislike : user.getDislikeList()) {
-            if(dislike.getVideoId() == id)
-            {
-                return true;
-            }
+        if (!dislikesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     @Override
     public void subtractDislike(int videoId, String email) {
-        User user = userDao.findByEmail(email);
+
+        User user = findUserByEmail(email);
+
+        if (!dislikesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
+            return;
+        }
+
         dislikesDao.removeByVideoIdAndUserId(videoId, user.getId());
 
-        Video videoToSave = videoDao.findById(videoId);
+        Video videoToSave = findVideoById(videoId);
+
         int dislikes = videoToSave.getDislikes() - 1;
         videoToSave.setDislikes(dislikes);
 
         videoDao.save(videoToSave);
+    }
+
+    private Video findVideoById(int id) {
+
+        Optional<Video> videoToSaveOptional = videoDao.findById(id);
+
+        if (!videoToSaveOptional.isPresent()) {
+            throw new IllegalStateException("No found Video");
+        }
+
+        return videoToSaveOptional.get();
+    }
+
+    private User findUserByEmail(String email) {
+
+        Optional<User> userOptional = userDao.findByEmail(email);
+
+        if (!userOptional.isPresent()) {
+            throw new IllegalStateException("No found user");
+        }
+
+        return userOptional.get();
     }
 }

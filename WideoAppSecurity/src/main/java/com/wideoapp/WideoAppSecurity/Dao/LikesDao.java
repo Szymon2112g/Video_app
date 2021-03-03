@@ -11,8 +11,11 @@ import java.util.List;
 public interface LikesDao extends JpaRepository<Likes, Long> {
 
     @Transactional
-    public void removeByVideoIdAndUserId(int VideoId, int UserId);
+    void removeByVideoIdAndUserId(int VideoId, int UserId);
 
     @Transactional
-    public List<Likes> findAllByUserIdOrderByIdDesc(int userId);
+    List<Likes> findAllByUserIdOrderByIdDesc(int userId);
+
+    boolean existsByVideoIdAndUserId(int videoId, int userId);
+
 }

@@ -17,20 +17,21 @@ import java.util.*;
 //@CrossOrigin(origins="http://localhost:4200")
 public class VideoController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private WideoAppFS wideoAppFS;
     private VideoService videoService;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    public VideoController(WideoAppFS wideoAppFS, VideoService videoService) {
+    public VideoController(WideoAppFS wideoAppFS, VideoService videoService, JwtTokenService jwtTokenService) {
         this.wideoAppFS = wideoAppFS;
         this.videoService = videoService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     //@PostMapping(path = "/send-video-to-db")
     @PostMapping(path = "/video/file/db")
     public ResponseEntity<?> sendVideoToDB(@RequestBody SmallVideoInformation smallVideoInformation) {
+
         if (smallVideoInformation == null) {
             ResponseEntity.badRequest().build();
         }
@@ -40,47 +41,61 @@ public class VideoController {
     }
 
     //@GetMapping(path = "/get-video-feed/{category}/{id}")
-    @GetMapping(path = "/video/feed/{category}/{id}")
-    public ResponseEntity<?> getVideoFeed(
-            @PathVariable("category") String category,
-            @PathVariable("id") int id,
-            @RequestParam("email") String email) {
+    @GetMapping(path = "/video/feed/history/{id}")
+    public ResponseEntity<?> getVideoHistoryFeed(
+            @RequestHeader Map<String, String> header,
+            @PathVariable("id") int id) {
 
-        if (category == null || email == null) {
+        if (id < 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        if (!checkIfStringIsEmail(email)) {
-            ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        switch (category) {
-            case "history":
-                return ResponseEntity.ok(videoService.getVideoFeedHistory(id, email));
-            case "liked":
-                return ResponseEntity.ok(videoService.getVideoFeedLiked(id, email));
-            case "subscription":
-                return ResponseEntity.ok(videoService.getVideoFeedSubscription(id, email));
-        }
+        List<ExtendedVideoInformation> historyFeed = videoService.getVideoFeedHistory(id, email);
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(historyFeed);
     }
 
-    @Deprecated
+    //@GetMapping(path = "/get-video-feed/{category}/{id}")
+    @GetMapping(path = "/video/feed/liked/{id}")
+    public ResponseEntity<?> getVideoLikeFeed(
+            @RequestHeader Map<String, String> header,
+            @PathVariable("id") int id) {
+
+        if (id < 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
+
+        List<ExtendedVideoInformation> likeFeed = videoService.getVideoFeedLiked(id, email);
+
+        return ResponseEntity.ok(likeFeed);
+    }
+
+    //@GetMapping(path = "/get-video-feed/{category}/{id}")
+    @GetMapping(path = "/video/feed/Subscription/{id}")
+    public ResponseEntity<?> getVideoSubscriptionFeed(
+            @RequestHeader Map<String, String> header,
+            @PathVariable("id") int id) {
+
+        if (id < 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
+
+        List<ExtendedVideoInformation> subscriptionFeed = videoService.getVideoFeedSubscription(id, email);
+
+        return ResponseEntity.ok(subscriptionFeed);
+    }
+
     //@PostMapping(path = "/send-file", consumes = {"multipart/form-data"})
     @PostMapping(path = "/video/send-file", consumes = {"multipart/form-data"})
     public ResponseEntity<?> handleFileUpload(@RequestBody MultipartFile file) {
 
         String response = wideoAppFS.handleFileUpload(file);
         return ResponseEntity.ok(new ResponseMessage(response));
-    }
-
-    private boolean checkIfStringIsNumber(String number) {
-        return number.matches("\\d+");
-    }
-
-    @Deprecated
-    private boolean checkIfStringIsEmail(String email) {
-        return true;
     }
 }

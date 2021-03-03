@@ -11,5 +11,5 @@ import java.util.List;
 public interface HistoryDao extends JpaRepository<History, Long> {
 
     @Transactional
-    public List<History> findAllByUserIdOrderByIdDesc(int userId);
+    List<History> findAllByUserIdOrderByIdDesc(int userId);
 }

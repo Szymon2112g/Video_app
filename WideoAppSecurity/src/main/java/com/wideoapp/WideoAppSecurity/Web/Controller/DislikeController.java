@@ -1,7 +1,7 @@
 package com.wideoapp.WideoAppSecurity.Web.Controller;
 
 import com.wideoapp.WideoAppSecurity.Service.DislikeService;
-import com.wideoapp.WideoAppSecurity.Web.Model.ResponseMessage;
+import com.wideoapp.WideoAppSecurity.Service.JwtTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,89 +13,48 @@ import java.util.Map;
 public class DislikeController {
 
     private DislikeService dislikeService;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    public DislikeController(DislikeService dislikeService) {
+    public DislikeController(DislikeService dislikeService, JwtTokenService jwtTokenService) {
         this.dislikeService = dislikeService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     //@PostMapping(path = "/add-dislike-to-video", consumes = "application/json")
-    @PostMapping(path = "/dislike/add/video", consumes = "application/json")
-    public ResponseEntity<?> addDislikeToVideo(@RequestBody Map<String, Object> body) {
+    @PostMapping(path = "/dislike/add/video/{videoId}", consumes = "application/json")
+    public ResponseEntity<?> addDislikeToVideo(@RequestHeader Map<String, String> header,
+                                               @PathVariable int videoId) {
 
-        if (body.get("id") == null || body.get("email") == null) {
-            return ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        if (!checkIfStringIsNumber(body.get(("id")).toString())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (checkIfStringIsEmail(body.get("email").toString())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        int id = Integer.parseInt(body.get("id").toString());
-
-        String email = body.get("email").toString();
-
-        dislikeService.addDislike(id, email);
+        dislikeService.addDislike(videoId, email);
 
         return ResponseEntity.ok().build();
     }
 
+
     //@GetMapping(path = "/is-dislike-to-video")
-    @GetMapping(path = "/dislike/video")
-    public ResponseEntity<?> isDislikeToVideoRest(@RequestParam("id") String idString, @RequestParam("email") String email) {
+    @GetMapping(path = "/dislike/video/{videoId}")
+    public ResponseEntity<?> isDislikeVideo(@RequestHeader Map<String, String> header,
+                                                  @PathVariable("videoId") int videoId) {
 
-        if (idString == null || email == null) {
-            return ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        if (!checkIfStringIsNumber(idString)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (!checkIfStringIsEmail(email)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        int id = Integer.parseInt(idString);
-        boolean isDislike = dislikeService.isDislikeToVideo(id, email);
+        boolean isDislike = dislikeService.isDislikeToVideo(videoId, email);
 
         return ResponseEntity.ok(isDislike);
     }
 
     //@PostMapping(path = "/subtract-dislike-to-video", consumes = "application/json")
-    @PostMapping(path = "/dislike/subtract/video", consumes = "application/json")
-    public ResponseEntity<?> subtractDislikeToVideo(@RequestBody Map<String, Object> body) {
+    @PostMapping(path = "/dislike/subtract/video/{videoId}", consumes = "application/json")
+    public ResponseEntity<?> subtractDislikeFromVideo(@RequestHeader Map<String, String> header,
+                                                    @PathVariable int videoId) {
 
-        if (body.get("id") == null || body.get("email") == null) {
-            return ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        if (!checkIfStringIsNumber(body.get(("id")).toString())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (checkIfStringIsEmail(body.get("email").toString())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        int id = Integer.parseInt(body.get("id").toString());
-        String email = body.get("email").toString();
-
-        dislikeService.subtractDislike(id, email);
+        dislikeService.subtractDislike(videoId, email);
 
         return ResponseEntity.ok().build();
-    }
-
-    private boolean checkIfStringIsNumber(String number) {
-        return number.matches("\\d+");
-    }
-
-    @Deprecated
-    private boolean checkIfStringIsEmail(String email) {
-        return true;
     }
 }

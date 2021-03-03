@@ -1,6 +1,7 @@
 package com.wideoapp.WideoAppSecurity.Web.Model;
 
 public class ExtendedVideoInformation {
+
     private int id;
     private String url;
     private String title;

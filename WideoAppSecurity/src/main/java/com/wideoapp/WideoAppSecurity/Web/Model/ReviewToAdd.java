@@ -1,25 +1,15 @@
 package com.wideoapp.WideoAppSecurity.Web.Model;
 
 public class ReviewToAdd {
-    private String email;
     private String comment;
     private int videoId;
 
-    public ReviewToAdd(String email, String comment, int videoId) {
-        this.email = email;
+    public ReviewToAdd(String comment, int videoId) {
         this.comment = comment;
         this.videoId = videoId;
     }
 
     public ReviewToAdd() {
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getComment() {

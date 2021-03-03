@@ -39,7 +39,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        logger.debug("Authentication Request For '{}", httpServletRequest.getRequestURL());
+        logger.info("Authentication Request For '{}", httpServletRequest.getRequestURL());
 
         final String requestTokenHeader = httpServletRequest.getHeader(this.tokenHeader);
 
@@ -59,7 +59,8 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
         }
 
-        logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
+        logger.info("JWT_TOKEN_USERNAME_VALUE '{}'", username);
+
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.jwtInMemoryUserDetailsService.loadUserByUsername(username);

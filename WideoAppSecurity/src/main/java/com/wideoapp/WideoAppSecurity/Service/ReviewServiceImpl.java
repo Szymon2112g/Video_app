@@ -10,6 +10,8 @@ import com.wideoapp.WideoAppSecurity.Web.Model.ReviewToAdd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
@@ -25,12 +27,35 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void save(ReviewToAdd reviewToAdd) {
-        Video video = videoDao.findById(reviewToAdd.getVideoId());
-        User user = userDao.findByEmail(reviewToAdd.getEmail());
+    public void addReview(String email, ReviewToAdd reviewToAdd) {
+
+        Video video = findVideoById(reviewToAdd.getVideoId());
+        User user = findUserByEmail(email);
 
         Review review = new Review(reviewToAdd.getComment(), user.getId(), video.getId());
 
         reviewDAO.save(review);
+    }
+
+    private Video findVideoById(int id) {
+
+        Optional<Video> videoToSaveOptional = videoDao.findById(id);
+
+        if (!videoToSaveOptional.isPresent()) {
+            throw new IllegalStateException("No found Video");
+        }
+
+        return videoToSaveOptional.get();
+    }
+
+    private User findUserByEmail(String email) {
+
+        Optional<User> userOptional = userDao.findByEmail(email);
+
+        if (!userOptional.isPresent()) {
+            throw new IllegalStateException("No found user");
+        }
+
+        return userOptional.get();
     }
 }

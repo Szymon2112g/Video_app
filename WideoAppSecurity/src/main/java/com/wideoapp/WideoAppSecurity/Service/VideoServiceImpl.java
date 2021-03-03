@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -30,7 +31,14 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public void addSpecificVideoToDB(SmallVideoInformation smallVideoInformation) {
-        User user = userDao.findByEmail(smallVideoInformation.getEmail());
+
+        Optional<User> userOptional = userDao.findByEmail(smallVideoInformation.getEmail());
+
+        if (!userOptional.isPresent()) {
+            throw new IllegalStateException("No found user");
+        }
+
+        User user = userOptional.get();
 
         String currentDate = (java.time.LocalDate.now()).toString();
 
@@ -54,32 +62,38 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<ExtendedVideoInformation> getVideoFeedHistory(int id, String email) {
 
-        User user = userDao.findByEmail(email);
+        User user = findUserByEmail(email);
+
         List<History> historyList = historyDao.findAllByUserIdOrderByIdDesc(user.getId());
-        List<ExtendedVideoInformation> videoInformations = new ArrayList<>();
+
+        List<ExtendedVideoInformation> videoInformation = new ArrayList<>();
 
         for (int i = (id-1)*10; i < id*10; i++) {
 
             if(i >= historyList.size()) {
                 continue;
             }
-            Video video = videoDao.findById(historyList.get(i).getVideoId());
+
+            Video video = findVideoById(historyList.get(i).getVideoId());
+
             User userVideo = userDao.findById(video.getUserId());
 
             ExtendedVideoInformation extendedVideoInformation = createExtendedVideoInformation(userVideo, video);
 
-            videoInformations.add(extendedVideoInformation);
+            videoInformation.add(extendedVideoInformation);
         }
 
-        return videoInformations;
+        return videoInformation;
     }
 
     @Override
     public List<ExtendedVideoInformation> getVideoFeedLiked(int id, String email) {
 
-        User user = userDao.findByEmail(email);
+        User user = findUserByEmail(email);
+
         List<Likes> likes = likesDao.findAllByUserIdOrderByIdDesc(user.getId());
-        List<ExtendedVideoInformation> videoInformations = new ArrayList<>();
+
+        List<ExtendedVideoInformation> videoInformation = new ArrayList<>();
 
         for (int i = (id-1)*10; i < id*10; i++) {
 
@@ -87,24 +101,27 @@ public class VideoServiceImpl implements VideoService {
                 continue;
             }
 
-            Video video = videoDao.findById(likes.get(i).getVideoId());
+            Video video = findVideoById(likes.get(i).getVideoId());
+
             User userVideo = userDao.findById(video.getUserId());
 
             ExtendedVideoInformation extendedVideoInformation = createExtendedVideoInformation(userVideo, video);
 
-            videoInformations.add(extendedVideoInformation);
+            videoInformation.add(extendedVideoInformation);
         }
 
-        return videoInformations;
+        return videoInformation;
     }
 
     @Override
     public List<ExtendedVideoInformation> getVideoFeedSubscription(int id, String email) {
 
-        User user = userDao.findByEmail(email);
+        User user = findUserByEmail(email);
+
         List<Subscribe> subscribes = subscribeDao.findAllByUserId(user.getId());
 
-        List<ExtendedVideoInformation> videoInformations = new ArrayList<>();
+        List<ExtendedVideoInformation> videoInformation = new ArrayList<>();
+
         List<Video> videoList = new ArrayList<>();
 
         for(Subscribe tmpSubscribe: subscribes) {
@@ -125,10 +142,10 @@ public class VideoServiceImpl implements VideoService {
 
             ExtendedVideoInformation extendedVideoInformation = createExtendedVideoInformation(userVideo, video);
 
-            videoInformations.add(extendedVideoInformation);
+            videoInformation.add(extendedVideoInformation);
         }
 
-        return videoInformations;
+        return videoInformation;
     }
 
     private ExtendedVideoInformation createExtendedVideoInformation(User user, Video video) {
@@ -150,4 +167,25 @@ public class VideoServiceImpl implements VideoService {
         return extendedVideoInformation;
     }
 
+    private Video findVideoById(int id) {
+
+        Optional<Video> videoToSaveOptional = videoDao.findById(id);
+
+        if (!videoToSaveOptional.isPresent()) {
+            throw new IllegalStateException("No found Video");
+        }
+
+        return videoToSaveOptional.get();
+    }
+
+    private User findUserByEmail(String email) {
+
+        Optional<User> userOptional = userDao.findByEmail(email);
+
+        if (!userOptional.isPresent()) {
+            throw new IllegalStateException("No found user");
+        }
+
+        return userOptional.get();
+    }
 }

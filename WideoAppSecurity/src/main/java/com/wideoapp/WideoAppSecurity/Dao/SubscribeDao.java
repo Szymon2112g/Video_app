@@ -11,8 +11,8 @@ import java.util.List;
 public interface SubscribeDao extends JpaRepository<Subscribe, Long> {
 
     @Transactional
-    public void removeByUserSubscriptionIdAndUserId(int VideoId, int UserId);
+    void removeByUserSubscriptionIdAndUserId(int VideoId, int UserId);
 
     @Transactional
-    public List<Subscribe> findAllByUserId(int userId);
+    List<Subscribe> findAllByUserId(int userId);
 }

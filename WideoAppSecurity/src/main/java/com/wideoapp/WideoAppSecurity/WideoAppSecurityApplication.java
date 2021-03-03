@@ -1,6 +1,8 @@
 package com.wideoapp.WideoAppSecurity;
 
-import brave.sampler.Sampler;
+//import brave.sampler.Sampler;
+//import com.wideoapp.WideoAppSecurity.Dao.UserDao;
+//import com.wideoapp.WideoAppSecurity.Jwt.JwtInMemoryUserDetailsService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -16,8 +18,8 @@ public class WideoAppSecurityApplication {
 		SpringApplication.run(WideoAppSecurityApplication.class, args);
 	}
 
-	@Bean
-	public Sampler defaultSampler(){
-		return Sampler.ALWAYS_SAMPLE;
-	}
+//	@Bean
+//	public Sampler defaultSampler(){
+//		return Sampler.ALWAYS_SAMPLE;
+//	}
 }

@@ -35,8 +35,6 @@ public class JwtAuthenticationRestController {
     @Autowired
     private UserDetailsService jwtInMemoryUserDetailsService;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
             throws AuthenticationException {
@@ -55,8 +53,6 @@ public class JwtAuthenticationRestController {
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String authToken = request.getHeader(tokenHeader);
         final String token = authToken.substring(7);
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        JwtUserDetails user = (JwtUserDetails) jwtInMemoryUserDetailsService.loadUserByUsername(username);
 
         if (jwtTokenUtil.canTokenBeRefreshed(token)) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);

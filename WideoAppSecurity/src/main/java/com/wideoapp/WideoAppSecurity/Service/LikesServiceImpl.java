@@ -9,6 +9,8 @@ import com.wideoapp.WideoAppSecurity.Entity.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class LikesServiceImpl implements LikesService {
 
@@ -25,12 +27,19 @@ public class LikesServiceImpl implements LikesService {
 
     @Override
     public void addLike(int videoId, String email) {
-        Video video = videoDao.findById(videoId);
+
+        User user = findUserByEmail(email);
+
+        if (likesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
+            return;
+        }
+
+        Video video = findVideoById(videoId);
+
         int likes = video.getLikes();
         video.setLikes(likes + 1);
         videoDao.save(video);
 
-        User user = userDao.findByEmail(email);
         user.getLikeList().add(new Likes(videoId, user.getId()));
         userDao.save(user);
     }
@@ -38,28 +47,54 @@ public class LikesServiceImpl implements LikesService {
     @Override
     public boolean isLikeToVideo(int id, String email) {
 
-        User user = userDao.findByEmail(email);
+        User user = findUserByEmail(email);
 
-        for(Likes like : user.getLikeList()) {
-            if(like.getVideoId() == id)
-            {
-                return true;
-            }
+        if (!likesDao.existsByVideoIdAndUserId(id, user.getId())) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     @Override
     public void subtractLike(int videoId, String email) {
-        User user = userDao.findByEmail(email);
+
+
+        User user = findUserByEmail(email);
+
+        if (!likesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
+            return;
+        }
 
         likesDao.removeByVideoIdAndUserId(videoId, user.getId());
 
-        Video videoToSave = videoDao.findById(videoId);
+        Video videoToSave = findVideoById(videoId);
+
         int likes = videoToSave.getLikes() - 1;
         videoToSave.setLikes(likes);
 
         videoDao.save(videoToSave);
+    }
+
+    private Video findVideoById(int id) {
+
+        Optional<Video> videoToSaveOptional = videoDao.findById(id);
+
+        if (!videoToSaveOptional.isPresent()) {
+            throw new IllegalStateException("No found Video");
+        }
+
+        return videoToSaveOptional.get();
+    }
+
+    private User findUserByEmail(String email) {
+
+        Optional<User> userOptional = userDao.findByEmail(email);
+
+        if (!userOptional.isPresent()) {
+            throw new IllegalStateException("No found user");
+        }
+
+        return userOptional.get();
     }
 }

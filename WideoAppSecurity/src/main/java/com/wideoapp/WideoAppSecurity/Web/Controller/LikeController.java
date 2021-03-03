@@ -1,5 +1,6 @@
 package com.wideoapp.WideoAppSecurity.Web.Controller;
 
+import com.wideoapp.WideoAppSecurity.Service.JwtTokenService;
 import com.wideoapp.WideoAppSecurity.Service.LikesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,87 +13,47 @@ import java.util.Map;
 public class LikeController {
 
     private LikesService likesService;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    public LikeController(LikesService likesService) {
+    public LikeController(LikesService likesService, JwtTokenService jwtTokenService) {
         this.likesService = likesService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     //@PostMapping(path = "/add-like-to-video", consumes = "application/json")
-    @PostMapping(path = "/like/add/video", consumes = "application/json")
-    public ResponseEntity<?> addLikeToVideo(@RequestBody Map<String, Object> body) {
+    @PostMapping(path = "/like/add/video/{videoId}", consumes = "application/json")
+    public ResponseEntity<?> addLikeToVideo(@RequestHeader Map<String, String> header,
+                                            @PathVariable int videoId) {
 
-        if (body.get("id") == null || body.get("email") == null) {
-            return ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        if (!checkIfStringIsNumber(body.get(("id")).toString())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (checkIfStringIsEmail(body.get("email").toString())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        int id = Integer.parseInt(body.get("id").toString());
-        String email = body.get("email").toString();
-
-        likesService.addLike(id, email);
+        likesService.addLike(videoId, email);
 
         return ResponseEntity.ok().build();
     }
 
     //@GetMapping(path = "/is-like-to-video")
-    @GetMapping(path = "/like/video")
-    public ResponseEntity<?> isLikeToVideoRest(@RequestParam("id") String idString, @RequestParam("email") String email) {
+    @GetMapping(path = "/like/video/{videoId}")
+    public ResponseEntity<?> isLikeToVideoRest(@RequestHeader Map<String, String> header,
+                                               @PathVariable int videoId) {
 
-        if (idString == null || email == null) {
-            return ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        if (!checkIfStringIsNumber(idString)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (checkIfStringIsEmail(email)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        int id = Integer.parseInt(idString);
-        boolean isLike = likesService.isLikeToVideo(id, email);
+        boolean isLike = likesService.isLikeToVideo(videoId, email);
 
         return ResponseEntity.ok(isLike);
     }
 
     //@PostMapping(path = "/subtract-like-to-video", consumes = "application/json")
-    @PostMapping(path = "/like/subtract/video", consumes = "application/json")
-    public ResponseEntity<?> subtractLikeToVideo(@RequestBody Map<String, Object> body) {
-        if (body.get("id") == null || body.get("email") == null) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping(path = "/like/subtract/video/{videoId}", consumes = "application/json")
+    public ResponseEntity<?> subtractLikeToVideo(@RequestHeader Map<String, String> header,
+                                                 @PathVariable int videoId) {
 
-        if (!checkIfStringIsNumber(body.get(("id")).toString())) {
-            return ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        if (checkIfStringIsEmail(body.get("email").toString())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        int id = Integer.parseInt(body.get("id").toString());
-        String email = body.get("email").toString();
-
-        likesService.subtractLike(id, email);
+        likesService.subtractLike(videoId, email);
 
         return ResponseEntity.ok().build();
-    }
-
-    private boolean checkIfStringIsNumber(String number) {
-        return number.matches("\\d+");
-    }
-
-    @Deprecated
-    private boolean checkIfStringIsEmail(String email) {
-        return true;
     }
 }

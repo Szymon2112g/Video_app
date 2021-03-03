@@ -1,8 +1,13 @@
 package com.wideoapp.WideoAppSecurity.Web.Controller;
 
+import com.wideoapp.WideoAppSecurity.Jwt.JwtTokenUtil;
+import com.wideoapp.WideoAppSecurity.Service.JwtTokenService;
 import com.wideoapp.WideoAppSecurity.Service.SubscribeService;
 import com.wideoapp.WideoAppSecurity.Web.Model.SubscribedUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,80 +19,53 @@ import java.util.Map;
 public class SubscriptionController {
 
     private SubscribeService subscribeService;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    public SubscriptionController(SubscribeService subscribeService) {
+    public SubscriptionController(SubscribeService subscribeService, JwtTokenService jwtTokenService) {
         this.subscribeService = subscribeService;
+        this.jwtTokenService = jwtTokenService;
     }
 
-
     //@GetMapping(path = "/get-subscription/{email}")
-    @GetMapping(path = "/subscription/{email}")
-    public ResponseEntity<?> getSubscriptions(@PathVariable("email") String email) {
-        if (email == null) {
-            return ResponseEntity.badRequest().build();
-        }
+    @GetMapping(path = "/subscription/")
+    public ResponseEntity<?> getUserSubscriptions(@RequestHeader Map<String, String> header) {
 
-        if (!checkIfStringIsEmail(email)) {
-            return ResponseEntity.badRequest().build();
-        }
-
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
         List<SubscribedUser> subscribes = subscribeService.getUserSubscriptions(email);
+
         return ResponseEntity.ok(subscribes);
     }
 
     //@PostMapping(path = "/add-subscription")
-    @PostMapping(path = "/subscription/add")
-    public ResponseEntity<?> addSubscription(@RequestBody Map<String, Object> body) {
-        if (body.get("userId") == null || body.get("email") == null) {
+    @PostMapping(path = "/subscription/add/user/{userId}")
+    public ResponseEntity<?> addSubscription(@RequestHeader Map<String, String> header,
+                                             @PathVariable int userId) {
+
+        if (userId < 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        if (!checkIfStringIsNumber(body.get(("userId")).toString())) {
-            return ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        if (checkIfStringIsEmail(body.get("email").toString())) {
-            return ResponseEntity.badRequest().build();
-        }
+        subscribeService.addSubscription(email, userId);
 
-        int userVideoId = Integer.parseInt(body.get("userId").toString());
-        String email = body.get("email").toString();
-
-        subscribeService.addSubscription(email, userVideoId);
         return ResponseEntity.ok().build();
     }
 
     //@PostMapping(path = "/subtract-subscription")
-    @PostMapping(path = "/subscription/subtract")
-    public ResponseEntity<?> subtractSubscription(@RequestBody Map<String, Object> body) {
-        if (body.get("userId") == null || body.get("email") == null) {
+    @PostMapping(path = "/subscription/subtract/user/{userId}")
+    public ResponseEntity<?> subtractSubscription(@RequestHeader Map<String, String> header,
+                                                  @PathVariable int userId) {
+
+        if (userId < 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        if (!checkIfStringIsNumber(body.get(("userId")).toString())) {
-            return ResponseEntity.badRequest().build();
-        }
+        String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        if (checkIfStringIsEmail(body.get("email").toString())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        int userVideoId = Integer.parseInt(body.get("userId").toString());
-        String email = body.get("email").toString();
-
-        subscribeService.subtractSubscription(email, userVideoId);
+        subscribeService.subtractSubscription(email, userId);
         return ResponseEntity.ok().build();
     }
-
-    private boolean checkIfStringIsNumber(String number) {
-        return number.matches("\\d+");
-    }
-
-    @Deprecated
-    private boolean checkIfStringIsEmail(String email) {
-        return true;
-    }
-
 }
