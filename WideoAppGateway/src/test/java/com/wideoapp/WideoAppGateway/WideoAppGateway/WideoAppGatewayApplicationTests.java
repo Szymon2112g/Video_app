@@ -1,10 +1,10 @@
-package com.wideoapp.WideoAppZuul;
+package com.wideoapp.WideoAppGateway.WideoAppGateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WideoAppZuulApplicationTests {
+class WideoAppGatewayApplicationTests {
 
 	@Test
 	void contextLoads() {

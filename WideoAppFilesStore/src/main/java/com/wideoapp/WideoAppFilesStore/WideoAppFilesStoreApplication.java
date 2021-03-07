@@ -1,6 +1,5 @@
 package com.wideoapp.WideoAppFilesStore;
 
-import brave.sampler.Sampler;
 import com.wideoapp.WideoAppFilesStore.Storage.StorageProperties;
 import com.wideoapp.WideoAppFilesStore.Storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
@@ -26,8 +25,4 @@ public class WideoAppFilesStoreApplication {
 		};
 	}
 
-	@Bean
-	public Sampler defaultSampler(){
-		return Sampler.ALWAYS_SAMPLE;
-	}
 }

@@ -46,7 +46,7 @@ public class VideoController {
             @RequestHeader Map<String, String> header,
             @PathVariable("id") int id) {
 
-        if (id < 0) {
+        if (id <= 0) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -63,7 +63,7 @@ public class VideoController {
             @RequestHeader Map<String, String> header,
             @PathVariable("id") int id) {
 
-        if (id < 0) {
+        if (id <= 0) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -80,7 +80,7 @@ public class VideoController {
             @RequestHeader Map<String, String> header,
             @PathVariable("id") int id) {
 
-        if (id < 0) {
+        if (id <= 0) {
             return ResponseEntity.badRequest().build();
         }
 

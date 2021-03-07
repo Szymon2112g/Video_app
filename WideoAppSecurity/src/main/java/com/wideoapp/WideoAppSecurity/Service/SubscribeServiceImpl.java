@@ -32,8 +32,10 @@ public class SubscribeServiceImpl implements SubscribeService{
 
         List<SubscribedUser> subscribes = new ArrayList<>();
 
-        for(Subscribe subscribe : user.getSubscribeList()) {
-            User subUser = userDao.findById(subscribe.getUserSubscriptionId());
+        List<Subscribe> foundSubscribe = subscribeDao.findAllByUserId(user.getId());
+
+        for(Subscribe subscribe : foundSubscribe) {
+            User subUser = findUserById(subscribe.getUserSubscriptionId());
             String name = subUser.getFirstName() + " " + subUser.getLastName();
             SubscribedUser subscribedUser = new SubscribedUser(subUser.getId(), subUser.getEmail(), name);
             subscribes.add(subscribedUser);
@@ -63,6 +65,17 @@ public class SubscribeServiceImpl implements SubscribeService{
     private User findUserByEmail(String email) {
 
         Optional<User> userOptional = userDao.findByEmail(email);
+
+        if (!userOptional.isPresent()) {
+            throw new IllegalStateException("No found user");
+        }
+
+        return userOptional.get();
+    }
+
+    private User findUserById(int id) {
+
+        Optional<User> userOptional = userDao.findById(id);
 
         if (!userOptional.isPresent()) {
             throw new IllegalStateException("No found user");

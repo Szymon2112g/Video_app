@@ -76,7 +76,7 @@ public class VideoServiceImpl implements VideoService {
 
             Video video = findVideoById(historyList.get(i).getVideoId());
 
-            User userVideo = userDao.findById(video.getUserId());
+            User userVideo = findUserById(video.getUserId());
 
             ExtendedVideoInformation extendedVideoInformation = createExtendedVideoInformation(userVideo, video);
 
@@ -103,7 +103,7 @@ public class VideoServiceImpl implements VideoService {
 
             Video video = findVideoById(likes.get(i).getVideoId());
 
-            User userVideo = userDao.findById(video.getUserId());
+            User userVideo =findUserById(video.getUserId());
 
             ExtendedVideoInformation extendedVideoInformation = createExtendedVideoInformation(userVideo, video);
 
@@ -125,7 +125,7 @@ public class VideoServiceImpl implements VideoService {
         List<Video> videoList = new ArrayList<>();
 
         for(Subscribe tmpSubscribe: subscribes) {
-            User tmpUser = userDao.findById(tmpSubscribe.getUserSubscriptionId());
+            User tmpUser = findUserById(tmpSubscribe.getUserSubscriptionId());
             videoList.addAll(videoDao.findAllByUserIdOrderByDateDesc(tmpUser.getId()));
         }
 
@@ -138,7 +138,7 @@ public class VideoServiceImpl implements VideoService {
             }
 
             Video video = videoList.get(i);
-            User userVideo = userDao.findById(video.getUserId());
+            User userVideo = findUserById(video.getUserId());
 
             ExtendedVideoInformation extendedVideoInformation = createExtendedVideoInformation(userVideo, video);
 
@@ -181,6 +181,17 @@ public class VideoServiceImpl implements VideoService {
     private User findUserByEmail(String email) {
 
         Optional<User> userOptional = userDao.findByEmail(email);
+
+        if (!userOptional.isPresent()) {
+            throw new IllegalStateException("No found user");
+        }
+
+        return userOptional.get();
+    }
+
+    private User findUserById(int id) {
+
+        Optional<User> userOptional = userDao.findById(id);
 
         if (!userOptional.isPresent()) {
             throw new IllegalStateException("No found user");

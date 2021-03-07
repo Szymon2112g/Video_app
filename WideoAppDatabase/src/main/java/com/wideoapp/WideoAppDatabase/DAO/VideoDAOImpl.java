@@ -141,6 +141,7 @@ public class VideoDAOImpl implements VideoDAO{
 
     @Override
     public List<Video> findVideoByKey(String key) {
+
         Session currentSession = entityManager.unwrap(Session.class);
 
         Query<Video> theQuery = currentSession.createQuery("from Video where title LIKE :keyfirst or description like :keyseconds", Video.class);
