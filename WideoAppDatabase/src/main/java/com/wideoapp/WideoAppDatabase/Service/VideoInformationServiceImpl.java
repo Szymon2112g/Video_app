@@ -27,8 +27,170 @@ public class VideoInformationServiceImpl implements VideoInformationService {
     @Transactional
     public ExtendedVideoInformation findById(int id) {
 
-        Video video = videoDAO.findById(id);
+        Optional<Video> videoOptional = videoDAO.findById(id);
+
+        if (!videoOptional.isPresent()) {
+            return null;
+        }
+
+        Video video = videoOptional.get();
+
+        return swapVideoToExtendedVideoInformation(video);
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findLatestVideo() {
+
+        List<Video> videoList = videoDAO.findLatestVideo();
+
+        if (videoList == null || videoList.isEmpty()) {
+            return null;
+        }
+
+        List<ExtendedVideoInformation> extendedVideoInformation =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformation;
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findTheMostDisplayVideo() {
+
+        List<Video> videoList = videoDAO.findTheMostDisplayVideo();
+
+        if (videoList == null || videoList.isEmpty()) {
+            return null;
+        }
+
+        List<ExtendedVideoInformation> extendedVideoInformation =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformation;
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findTheMostLikesVideo() {
+
+        List<Video> videoList = videoDAO.findTheMostLikesVideo();
+
+        if (videoList == null || videoList.isEmpty()) {
+            return null;
+        }
+
+        List<ExtendedVideoInformation> extendedVideoInformation =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformation;
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findTheMostDislikesVideo() {
+
+        List<Video> videoList = videoDAO.findTheMostDislikesVideo();
+
+        if (videoList == null || videoList.isEmpty()) {
+            return null;
+        }
+
+        List<ExtendedVideoInformation> extendedVideoInformation =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformation;
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> getVideosOnTime() {
+
+        List<Video> videoList = videoDAO.findAllOrderByDateDesc();
+
+        if (videoList == null || videoList.isEmpty()) {
+            return null;
+        }
+
+        videoList.sort((o1, o2) -> Integer.compare(o2.getDisplay(), o1.getDisplay()));
+
+        for (int i = 10; i< videoList.size(); i++) {
+            videoList.remove(i);
+        }
+
+        List<ExtendedVideoInformation> extendedVideoInformation =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformation;
+    }
+
+    @Override
+    @Transactional
+    public List<String> findTipsByKey(String key) {
+        return videoDAO.findTipsByKey(key);
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findVideoByKey(String key) {
+
+        List<Video> videoList = videoDAO.findVideoByKey(key);
+
+        if (videoList == null || videoList.isEmpty()) {
+            return null;
+        }
+
+        List<ExtendedVideoInformation> extendedVideoInformation =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformation;
+    }
+
+    @Override
+    @Transactional
+    public void increaseDisplay(ExtendedVideoInformation theVideo) {
+
+        Video video = new Video();
+        video.setId(theVideo.getId());
+        video.setDisplay(theVideo.getDisplay());
+
+        videoDAO.increaseDisplay(video);
+    }
+
+    @Override
+    @Transactional
+    public List<ExtendedVideoInformation> findVideoByUserId(int userId) {
+
+        List<Video> videoList = videoDAO.findVideoByUserId(userId);
+
+        if (videoList == null || videoList.isEmpty()) {
+            return null;
+        }
+
+        List<ExtendedVideoInformation> extendedVideoInformation =
+                swapVideoListToExtendedVideoInformationList(videoList);
+
+        return extendedVideoInformation;
+    }
+
+    private List<ExtendedVideoInformation> swapVideoListToExtendedVideoInformationList(List<Video> videoList) {
+
+        List<ExtendedVideoInformation> extendedVideoInformationList = new ArrayList<>();
+
+        for(Video video: videoList) {
+            extendedVideoInformationList.add(swapVideoToExtendedVideoInformation(video));
+        }
+
+        return extendedVideoInformationList;
+    }
+
+    private ExtendedVideoInformation swapVideoToExtendedVideoInformation(Video video) {
+
         User user = userDAO.findUserById(video.getUserId());
+
+        if (user == null) {
+            return null;
+        }
 
         ExtendedVideoInformation extendedVideoInformation = ExtendedVideoInformation.getBuilder()
                 .setId(video.getId())
@@ -46,131 +208,6 @@ public class VideoInformationServiceImpl implements VideoInformationService {
                 .build();
 
         return extendedVideoInformation;
-    }
-
-    @Override
-    @Transactional
-    public List<ExtendedVideoInformation> findLatestVideo() {
-        List<Video> videoList = videoDAO.findLatestVideo();
-
-        List<ExtendedVideoInformation> extendedVideoInformations =
-                swapVideoListToExtendedVideoInformationList(videoList);
-
-        return extendedVideoInformations;
-    }
-
-    @Override
-    @Transactional
-    public List<ExtendedVideoInformation> findTheMostDisplayVideo() {
-        List<Video> videoList = videoDAO.findTheMostDisplayVideo();
-
-        List<ExtendedVideoInformation> extendedVideoInformations =
-                swapVideoListToExtendedVideoInformationList(videoList);
-
-        return extendedVideoInformations;
-    }
-
-    @Override
-    @Transactional
-    public List<ExtendedVideoInformation> findTheMostLikesVideo() {
-        List<Video> videoList = videoDAO.findTheMostLikesVideo();
-
-        List<ExtendedVideoInformation> extendedVideoInformations =
-                swapVideoListToExtendedVideoInformationList(videoList);
-
-        return extendedVideoInformations;
-    }
-
-    @Override
-    @Transactional
-    public List<ExtendedVideoInformation> findTheMostDislikesVideo() {
-        List<Video> videoList = videoDAO.findTheMostDislikesVideo();
-
-        List<ExtendedVideoInformation> extendedVideoInformations =
-                swapVideoListToExtendedVideoInformationList(videoList);
-
-        return extendedVideoInformations;
-    }
-
-    @Override
-    @Transactional
-    public List<ExtendedVideoInformation> getVideosOnTime() {
-        List<Video> videoList = videoDAO.findAllOrderByDateDesc();
-
-        Collections.sort(videoList, (o1, o2) -> Integer.compare(o2.getDisplay(), o1.getDisplay()));
-
-        for (int i = 10; i< videoList.size(); i++) {
-            videoList.remove(i);
-        }
-
-        List<ExtendedVideoInformation> extendedVideoInformations =
-                swapVideoListToExtendedVideoInformationList(videoList);
-
-        return extendedVideoInformations;
-    }
-
-    @Override
-    @Transactional
-    public List<String> findTipsByKey(String key) {
-        return videoDAO.findTipsByKey(key);
-    }
-
-    @Override
-    @Transactional
-    public List<ExtendedVideoInformation> findVideoByKey(String key) {
-
-        List<Video> videoList = videoDAO.findVideoByKey(key);
-        List<ExtendedVideoInformation> extendedVideoInformations =
-                swapVideoListToExtendedVideoInformationList(videoList);
-
-        return extendedVideoInformations;
-    }
-
-    @Override
-    @Transactional
-    public void increaseDisplay(ExtendedVideoInformation theVideo) {
-        Video video = new Video();
-        video.setId(theVideo.getId());
-        video.setDisplay(theVideo.getDisplay());
-        videoDAO.increaseDisplay(video);
-    }
-
-    @Override
-    @Transactional
-    public List<ExtendedVideoInformation> findVideoByUserId(int userId) {
-
-        List<Video> videoList = videoDAO.findVideoByUserId(userId);
-        List<ExtendedVideoInformation> extendedVideoInformations =
-                swapVideoListToExtendedVideoInformationList(videoList);
-
-        return extendedVideoInformations;
-    }
-
-    private List<ExtendedVideoInformation> swapVideoListToExtendedVideoInformationList(List<Video> videoList) {
-        List<ExtendedVideoInformation> extendedVideoInformations = new ArrayList<>();
-
-        for(Video video: videoList) {
-            User user = userDAO.findUserById(video.getUserId());
-
-            ExtendedVideoInformation extendedVideoInformation = ExtendedVideoInformation.getBuilder()
-                    .setId(video.getId())
-                    .setUrl(video.getUrl())
-                    .setTitle(video.getTitle())
-                    .setDescription(video.getDescription())
-                    .setFirstName(user.getFirstName())
-                    .setLastName(user.getLastName())
-                    .setUserId(user.getId())
-                    .setDisplay(video.getDisplay())
-                    .setPhotoUrl(video.getPhotoUrl())
-                    .setDate(video.getDate())
-                    .setLikes(video.getLikes())
-                    .setDislikes(video.getDislikes())
-                    .build();
-
-            extendedVideoInformations.add(extendedVideoInformation);
-        }
-
-        return extendedVideoInformations;
     }
 
 }

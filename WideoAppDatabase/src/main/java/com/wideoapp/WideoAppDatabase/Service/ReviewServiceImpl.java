@@ -1,6 +1,7 @@
 package com.wideoapp.WideoAppDatabase.Service;
 
 import com.wideoapp.WideoAppDatabase.DAO.VideoDAO;
+import com.wideoapp.WideoAppDatabase.Entity.Video;
 import com.wideoapp.WideoAppDatabase.Web.Mapper.ReviewMapper;
 import com.wideoapp.WideoAppDatabase.Web.Model.ReviewDto;
 import com.wideoapp.WideoAppDatabase.Entity.Review;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -27,11 +29,17 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public List<ReviewDto> getAllReviewByVideoId(int id) {
 
-        List<Review> reviews = videoDAO.findById(id).getReviews();
+        Optional<Video> optionalVideo = videoDAO.findById(id);
+
+        if (!optionalVideo.isPresent()) {
+            return null;
+        }
+
+        List<Review> reviews = optionalVideo.get().getReviews();
+
         List<ReviewDto> reviewsDTO = new ArrayList<>(reviews.size());
 
         for(Review review: reviews) {
-
             ReviewDto reviewDto = reviewMapper.ReviewToReviewDto(review);
             reviewsDTO.add(reviewDto);
         }

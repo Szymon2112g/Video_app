@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -57,7 +58,13 @@ public class UserDAOImpl implements UserDAO {
         Query<User> theQuery = currentSession.createQuery("from User where id = :id");
         theQuery.setParameter("id", id);
 
-        User user = theQuery.getSingleResult();
+        User user;
+
+        try {
+            user = theQuery.getSingleResult();
+        } catch (Exception e) {
+            user = null;
+        }
 
         return user;
     }

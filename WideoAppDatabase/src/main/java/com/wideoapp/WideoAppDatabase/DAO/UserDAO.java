@@ -3,6 +3,7 @@ package com.wideoapp.WideoAppDatabase.DAO;
 import com.wideoapp.WideoAppDatabase.Entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDAO {
 

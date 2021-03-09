@@ -5,5 +5,5 @@ import com.wideoapp.WideoAppDatabase.Web.Model.ReviewDto;
 import java.util.List;
 
 public interface ReviewService {
-    public List<ReviewDto> getAllReviewByVideoId(int id);
+    List<ReviewDto> getAllReviewByVideoId(int id);
 }

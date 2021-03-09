@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -29,14 +30,14 @@ public class VideoDAOImpl implements VideoDAO{
     }
 
     @Override
-    public Video findById(int id) {
+    public Optional<Video> findById(int id) {
 
         Session currentSession = entityManager.unwrap(Session.class);
 
         Query<Video> videoQuery = currentSession.createQuery("from Video where id = :id ", Video.class);
         videoQuery.setParameter("id", id);
 
-        return videoQuery.getSingleResult();
+        return Optional.of(videoQuery.getSingleResult());
     }
 
     @Override
