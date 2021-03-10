@@ -2,6 +2,8 @@ package com.wideoapp.WideoAppSecurity.Web.Controller;
 
 import com.wideoapp.WideoAppSecurity.Service.JwtTokenService;
 import com.wideoapp.WideoAppSecurity.Service.ReviewService;
+import com.wideoapp.WideoAppSecurity.Web.Controller.Exception.InvalidInputException;
+import com.wideoapp.WideoAppSecurity.Web.Controller.Exception.NoFoundObjectException;
 import com.wideoapp.WideoAppSecurity.Web.Model.ReviewToAdd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,23 +27,28 @@ public class ReviewController {
     //@PostMapping(path = "/add-review/")
     @PostMapping(path = "/review/add")
     public ResponseEntity<?> addReview(@RequestHeader Map<String, String> header,
-                                       @RequestBody ReviewToAdd reviewToAdd) {
+                                       @RequestBody ReviewToAdd reviewToAdd)
+            throws InvalidInputException, NoFoundObjectException {
 
         if (reviewToAdd == null ) {
-            return ResponseEntity.badRequest().build();
+            throw new InvalidInputException("body of review is null");
         }
 
         if (reviewToAdd.getComment() == null || reviewToAdd.getComment().equals("")) {
-            return ResponseEntity.badRequest().build();
+            throw new InvalidInputException("comment is empty");
         }
 
         if (reviewToAdd.getVideoId() < 0) {
-            return ResponseEntity.badRequest().build();
+            throw new InvalidInputException("video id is below 1");
         }
 
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        reviewService.addReview(email, reviewToAdd);
+        boolean isSuccess = reviewService.addReview(email, reviewToAdd);
+
+        if (!isSuccess) {
+            throw new NoFoundObjectException("review can't be added");
+        }
 
         return ResponseEntity.ok().build();
     }

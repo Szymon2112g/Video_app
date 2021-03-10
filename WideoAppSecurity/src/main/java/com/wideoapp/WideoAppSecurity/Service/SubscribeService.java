@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface SubscribeService {
     public List<SubscribedUser> getUserSubscriptions(String email);
-    public void addSubscription(String email, int subscribedUser);
-    public void subtractSubscription(String email, int subscribedUser);
+    public boolean addSubscription(String email, int subscribedUser);
+    public boolean subtractSubscription(String email, int subscribedUser);
 }

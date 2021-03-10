@@ -26,12 +26,12 @@ public class DislikeServiceImpl implements DislikeService {
     }
 
     @Override
-    public void addDislike(int videoId, String email) {
+    public boolean addDislike(int videoId, String email) {
 
         User user = findUserByEmail(email);
 
         if (dislikesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
-            return;
+            return false;
         }
 
         Video videoToSave = findVideoById(videoId);
@@ -42,6 +42,8 @@ public class DislikeServiceImpl implements DislikeService {
 
         user.getDislikeList().add(new Dislike(videoId, user.getId()));
         userDao.save(user);
+
+        return true;
     }
 
     @Override
@@ -57,12 +59,12 @@ public class DislikeServiceImpl implements DislikeService {
     }
 
     @Override
-    public void subtractDislike(int videoId, String email) {
+    public boolean subtractDislike(int videoId, String email) {
 
         User user = findUserByEmail(email);
 
         if (!dislikesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
-            return;
+            return false;
         }
 
         dislikesDao.removeByVideoIdAndUserId(videoId, user.getId());
@@ -73,6 +75,8 @@ public class DislikeServiceImpl implements DislikeService {
         videoToSave.setDislikes(dislikes);
 
         videoDao.save(videoToSave);
+
+        return true;
     }
 
     private Video findVideoById(int id) {
@@ -80,7 +84,7 @@ public class DislikeServiceImpl implements DislikeService {
         Optional<Video> videoToSaveOptional = videoDao.findById(id);
 
         if (!videoToSaveOptional.isPresent()) {
-            throw new IllegalStateException("No found Video");
+            return null;
         }
 
         return videoToSaveOptional.get();
@@ -91,7 +95,7 @@ public class DislikeServiceImpl implements DislikeService {
         Optional<User> userOptional = userDao.findByEmail(email);
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return null;
         }
 
         return userOptional.get();

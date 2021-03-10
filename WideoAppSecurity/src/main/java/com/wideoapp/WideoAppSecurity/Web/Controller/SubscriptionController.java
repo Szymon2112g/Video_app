@@ -3,6 +3,7 @@ package com.wideoapp.WideoAppSecurity.Web.Controller;
 import com.wideoapp.WideoAppSecurity.Jwt.JwtTokenUtil;
 import com.wideoapp.WideoAppSecurity.Service.JwtTokenService;
 import com.wideoapp.WideoAppSecurity.Service.SubscribeService;
+import com.wideoapp.WideoAppSecurity.Web.Controller.Exception.NoFoundObjectException;
 import com.wideoapp.WideoAppSecurity.Web.Model.SubscribedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +30,16 @@ public class SubscriptionController {
 
     //@GetMapping(path = "/get-subscription/{email}")
     @GetMapping(path = "/subscription/")
-    public ResponseEntity<?> getUserSubscriptions(@RequestHeader Map<String, String> header) {
+    public ResponseEntity<?> getUserSubscriptions(@RequestHeader Map<String, String> header)
+            throws NoFoundObjectException {
 
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
         List<SubscribedUser> subscribes = subscribeService.getUserSubscriptions(email);
+
+        if (subscribes == null || subscribes.isEmpty()) {
+            throw new NoFoundObjectException("no found subscriptions");
+        }
 
         return ResponseEntity.ok(subscribes);
     }
@@ -41,7 +47,7 @@ public class SubscriptionController {
     //@PostMapping(path = "/add-subscription")
     @PostMapping(path = "/subscription/add/user/{userId}")
     public ResponseEntity<?> addSubscription(@RequestHeader Map<String, String> header,
-                                             @PathVariable int userId) {
+                                             @PathVariable int userId) throws NoFoundObjectException {
 
         if (userId < 0) {
             return ResponseEntity.badRequest().build();
@@ -49,7 +55,11 @@ public class SubscriptionController {
 
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        subscribeService.addSubscription(email, userId);
+        boolean isSuccess = subscribeService.addSubscription(email, userId);
+
+        if (!isSuccess) {
+            throw new NoFoundObjectException("subscription can't be added");
+        }
 
         return ResponseEntity.ok().build();
     }
@@ -57,7 +67,7 @@ public class SubscriptionController {
     //@PostMapping(path = "/subtract-subscription")
     @PostMapping(path = "/subscription/subtract/user/{userId}")
     public ResponseEntity<?> subtractSubscription(@RequestHeader Map<String, String> header,
-                                                  @PathVariable int userId) {
+                                                  @PathVariable int userId) throws NoFoundObjectException {
 
         if (userId < 0) {
             return ResponseEntity.badRequest().build();
@@ -65,7 +75,12 @@ public class SubscriptionController {
 
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        subscribeService.subtractSubscription(email, userId);
+        boolean isSuccess = subscribeService.subtractSubscription(email, userId);
+
+        if (!isSuccess) {
+            throw new NoFoundObjectException("subscription can't be subtract");
+        }
+
         return ResponseEntity.ok().build();
     }
 }

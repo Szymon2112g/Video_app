@@ -27,14 +27,24 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void addReview(String email, ReviewToAdd reviewToAdd) {
+    public boolean addReview(String email, ReviewToAdd reviewToAdd) {
 
         Video video = findVideoById(reviewToAdd.getVideoId());
+
+        if (video == null) {
+            return false;
+        }
+
         User user = findUserByEmail(email);
+
+        if (user == null) {
+            return false;
+        }
 
         Review review = new Review(reviewToAdd.getComment(), user.getId(), video.getId());
 
         reviewDAO.save(review);
+        return true;
     }
 
     private Video findVideoById(int id) {
@@ -42,7 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<Video> videoToSaveOptional = videoDao.findById(id);
 
         if (!videoToSaveOptional.isPresent()) {
-            throw new IllegalStateException("No found Video");
+            return null;
         }
 
         return videoToSaveOptional.get();
@@ -53,7 +63,7 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<User> userOptional = userDao.findByEmail(email);
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return null;
         }
 
         return userOptional.get();

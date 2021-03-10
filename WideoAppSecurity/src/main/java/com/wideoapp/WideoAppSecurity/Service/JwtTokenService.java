@@ -21,19 +21,19 @@ public class JwtTokenService {
     public String findEmailFromTokenOfHeader(Map<String, String> header) {
 
         if (header.get(tokenHeader) == null || header.get(tokenHeader).equals("")) {
-            throw new IllegalStateException("SECURITY Server Error - header have no token #1");
+            throw new SecurityException("SECURITY Server Error - header have no token #1");
         }
 
         String jwtToken = header.get(tokenHeader).substring(7);
 
         if (jwtToken == null || jwtToken.equals("")) {
-            throw new IllegalStateException("SECURITY Server Error - not found token from header #2");
+            throw new SecurityException("SECURITY Server Error - not found token from header #2");
         }
 
         String email = jwtTokenUtil.getUsernameFromToken(jwtToken);
 
         if (email == null || email.equals("")) {
-            throw new IllegalStateException("SECURITY Server Error - not found email from token #3");
+            throw new SecurityException("SECURITY Server Error - not found email from token #3");
         }
 
         return email;

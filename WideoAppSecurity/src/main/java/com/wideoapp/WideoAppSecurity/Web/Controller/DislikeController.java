@@ -2,6 +2,7 @@ package com.wideoapp.WideoAppSecurity.Web.Controller;
 
 import com.wideoapp.WideoAppSecurity.Service.DislikeService;
 import com.wideoapp.WideoAppSecurity.Service.JwtTokenService;
+import com.wideoapp.WideoAppSecurity.Web.Controller.Exception.NoFoundObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,15 @@ public class DislikeController {
     //@PostMapping(path = "/add-dislike-to-video", consumes = "application/json")
     @PostMapping(path = "/dislike/add/video/{videoId}", consumes = "application/json")
     public ResponseEntity<?> addDislikeToVideo(@RequestHeader Map<String, String> header,
-                                               @PathVariable int videoId) {
+                                               @PathVariable int videoId) throws NoFoundObjectException {
 
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        dislikeService.addDislike(videoId, email);
+        boolean isSuccess = dislikeService.addDislike(videoId, email);
+
+        if (!isSuccess) {
+            throw new NoFoundObjectException("dislike can't be added");
+        }
 
         return ResponseEntity.ok().build();
     }
@@ -49,11 +54,15 @@ public class DislikeController {
     //@PostMapping(path = "/subtract-dislike-to-video", consumes = "application/json")
     @PostMapping(path = "/dislike/subtract/video/{videoId}", consumes = "application/json")
     public ResponseEntity<?> subtractDislikeFromVideo(@RequestHeader Map<String, String> header,
-                                                    @PathVariable int videoId) {
+                                                    @PathVariable int videoId) throws NoFoundObjectException {
 
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        dislikeService.subtractDislike(videoId, email);
+        boolean isSuccess = dislikeService.subtractDislike(videoId, email);
+
+        if (!isSuccess) {
+            throw new NoFoundObjectException("dislike can't be subtract");
+        }
 
         return ResponseEntity.ok().build();
     }

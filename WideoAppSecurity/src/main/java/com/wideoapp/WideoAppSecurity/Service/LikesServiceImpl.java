@@ -26,15 +26,19 @@ public class LikesServiceImpl implements LikesService {
     }
 
     @Override
-    public void addLike(int videoId, String email) {
+    public boolean addLike(int videoId, String email) {
 
         User user = findUserByEmail(email);
 
         if (likesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
-            return;
+            return false;
         }
 
         Video video = findVideoById(videoId);
+
+        if (video == null) {
+            return false;
+        }
 
         int likes = video.getLikes();
         video.setLikes(likes + 1);
@@ -42,6 +46,8 @@ public class LikesServiceImpl implements LikesService {
 
         user.getLikeList().add(new Likes(videoId, user.getId()));
         userDao.save(user);
+
+        return true;
     }
 
     @Override
@@ -57,13 +63,13 @@ public class LikesServiceImpl implements LikesService {
     }
 
     @Override
-    public void subtractLike(int videoId, String email) {
+    public boolean subtractLike(int videoId, String email) {
 
 
         User user = findUserByEmail(email);
 
         if (!likesDao.existsByVideoIdAndUserId(videoId, user.getId())) {
-            return;
+            return false;
         }
 
         likesDao.removeByVideoIdAndUserId(videoId, user.getId());
@@ -74,6 +80,8 @@ public class LikesServiceImpl implements LikesService {
         videoToSave.setLikes(likes);
 
         videoDao.save(videoToSave);
+
+        return true;
     }
 
     private Video findVideoById(int id) {
@@ -81,7 +89,7 @@ public class LikesServiceImpl implements LikesService {
         Optional<Video> videoToSaveOptional = videoDao.findById(id);
 
         if (!videoToSaveOptional.isPresent()) {
-            throw new IllegalStateException("No found Video");
+            return null;
         }
 
         return videoToSaveOptional.get();
@@ -92,7 +100,7 @@ public class LikesServiceImpl implements LikesService {
         Optional<User> userOptional = userDao.findByEmail(email);
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return null;
         }
 
         return userOptional.get();

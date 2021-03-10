@@ -2,6 +2,7 @@ package com.wideoapp.WideoAppSecurity.Web.Controller;
 
 import com.wideoapp.WideoAppSecurity.Service.JwtTokenService;
 import com.wideoapp.WideoAppSecurity.Service.LikesService;
+import com.wideoapp.WideoAppSecurity.Web.Controller.Exception.NoFoundObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,15 @@ public class LikeController {
     //@PostMapping(path = "/add-like-to-video", consumes = "application/json")
     @PostMapping(path = "/like/add/video/{videoId}", consumes = "application/json")
     public ResponseEntity<?> addLikeToVideo(@RequestHeader Map<String, String> header,
-                                            @PathVariable int videoId) {
+                                            @PathVariable int videoId) throws NoFoundObjectException {
 
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        likesService.addLike(videoId, email);
+        boolean isSuccess = likesService.addLike(videoId, email);
+
+        if (!isSuccess) {
+            throw new NoFoundObjectException("like can't be added");
+        }
 
         return ResponseEntity.ok().build();
     }
@@ -48,11 +53,15 @@ public class LikeController {
     //@PostMapping(path = "/subtract-like-to-video", consumes = "application/json")
     @PostMapping(path = "/like/subtract/video/{videoId}", consumes = "application/json")
     public ResponseEntity<?> subtractLikeToVideo(@RequestHeader Map<String, String> header,
-                                                 @PathVariable int videoId) {
+                                                 @PathVariable int videoId) throws NoFoundObjectException {
 
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
-        likesService.subtractLike(videoId, email);
+        boolean isSuccess = likesService.subtractLike(videoId, email);
+
+        if (!isSuccess) {
+            throw new NoFoundObjectException("like can't be subtract");
+        }
 
         return ResponseEntity.ok().build();
     }

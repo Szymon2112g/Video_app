@@ -45,21 +45,41 @@ public class SubscribeServiceImpl implements SubscribeService{
     }
 
     @Override
-    public void addSubscription(String email, int subscribedUserId) {
+    public boolean addSubscription(String email, int subscribedUserId) {
 
         User user = findUserByEmail(email);
+
+        if (user == null) {
+            return false;
+        }
+
+        if (subscribeDao.existsByUserIdAndUserSubscriptionId(user.getId(), subscribedUserId)) {
+            return false;
+        }
 
         user.getSubscribeList().add(new Subscribe(0, subscribedUserId, user.getId()));
 
         userDao.save(user);
+
+        return true;
     }
 
     @Override
-    public void subtractSubscription(String email, int subscribedUserId) {
+    public boolean subtractSubscription(String email, int subscribedUserId) {
 
         User user = findUserByEmail(email);
 
+        if (user == null) {
+            return false;
+        }
+
+        if (!subscribeDao.existsByUserIdAndUserSubscriptionId(user.getId(), subscribedUserId)) {
+            return false;
+        }
+
         subscribeDao.removeByUserSubscriptionIdAndUserId(subscribedUserId, user.getId());
+
+        return true;
     }
 
     private User findUserByEmail(String email) {
@@ -67,7 +87,7 @@ public class SubscribeServiceImpl implements SubscribeService{
         Optional<User> userOptional = userDao.findByEmail(email);
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return null;
         }
 
         return userOptional.get();
@@ -78,7 +98,7 @@ public class SubscribeServiceImpl implements SubscribeService{
         Optional<User> userOptional = userDao.findById(id);
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return null;
         }
 
         return userOptional.get();

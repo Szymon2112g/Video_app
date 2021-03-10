@@ -23,15 +23,25 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public void addHistory(String email, int videoId) {
+    public boolean addHistory(String email, int videoId) {
 
         User user = findUserByEmail(email);
 
+        if (user == null) {
+            return false;
+        }
+
         Video video = findVideoById(videoId);
+
+        if (video == null) {
+            return false;
+        }
 
         user.getHistoryList().add(new History(0, video.getId(), user.getId()));
 
         userDao.save(user);
+
+        return true;
     }
 
     private Video findVideoById(int id) {
@@ -39,7 +49,7 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<Video> videoToSaveOptional = videoDao.findById(id);
 
         if (!videoToSaveOptional.isPresent()) {
-            throw new IllegalStateException("No found Video");
+            return null;
         }
 
         return videoToSaveOptional.get();
@@ -50,7 +60,7 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<User> userOptional = userDao.findByEmail(email);
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return null;
         }
 
         return userOptional.get();

@@ -4,6 +4,8 @@ import com.wideoapp.WideoAppSecurity.Dao.*;
 import com.wideoapp.WideoAppSecurity.Entity.*;
 import com.wideoapp.WideoAppSecurity.Web.Model.ExtendedVideoInformation;
 import com.wideoapp.WideoAppSecurity.Web.Model.SmallVideoInformation;
+import com.wideoapp.WideoAppSecurity.Web.Model.UserDto;
+import com.wideoapp.WideoAppSecurity.Web.Model.VideoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +32,12 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public void addSpecificVideoToDB(SmallVideoInformation smallVideoInformation) {
+    public boolean addSpecificVideoToDB(SmallVideoInformation smallVideoInformation) {
 
         Optional<User> userOptional = userDao.findByEmail(smallVideoInformation.getEmail());
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return false;
         }
 
         User user = userOptional.get();
@@ -57,6 +59,8 @@ public class VideoServiceImpl implements VideoService {
 
         user.getVideoList().add(video);
         userDao.save(user);
+
+        return true;
     }
 
     @Override
@@ -172,7 +176,7 @@ public class VideoServiceImpl implements VideoService {
         Optional<Video> videoToSaveOptional = videoDao.findById(id);
 
         if (!videoToSaveOptional.isPresent()) {
-            throw new IllegalStateException("No found Video");
+            return null;
         }
 
         return videoToSaveOptional.get();
@@ -183,7 +187,7 @@ public class VideoServiceImpl implements VideoService {
         Optional<User> userOptional = userDao.findByEmail(email);
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return null;
         }
 
         return userOptional.get();
@@ -194,7 +198,7 @@ public class VideoServiceImpl implements VideoService {
         Optional<User> userOptional = userDao.findById(id);
 
         if (!userOptional.isPresent()) {
-            throw new IllegalStateException("No found user");
+            return null;
         }
 
         return userOptional.get();

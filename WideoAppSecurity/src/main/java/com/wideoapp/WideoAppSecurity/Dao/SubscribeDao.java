@@ -15,4 +15,7 @@ public interface SubscribeDao extends JpaRepository<Subscribe, Long> {
 
     @Transactional
     List<Subscribe> findAllByUserId(int userId);
+
+    boolean existsByUserIdAndUserSubscriptionId(int userId, int userSubscriptionId);
+
 }

@@ -1,6 +1,8 @@
 package com.wideoapp.WideoAppSecurity.Web.Controller;
 import com.wideoapp.WideoAppSecurity.Proxy.WideoAppFS;
 import com.wideoapp.WideoAppSecurity.Service.*;
+import com.wideoapp.WideoAppSecurity.Web.Controller.Exception.InvalidInputException;
+import com.wideoapp.WideoAppSecurity.Web.Controller.Exception.NoFoundObjectException;
 import com.wideoapp.WideoAppSecurity.Web.Model.ExtendedVideoInformation;
 import com.wideoapp.WideoAppSecurity.Web.Model.ResponseMessage;
 import com.wideoapp.WideoAppSecurity.Web.Model.SmallVideoInformation;
@@ -30,13 +32,19 @@ public class VideoController {
 
     //@PostMapping(path = "/send-video-to-db")
     @PostMapping(path = "/video/file/db")
-    public ResponseEntity<?> sendVideoToDB(@RequestBody SmallVideoInformation smallVideoInformation) {
+    public ResponseEntity<?> sendVideoToDB(@RequestBody SmallVideoInformation smallVideoInformation)
+            throws InvalidInputException {
 
         if (smallVideoInformation == null) {
             ResponseEntity.badRequest().build();
         }
 
-        videoService.addSpecificVideoToDB(smallVideoInformation);
+        boolean isSuccess = videoService.addSpecificVideoToDB(smallVideoInformation);
+
+        if (!isSuccess) {
+            throw new InvalidInputException("video can't be added");
+        }
+
         return ResponseEntity.ok().build();
     }
 
@@ -44,7 +52,7 @@ public class VideoController {
     @GetMapping(path = "/video/feed/history/{id}")
     public ResponseEntity<?> getVideoHistoryFeed(
             @RequestHeader Map<String, String> header,
-            @PathVariable("id") int id) {
+            @PathVariable("id") int id) throws NoFoundObjectException {
 
         if (id <= 0) {
             return ResponseEntity.badRequest().build();
@@ -54,6 +62,10 @@ public class VideoController {
 
         List<ExtendedVideoInformation> historyFeed = videoService.getVideoFeedHistory(id, email);
 
+        if (historyFeed == null || historyFeed.isEmpty()) {
+            throw new NoFoundObjectException("history feed can't be get");
+        }
+
         return ResponseEntity.ok(historyFeed);
     }
 
@@ -61,7 +73,7 @@ public class VideoController {
     @GetMapping(path = "/video/feed/liked/{id}")
     public ResponseEntity<?> getVideoLikeFeed(
             @RequestHeader Map<String, String> header,
-            @PathVariable("id") int id) {
+            @PathVariable("id") int id) throws NoFoundObjectException {
 
         if (id <= 0) {
             return ResponseEntity.badRequest().build();
@@ -71,14 +83,18 @@ public class VideoController {
 
         List<ExtendedVideoInformation> likeFeed = videoService.getVideoFeedLiked(id, email);
 
+        if (likeFeed == null || likeFeed.isEmpty()) {
+            throw new NoFoundObjectException("like feed can't be get");
+        }
+
         return ResponseEntity.ok(likeFeed);
     }
 
     //@GetMapping(path = "/get-video-feed/{category}/{id}")
-    @GetMapping(path = "/video/feed/Subscription/{id}")
+    @GetMapping(path = "/video/feed/subscription/{id}")
     public ResponseEntity<?> getVideoSubscriptionFeed(
             @RequestHeader Map<String, String> header,
-            @PathVariable("id") int id) {
+            @PathVariable("id") int id) throws NoFoundObjectException {
 
         if (id <= 0) {
             return ResponseEntity.badRequest().build();
@@ -87,6 +103,10 @@ public class VideoController {
         String email = jwtTokenService.findEmailFromTokenOfHeader(header);
 
         List<ExtendedVideoInformation> subscriptionFeed = videoService.getVideoFeedSubscription(id, email);
+
+        if (subscriptionFeed == null || subscriptionFeed.isEmpty()) {
+            throw new NoFoundObjectException("subscription feed can't be get");
+        }
 
         return ResponseEntity.ok(subscriptionFeed);
     }
