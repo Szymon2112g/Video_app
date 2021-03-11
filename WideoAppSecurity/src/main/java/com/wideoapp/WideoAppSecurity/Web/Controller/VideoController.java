@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 
 @RestController
-//@CrossOrigin(origins="http://localhost:4200")
+//@CrossOrigin(origins="http://localhost:8765")
 public class VideoController {
 
     private WideoAppFS wideoAppFS;
@@ -31,7 +31,7 @@ public class VideoController {
     }
 
     //@PostMapping(path = "/send-video-to-db")
-    @PostMapping(path = "/video/file/db")
+    @PostMapping(path = "/video/file/add/db/")
     public ResponseEntity<?> sendVideoToDB(@RequestBody SmallVideoInformation smallVideoInformation)
             throws InvalidInputException {
 
@@ -112,7 +112,7 @@ public class VideoController {
     }
 
     //@PostMapping(path = "/send-file", consumes = {"multipart/form-data"})
-    @PostMapping(path = "/video/send-file", consumes = {"multipart/form-data"})
+    @PostMapping(path = "/video/send-file/", consumes = {"multipart/form-data"})
     public ResponseEntity<?> handleFileUpload(@RequestBody MultipartFile file) {
 
         String response = wideoAppFS.handleFileUpload(file);

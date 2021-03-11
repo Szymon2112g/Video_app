@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@CrossOrigin(origins="http://localhost:4200")
+//@CrossOrigin(origins="http://localhost:8765")
 public class SubscriptionController {
 
     private SubscribeService subscribeService;
@@ -29,7 +29,7 @@ public class SubscriptionController {
     }
 
     //@GetMapping(path = "/get-subscription/{email}")
-    @GetMapping(path = "/subscription/")
+    @GetMapping(path = "/subscription/get/")
     public ResponseEntity<?> getUserSubscriptions(@RequestHeader Map<String, String> header)
             throws NoFoundObjectException {
 

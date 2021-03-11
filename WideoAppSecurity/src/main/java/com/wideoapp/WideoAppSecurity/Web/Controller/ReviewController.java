@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-//@CrossOrigin(origins="http://localhost:4200")
+//@CrossOrigin(origins="http://localhost:8765")
 public class ReviewController {
 
     private ReviewService reviewService;
@@ -25,7 +25,7 @@ public class ReviewController {
     }
 
     //@PostMapping(path = "/add-review/")
-    @PostMapping(path = "/review/add")
+    @PostMapping(path = "/review/add/")
     public ResponseEntity<?> addReview(@RequestHeader Map<String, String> header,
                                        @RequestBody ReviewToAdd reviewToAdd)
             throws InvalidInputException, NoFoundObjectException {

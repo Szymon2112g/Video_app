@@ -11,6 +11,11 @@ public class ApiGatewayConfiguration {
     @Bean
     public RouteLocator gatewayRouter(RouteLocatorBuilder builder) {
         return builder.routes()
+                /**
+                 *
+                 *  WideoAppDatabase
+                 *
+                 */
                 .route(p -> p.path("/reviews/**")
                         .uri("lb://wideoappdatabase")
                 )
@@ -47,10 +52,62 @@ public class ApiGatewayConfiguration {
                 .route(p -> p.path("/user/videos/**")
                         .uri("lb://wideoappdatabase")
                 )
+                /**
+                 *
+                 * WideoAppSecurity
+                 *
+                 */
+                .route(p -> p.path("/dislike/add/video/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/dislike/video/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/dislike/subtract/video/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/history/video/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/like/add/video/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/like/video/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/like/subtract/video/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/review/add/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/subscription/get/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/subscription/add/user/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/subscription/subtract/user/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/video/file/add/db/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/video/feed/history/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/video/feed/liked/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/video/feed/subscription/**")
+                        .uri("lb://wideoappsecurity")
+                )
+                .route(p -> p.path("/video/send-file/**")
+                        .uri("lb://wideoappsecurity")
+                )
+
                 .build();
     }
-
-
 
 }
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-//@CrossOrigin(origins="http://localhost:4200")
+//@CrossOrigin(origins="http://localhost:8765")
 public class HistoryController {
 
     private HistoryService historyService;
