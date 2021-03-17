@@ -15,7 +15,7 @@ import {Router} from '@angular/router';
 
 export class AddvideoComponent implements OnInit {
 
-  @ViewChild('f', { static: false }) addVideoForm: NgForm;
+  @ViewChild('f') addVideoForm: NgForm;
 
   videoToUpload: File = null;
   photoToUpload: File = null;

@@ -12,7 +12,7 @@ import {ListVideoActionsService} from '../services/list-video-actions.service';
 })
 export class SearchVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('browser', {static: false}) browser: ElementRef;
+  @ViewChild('browser') browser: ElementRef;
 
   category: string;
   search = '';

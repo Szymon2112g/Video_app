@@ -1,66 +1,66 @@
-<div class="container">
-  <div class="row" *ngIf="this.bookedAddressUrlFileServer !== ''">
+<!--<div class="container">-->
+<!--  <div class="row" *ngIf="this.bookedAddressUrlFileServer !== ''">-->
 
-    <h1 class="text-center">Dodaj film</h1>
-    <hr>
+<!--    <h1 class="text-center">Dodaj film</h1>-->
+<!--    <hr>-->
 
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-sm-offset-2 col-md-offset-2">
-        <label>Wybierz film</label>
-        <div class="progress">
-          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [style.width.%]="valueProgressVideo">
-            <span class="sr-only">{{valueProgressVideo}}%</span>
-          </div>
-        </div>
-        <div class="form-group" *ngIf="!isVideo; else videoAdded">
-          <input type="file" id="fileVideo" (change)="handleVideoInput($event.target.files)" accept=".mp4">
-          <button (click)="sendVideoFile()" class="btn btn-success">Wyślij film</button>
-        </div>
+<!--    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-sm-offset-2 col-md-offset-2">-->
+<!--        <label>Wybierz film</label>-->
+<!--        <div class="progress">-->
+<!--          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [style.width.%]="valueProgressVideo">-->
+<!--            <span class="sr-only">{{valueProgressVideo}}%</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="form-group" *ngIf="!isVideo; else videoAdded">-->
+<!--          <input type="file" id="fileVideo" (change)="handleVideoInput($event.target.files)" accept=".mp4">-->
+<!--          <button (click)="sendVideoFile()" class="btn btn-success">Wyślij film</button>-->
+<!--        </div>-->
 
-        <ng-template #videoAdded><span class="text text-success"><b>Film został dodany</b></span></ng-template>
-        </div>
+<!--        <ng-template #videoAdded><span class="text text-success"><b>Film został dodany</b></span></ng-template>-->
+<!--        </div>-->
 
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-sm-offset-2 col-md-offset-2">
-        <label>Wybierz zdjęcie</label>
-        <div class="progress">
-          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [style.width.%]="valueProgressImage">
-            <span class="sr-only">{{valueProgressImage}}%</span>
-          </div>
-        </div>
-        <div class="form-group" *ngIf="!isPhoto; else photoAdded">
-          <input type="file" id="filePhoto" (change)="handlePhotoInput($event.target.files)" accept=".jpg, .png">
-          <button (click)="sendPhotoFile()" class="btn btn-success">Wyślij zdjęcie</button>
-        </div>
+<!--      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-sm-offset-2 col-md-offset-2">-->
+<!--        <label>Wybierz zdjęcie</label>-->
+<!--        <div class="progress">-->
+<!--          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [style.width.%]="valueProgressImage">-->
+<!--            <span class="sr-only">{{valueProgressImage}}%</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="form-group" *ngIf="!isPhoto; else photoAdded">-->
+<!--          <input type="file" id="filePhoto" (change)="handlePhotoInput($event.target.files)" accept=".jpg, .png">-->
+<!--          <button (click)="sendPhotoFile()" class="btn btn-success">Wyślij zdjęcie</button>-->
+<!--        </div>-->
 
-        <ng-template #photoAdded><span class="text text-success"><b>Zdjęcie zostało dodane</b></span></ng-template>
-      </div>
+<!--        <ng-template #photoAdded><span class="text text-success"><b>Zdjęcie zostało dodane</b></span></ng-template>-->
+<!--      </div>-->
 
-    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-      <form (ngSubmit)="sendVideoToDB()" #f="ngForm">
+<!--    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">-->
+<!--      <form (ngSubmit)="sendVideoToDB()" #f="ngForm">-->
 
-          <div class="form-group">
-            <label>Tytuł filmu</label>
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="title"
-              name="title"
-              required>
-          </div>
+<!--          <div class="form-group">-->
+<!--            <label>Tytuł filmu</label>-->
+<!--            <input-->
+<!--              type="text"-->
+<!--              class="form-control"-->
+<!--              [(ngModel)]="title"-->
+<!--              name="title"-->
+<!--              required>-->
+<!--          </div>-->
 
-        <div class="form-group">
-          <label>Opis</label>
-          <textarea
-            name="description"
-            rows="3"
-            class="form-control"
-            [(ngModel)]="description"
-            required></textarea>
-        </div>
-        <hr>
+<!--        <div class="form-group">-->
+<!--          <label>Opis</label>-->
+<!--          <textarea-->
+<!--            name="description"-->
+<!--            rows="3"-->
+<!--            class="form-control"-->
+<!--            [(ngModel)]="description"-->
+<!--            required></textarea>-->
+<!--        </div>-->
+<!--        <hr>-->
 
-         <button class="btn btn-primary"
-         type="submit" [disabled]="!f.valid || !isVideo || !isPhoto">Wyślij</button>
-      </form>
-    </div>
-  </div>
-</div>
+<!--         <button class="btn btn-primary"-->
+<!--         type="submit" [disabled]="!f.valid || !isVideo || !isPhoto">Wyślij</button>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->

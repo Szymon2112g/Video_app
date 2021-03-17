@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SidelistComponent } from './sidelist.component';
 
@@ -6,7 +6,7 @@ describe('SidelistComponent', () => {
   let component: SidelistComponent;
   let fixture: ComponentFixture<SidelistComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SidelistComponent ]
     })

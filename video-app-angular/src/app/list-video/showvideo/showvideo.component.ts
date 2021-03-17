@@ -24,7 +24,7 @@ export class ShowvideoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private showVideoActions: ShowVideoActionsService,
-    private auth: AuthenticationService
+    public auth: AuthenticationService
   ) { }
 
   ngOnInit() {

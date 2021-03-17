@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { VerticalListVideoComponent } from './vertical-list-video.component';
 
@@ -6,7 +6,7 @@ describe('VerticalListVideoComponent', () => {
   let component: VerticalListVideoComponent;
   let fixture: ComponentFixture<VerticalListVideoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ VerticalListVideoComponent ]
     })
